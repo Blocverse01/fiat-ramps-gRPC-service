@@ -1,0 +1,25 @@
+edition = "2023";
+
+option go_package = "github.com/Blocverse01/globachain-ramps-gRPC-service/fiatramps";
+
+package fiatramps;
+
+service FiatRamps {
+  rpc GetSupportedCountries(SupportedCountriesRequest) returns (GetSupportedCountriesResponse) {};
+}
+
+message SupportedCountriesRequest {
+}
+
+message SupportedCountry {
+  string id = 1;
+  string name = 2;
+  string country_code = 3;
+  string currency_symbol = 4;
+  string currency_name = 5;
+  string flag_url = 6;
+}
+
+message GetSupportedCountriesResponse {
+  repeated SupportedCountry countries = 1;
+}
