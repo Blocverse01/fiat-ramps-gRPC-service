@@ -3,10 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	pb "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
 	"google.golang.org/grpc"
 	"log"
 	"net"
+
+	pb "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
 )
 
 var (

@@ -1,4 +1,4 @@
-module Globachain-Ramps-gRPC-service
+module github.com/blocverse01/globachain-ramps-grpc-service
 
 go 1.23.0
 
