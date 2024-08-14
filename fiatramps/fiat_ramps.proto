@@ -1,6 +1,6 @@
 edition = "2023";
 
-option go_package = "github.com/Blocverse01/globachain-ramps-gRPC-service/fiatramps";
+option go_package = "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps";
 
 package fiatramps;
 
