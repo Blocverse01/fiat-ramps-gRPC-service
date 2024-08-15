@@ -11,6 +11,7 @@ import (
 	"google.golang.org/grpc/credentials"
 	"log"
 	"net"
+	"net/http"
 )
 
 var (
@@ -121,6 +122,12 @@ func main() {
 	// Start the gRPC server to listen for incoming requests
 	log.Printf("server listening at %v", lis.Addr())
 	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+
+	err = http.ListenAndServe(":8080", nil)
+
+	if err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
