@@ -15,7 +15,7 @@ import (
 var (
 	tls                = flag.Bool("tls", false, "Connection uses TLS if true, else plain TCP")
 	caFile             = flag.String("ca_file", "", "The file containing the CA root cert file")
-	serverAddr         = flag.String("addr", "localhost:50051", "The server address in the format of host:port")
+	serverAddr         = flag.String("addr", "globachain-ramps-service:50051", "The server address in the format of host:port")
 	serverHostOverride = flag.String("server_host_override", "x.test.example.com", "The server name used to verify the hostname returned by the TLS handshake")
 )
 
@@ -39,7 +39,7 @@ func printSupportedCountries(client pb.FiatRampsClient) {
 }
 
 func printTransactionFee(client pb.FiatRampsClient) {
-	log.Printf("Getting supported countries")
+	log.Printf("Getting transaction fee")
 	req := &pb.GetTransactionFeeRequest{
 		CountryCode: proto.String("NG"),
 	}
@@ -53,10 +53,53 @@ func printTransactionFee(client pb.FiatRampsClient) {
 	log.Printf("Time taken to get transaction fee: %v", timeTaken)
 
 	if err != nil {
-		log.Fatalf("Failed to get supported countries: %v", err)
+		log.Fatalf("Failed to get transaction fee: %v", err)
 	}
 
-	log.Printf("Transaction Fees:\nOnramp:%v, Offramp:%v", res.OnrampFeePercentage, res.OfframpFeePercentage)
+	log.Printf("Transaction Fees:\nOnramp:%d, Offramp:%d", res.OnrampFeePercentage, res.OfframpFeePercentage)
+}
+
+func printRates(client pb.FiatRampsClient) {
+	log.Printf("Getting rates")
+	req := &pb.GetRatesRequest{
+		TargetCurrencies: []string{},
+	}
+	ctx := context.Background()
+	startReqTime := time.Now()
+	res, err := client.GetRates(ctx, req)
+	endReqTime := time.Now()
+
+	timeTaken := endReqTime.Sub(startReqTime)
+
+	log.Printf("Time taken to get rates: %v", timeTaken)
+
+	if err != nil {
+		log.Fatalf("Failed to get rates: %v", err)
+	}
+
+	log.Printf("Rates: %v", res.Rates)
+}
+
+func printQuotes(client pb.FiatRampsClient) {
+	log.Printf("Getting quotes")
+	req := &pb.FiatConfig{
+		CountryCode:    proto.String("NG"),
+		CurrencySymbol: proto.String("NGN"),
+	}
+	ctx := context.Background()
+	startReqTime := time.Now()
+	res, err := client.GetQuotes(ctx, req)
+	endReqTime := time.Now()
+
+	timeTaken := endReqTime.Sub(startReqTime)
+
+	log.Printf("Time taken to get quotes: %v", timeTaken)
+
+	if err != nil {
+		log.Fatalf("Failed to get quotes: %v", err)
+	}
+
+	log.Printf("Quotes: %v", res)
 }
 
 func main() {
@@ -93,4 +136,6 @@ func main() {
 
 	printSupportedCountries(client)
 	printTransactionFee(client)
+	printRates(client)
+	printQuotes(client)
 }
