@@ -97,38 +97,36 @@ func main() {
 		pb.LoadEnv(*envFile)
 	}
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	var opts []grpc.ServerOption
-
-	if *tls {
-		if *certFile == "" || *keyFile == "" {
-			log.Fatalf("cert_file and key_file must be set when tls is enabled")
-		}
-		creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
+	// Start gRPC server in a goroutine
+	go func() {
+		lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 		if err != nil {
-			log.Fatalf("failed to load TLS credentials: %v", err)
+			log.Fatalf("failed to listen: %v", err)
 		}
-		opts = append(opts, grpc.Creds(creds))
-	}
+		var opts []grpc.ServerOption
 
-	// Create a new gRPC server instance
-	grpcServer := grpc.NewServer(opts...)
+		if *tls {
+			if *certFile == "" || *keyFile == "" {
+				log.Fatalf("cert_file and key_file must be set when tls is enabled")
+			}
+			creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
+			if err != nil {
+				log.Fatalf("failed to load TLS credentials: %v", err)
+			}
+			opts = append(opts, grpc.Creds(creds))
+		}
 
-	// Create an instance of fiatRampsServer
-	server := &fiatRampsServer{}
+		grpcServer := grpc.NewServer(opts...)
+		server := &fiatRampsServer{}
+		pb.RegisterFiatRampsServer(grpcServer, server)
 
-	// Register the fiatRampsServer with the gRPC server
-	pb.RegisterFiatRampsServer(grpcServer, server)
+		log.Printf("gRPC server listening at %v", lis.Addr())
+		if err := grpcServer.Serve(lis); err != nil {
+			log.Fatalf("failed to serve gRPC: %v", err)
+		}
+	}()
 
-	// Start the gRPC server to listen for incoming requests
-	log.Printf("server listening at %v", lis.Addr())
-	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
-
+	// Start HTTP server
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3000"
@@ -136,9 +134,9 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	err = http.ListenAndServe(":"+port, mux)
-
+	log.Printf("HTTP server listening on port %s", port)
+	err := http.ListenAndServe(":"+port, mux)
 	if err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		log.Fatalf("failed to serve HTTP: %v", err)
 	}
 }
