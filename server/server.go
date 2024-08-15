@@ -11,7 +11,6 @@ import (
 	"google.golang.org/grpc/credentials"
 	"log"
 	"net"
-	"net/http"
 	"os"
 )
 
@@ -97,46 +96,30 @@ func main() {
 		pb.LoadEnv(*envFile)
 	}
 
-	// Start gRPC server in a goroutine
-	go func() {
-		lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
+	// Start gRPC server
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	var opts []grpc.ServerOption
+
+	if *tls {
+		if *certFile == "" || *keyFile == "" {
+			log.Fatalf("cert_file and key_file must be set when tls is enabled")
+		}
+		creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
 		if err != nil {
-			log.Fatalf("failed to listen: %v", err)
+			log.Fatalf("failed to load TLS credentials: %v", err)
 		}
-		var opts []grpc.ServerOption
-
-		if *tls {
-			if *certFile == "" || *keyFile == "" {
-				log.Fatalf("cert_file and key_file must be set when tls is enabled")
-			}
-			creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
-			if err != nil {
-				log.Fatalf("failed to load TLS credentials: %v", err)
-			}
-			opts = append(opts, grpc.Creds(creds))
-		}
-
-		grpcServer := grpc.NewServer(opts...)
-		server := &fiatRampsServer{}
-		pb.RegisterFiatRampsServer(grpcServer, server)
-
-		log.Printf("gRPC server listening at %v", lis.Addr())
-		if err := grpcServer.Serve(lis); err != nil {
-			log.Fatalf("failed to serve gRPC: %v", err)
-		}
-	}()
-
-	// Start HTTP server
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "3000"
+		opts = append(opts, grpc.Creds(creds))
 	}
 
-	mux := http.NewServeMux()
+	grpcServer := grpc.NewServer(opts...)
+	server := &fiatRampsServer{}
+	pb.RegisterFiatRampsServer(grpcServer, server)
 
-	log.Printf("HTTP server listening on port %s", port)
-	err := http.ListenAndServe(":"+port, mux)
-	if err != nil {
-		log.Fatalf("failed to serve HTTP: %v", err)
+	log.Printf("gRPC server listening at %v", lis.Addr())
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve gRPC: %v", err)
 	}
 }
