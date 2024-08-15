@@ -1,0 +1,14 @@
+{
+  "id": "mig_cpc2joq8c3hl3sjrpn00",
+  "parentID": "mig_cpc2f7bto3sct37up8r0",
+  "checksum": "1:b5bfcff4240b4cf5794897d29e4c570c3dd24f803e60bab5fb2505fcac24fc3e",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "cashierName",
+        "oldName": "name",
+        "table": "Cashier"
+      }
+    }
+  ]
+}

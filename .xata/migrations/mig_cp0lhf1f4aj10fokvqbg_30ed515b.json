@@ -1,0 +1,18 @@
+{
+  "id": "mig_cp0lhf1f4aj10fokvqbg",
+  "parentID": "mig_cp0lhapf4aj10fokvqag",
+  "checksum": "1:30ed515b0bcf0a3fbf42c4d6726b3fd7f983f8ac4f52c82db4f03b92e9254395",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "offrampPercentage",
+          "type": "float",
+          "notNull": true,
+          "defaultValue": "0"
+        },
+        "table": "CountryTransactionFees"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "mig_cnc9tlbpcgg0a6vn1sog",
+  "parentID": "mig_cnc9t7rk742esoa3seng",
+  "checksum": "1:4491f675260b975b1b07e4c5eb6b944e804085afe4bc462abc8477c1037e6d0e",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "hash",
+          "type": "string"
+        },
+        "table": "BlockchainTransactionLog"
+      }
+    }
+  ]
+}

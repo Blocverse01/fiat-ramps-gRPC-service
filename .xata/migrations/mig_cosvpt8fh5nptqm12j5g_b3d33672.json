@@ -1,0 +1,16 @@
+{
+  "id": "mig_cosvpt8fh5nptqm12j5g",
+  "parentID": "mig_cosvlngfh5nptqm12j4g",
+  "checksum": "1:b3d33672626c12a7c4f76310ad82b965fdad66926ba76f1949d781c16c5148f2",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "MerchantSupportedChains",
+          "type": "string"
+        },
+        "table": "MerchantSupportedBlockchain"
+      }
+    }
+  ]
+}

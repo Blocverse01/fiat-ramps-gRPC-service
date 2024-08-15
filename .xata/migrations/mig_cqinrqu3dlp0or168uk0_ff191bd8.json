@@ -1,0 +1,18 @@
+{
+  "id": "mig_cqinrqu3dlp0or168uk0",
+  "parentID": "mig_cqhqpp345f2rpe31h2gg",
+  "checksum": "1:ff191bd837d9280affccd859d15eea58981d983df401ca77e1afa42ccd5817dd",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "refundWalletAddress",
+          "type": "string",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "RefundRequest"
+      }
+    }
+  ]
+}

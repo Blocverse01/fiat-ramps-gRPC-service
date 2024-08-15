@@ -1,0 +1,19 @@
+{
+  "id": "mig_cpdfdgv52b9ujk4do82g",
+  "parentID": "mig_cpdehk37g140b3b24v50",
+  "checksum": "1:20491da7536e42c7229c5e2986da2e2d140b7e935f61b92e2f3ad57865b23534",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "merchant",
+          "type": "link",
+          "link": {
+            "table": "Merchant"
+          }
+        },
+        "table": "YellowCardBeneficiary"
+      }
+    }
+  ]
+}

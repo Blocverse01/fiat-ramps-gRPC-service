@@ -1,0 +1,17 @@
+{
+  "id": "mig_cpdlujf52b9ujk4dofe0",
+  "parentID": "mig_cpdlufn52b9ujk4dofd0",
+  "checksum": "1:36b2f6e8c2d1e5ef7fb584bc369638658e5acb6ab22f224035710eafbc26ce97",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "isDefault",
+          "type": "bool",
+          "defaultValue": "false"
+        },
+        "table": "YellowCardBeneficiary"
+      }
+    }
+  ]
+}

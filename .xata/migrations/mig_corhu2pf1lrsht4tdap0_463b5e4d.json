@@ -1,0 +1,17 @@
+{
+  "id": "mig_corhu2pf1lrsht4tdap0",
+  "parentID": "mig_corhov1f1lrsht4tdal0",
+  "checksum": "1:463b5e4d2fa2160a9b2b7223006e6342059a8c086ea6fd50566e9456410e1bf5",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "isEmailConfirmed",
+          "type": "bool",
+          "defaultValue": "false"
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

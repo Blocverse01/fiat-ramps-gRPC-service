@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq43h8varnk9e285t1tg",
+  "parentID": "mig_cq439ai8jjefqltkg1v0",
+  "checksum": "1:259d8f0b547c59d3de8f302010f7b92acdbbd21d6434ca07e22eb19d9d93ed97",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "amountInNGN",
+          "type": "float"
+        },
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

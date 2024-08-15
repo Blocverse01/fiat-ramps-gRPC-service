@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq41r6npgrgdcludbseg",
+  "parentID": "mig_cptdl79uin8uv19s76g0",
+  "checksum": "1:6020af531cf29cdbce5ea92093661256b2948dc5d1e4193e1c5fce304597fd94",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "refreshToken",
+          "type": "string"
+        },
+        "table": "Cashier"
+      }
+    }
+  ]
+}

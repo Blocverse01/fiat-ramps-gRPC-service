@@ -1,0 +1,16 @@
+{
+  "id": "mig_cn3kstm7hjqr7ucjqhbg",
+  "parentID": "mig_cn3ksqsebubn8r42d3tg",
+  "checksum": "1:300886af771066fe088373187cc3105659a166cf7e5edc2cffe62bc6d8dcc252",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "tokenName",
+          "type": "string"
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

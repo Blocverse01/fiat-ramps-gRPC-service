@@ -1,0 +1,14 @@
+{
+  "id": "mig_cq6b5ot2v5o3411qkt8g",
+  "parentID": "mig_cq6b157qrg0lse1mn1gg",
+  "checksum": "1:007559b35b94ed5875db9e74330e27e867d2e98b1e1a6cde3658bfae68b77aab",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "accountBalance",
+        "oldName": "walletBalance",
+        "table": "Merchant"
+      }
+    }
+  ]
+}

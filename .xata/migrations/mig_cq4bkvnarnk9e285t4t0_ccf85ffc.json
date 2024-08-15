@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq4bkvnarnk9e285t4t0",
+  "parentID": "mig_cq4bjonpgrgdcludc0rg",
+  "checksum": "1:ccf85ffc5b6e6d337be2f3c703d0dc7ca53a9b53973e64c546c1be0638911e40",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "network",
+          "type": "string"
+        },
+        "table": "MerchantMasterWallet"
+      }
+    }
+  ]
+}

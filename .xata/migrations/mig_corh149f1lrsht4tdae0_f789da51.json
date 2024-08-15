@@ -1,0 +1,12 @@
+{
+  "id": "mig_corh149f1lrsht4tdae0",
+  "parentID": "mig_coo775c6gogk8759v3ug",
+  "checksum": "1:f789da51f72832dfdbd61ca0c5f8e2ae74fdf32334196d718c76ef7f26f18d4f",
+  "operations": [
+    {
+      "addTable": {
+        "table": "Merchant"
+      }
+    }
+  ]
+}

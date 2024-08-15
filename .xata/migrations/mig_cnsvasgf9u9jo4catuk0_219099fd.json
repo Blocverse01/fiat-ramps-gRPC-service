@@ -1,0 +1,16 @@
+{
+  "id": "mig_cnsvasgf9u9jo4catuk0",
+  "parentID": "mig_cnsvah0f9u9jo4catui0",
+  "checksum": "1:219099fd8e825792625a224f3511c6b7b1750456250506196deb905364c7004d",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "networkId",
+          "type": "string"
+        },
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

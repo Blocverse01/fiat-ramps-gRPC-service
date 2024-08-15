@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq43hlnarnk9e285t1ug",
+  "parentID": "mig_cq43h8varnk9e285t1tg",
+  "checksum": "1:23087224e382e0dc108d84a1d36af6a0c721761d6dd6cb2e35b90f71d8ef8cbc",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "amountInUSD",
+          "type": "int"
+        },
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

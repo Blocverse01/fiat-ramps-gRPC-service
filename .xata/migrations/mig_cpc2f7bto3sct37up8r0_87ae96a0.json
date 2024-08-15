@@ -1,0 +1,16 @@
+{
+  "id": "mig_cpc2f7bto3sct37up8r0",
+  "parentID": "mig_cpc2e4q8c3hl3sjrpmu0",
+  "checksum": "1:87ae96a0a10f6f966f5f9b28f0250d81aabfb8c6ff2951208657f9da81716c54",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "authorizationCode",
+          "type": "string"
+        },
+        "table": "Cashier"
+      }
+    }
+  ]
+}

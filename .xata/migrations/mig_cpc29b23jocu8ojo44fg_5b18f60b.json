@@ -1,0 +1,12 @@
+{
+  "id": "mig_cpc29b23jocu8ojo44fg",
+  "parentID": "mig_cp8m43gbnhe4hhtsr9hg",
+  "checksum": "1:5b18f60b958062635e7116b50a84110e6140cd8071bda6c572ab588fdf868b8b",
+  "operations": [
+    {
+      "addTable": {
+        "table": "Cashier"
+      }
+    }
+  ]
+}

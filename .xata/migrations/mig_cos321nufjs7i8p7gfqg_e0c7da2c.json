@@ -1,0 +1,14 @@
+{
+  "id": "mig_cos321nufjs7i8p7gfqg",
+  "parentID": "mig_corhv2rjhp5tqv7hhpb0",
+  "checksum": "1:e0c7da2c9d3610cfeacc3d275a15b48e2ed3e5cb4a50f5807bacd783cc71f856",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "isEmailVerified",
+        "oldName": "isEmailConfirmed",
+        "table": "Merchant"
+      }
+    }
+  ]
+}

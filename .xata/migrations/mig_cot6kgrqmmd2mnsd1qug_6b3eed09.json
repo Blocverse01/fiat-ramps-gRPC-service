@@ -1,0 +1,14 @@
+{
+  "id": "mig_cot6kgrqmmd2mnsd1qug",
+  "parentID": "mig_cot6i94i8sbc1v0pc8a0",
+  "checksum": "1:6b3eed0934f00c0cd8a134ef507081c78a8ea0d75f013fbd5f67583dd2fd80db",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "cryptoToFiatSwap",
+        "oldName": "swapType",
+        "table": "Merchant"
+      }
+    }
+  ]
+}

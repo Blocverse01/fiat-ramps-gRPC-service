@@ -1,0 +1,12 @@
+{
+  "id": "mig_cnsv92gf9u9jo4catuf0",
+  "parentID": "mig_cnsv8sr102to4fu6jg10",
+  "checksum": "1:19863bb441ac85c69380a08a3835dee8ece91558a35860b092c1ec3d52aea9f7",
+  "operations": [
+    {
+      "addTable": {
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

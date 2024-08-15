@@ -1,0 +1,16 @@
+{
+  "id": "mig_cpc29g28c3hl3sjrpmt0",
+  "parentID": "mig_cpc29b23jocu8ojo44fg",
+  "checksum": "1:884898d75513a2164c2fb843a7f89c293fc1e5f9f275f29cf7b65dc6cf3f89f2",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "name",
+          "type": "string"
+        },
+        "table": "Cashier"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "mig_cq43td7pgrgdcludbt60",
+  "parentID": "mig_cq43t0farnk9e285t260",
+  "checksum": "1:dcc54e6bba07b1f5011d7cbcb4be7af54c6c9f420fe9b4752034a1c0fe0089f7",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "cashier",
+          "type": "link",
+          "link": {
+            "table": "Cashier"
+          }
+        },
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

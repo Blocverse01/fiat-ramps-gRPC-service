@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq8etsv645tgrqfonm7g",
+  "parentID": "mig_cq8et1oa37hm76l9nnsg",
+  "checksum": "1:9c4de8a77ceb0f32c56a6aee5c44d2854512a276dc934f59c5c6107dbaeb6a16",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "depositFeePercentage",
+          "type": "float"
+        },
+        "table": "MerchantTransactionFees"
+      }
+    }
+  ]
+}

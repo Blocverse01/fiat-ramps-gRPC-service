@@ -1,0 +1,13 @@
+{
+  "id": "mig_cosvqfgfh5nptqm12j6g",
+  "parentID": "mig_cosvpt8fh5nptqm12j5g",
+  "checksum": "1:fb8f0bc1ecee25377c4d37f0911df98865732c0b4406370952eef6c32635a16e",
+  "operations": [
+    {
+      "renameTable": {
+        "newName": "MerchantSupportedChain",
+        "oldName": "MerchantSupportedBlockchain"
+      }
+    }
+  ]
+}

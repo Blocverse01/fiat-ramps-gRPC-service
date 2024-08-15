@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq43pmvarnk9e285t240",
+  "parentID": "mig_cq43pffpgrgdcludbt10",
+  "checksum": "1:5554762737f48dc5cc62560c57e90d6a97fc41f232438fec66e29182b5dff478",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "blockchainNetwork",
+          "type": "string"
+        },
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "mig_cnsvb8b102to4fu6jg60",
+  "parentID": "mig_cnsvb3gf9u9jo4catul0",
+  "checksum": "1:8b41255bdb383a4cd25e115282ea8a0677802126bfc81ed439ab3cafb7b0091d",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "message",
+          "type": "string"
+        },
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "mig_covoeghf4aj10fokvg30",
+  "parentID": "mig_covodihf4aj10fokvg20",
+  "checksum": "1:95aa0152a21d5d59b031e4c83e405c0deef59c03b14d358b813cc8d4f5a61bbe",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "chain",
+          "type": "link",
+          "link": {
+            "table": "SupportedChain"
+          }
+        },
+        "table": "MerchantDepositWalletAddress"
+      }
+    }
+  ]
+}

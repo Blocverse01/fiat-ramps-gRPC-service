@@ -1,0 +1,13 @@
+{
+  "id": "mig_co2vcmcfiil5rc1uaap0",
+  "parentID": "mig_co2vcjsfiil5rc1uaao0",
+  "checksum": "1:f577f07f846c8d26bb57eb003311e6dfd27396a70f2bbba6e330e93238440a3d",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "networkId",
+        "table": "WithdrawalBatch"
+      }
+    }
+  ]
+}

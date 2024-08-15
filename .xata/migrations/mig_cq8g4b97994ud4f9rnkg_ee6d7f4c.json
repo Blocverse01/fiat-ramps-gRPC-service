@@ -1,0 +1,13 @@
+{
+  "id": "mig_cq8g4b97994ud4f9rnkg",
+  "parentID": "mig_cq8fjfp7994ud4f9rlu0",
+  "checksum": "1:ee6d7f4cd8e30eb42d897bfc7b2e1a3cc980b601dde669653c249a1e7aba22be",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "yellowCardStatus",
+        "table": "MerchantOffRampTransactions"
+      }
+    }
+  ]
+}

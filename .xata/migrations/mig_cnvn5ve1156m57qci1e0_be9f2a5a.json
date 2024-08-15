@@ -1,0 +1,16 @@
+{
+  "id": "mig_cnvn5ve1156m57qci1e0",
+  "parentID": "mig_cnvn5qdt1774nto0dsv0",
+  "checksum": "1:be9f2a5ac22b9e4a299d6518bf3dd63963ca5a369ff7782b8c4cf403d17fcf77",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "withdrawalPrefix",
+          "type": "string"
+        },
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

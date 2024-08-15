@@ -1,0 +1,16 @@
+{
+  "id": "mig_cqd8uoboougvctosnon0",
+  "parentID": "mig_cqd8ra72b91h0qbgjrm0",
+  "checksum": "1:0c63c4ffb3d996d3f567dd63df16adfadb60e2c46aba945512c88477dddd5491",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "customerEmail",
+          "type": "string"
+        },
+        "table": "RefundRequest"
+      }
+    }
+  ]
+}

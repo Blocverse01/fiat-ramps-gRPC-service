@@ -1,0 +1,14 @@
+{
+  "id": "mig_cq6ipkndgd5bjvgc5pdg",
+  "parentID": "mig_cq6ioevdgd5bjvgc5pcg",
+  "checksum": "1:19dc7fb6c6d07c75aa28a327dee21396b041e6f0ec4277a4d0133cd4a40965e3",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "transactionVerifiedAction",
+        "oldName": "postTransactionAction",
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

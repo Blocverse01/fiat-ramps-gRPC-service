@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq8eu20a37hm76l9nntg",
+  "parentID": "mig_cq8etsv645tgrqfonm7g",
+  "checksum": "1:d8fdaf91b055fddf3b8b7efbeaa866cb40d760fc469b184cdb149e01343e9367",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "withdrawFeePercentage",
+          "type": "float"
+        },
+        "table": "MerchantTransactionFees"
+      }
+    }
+  ]
+}

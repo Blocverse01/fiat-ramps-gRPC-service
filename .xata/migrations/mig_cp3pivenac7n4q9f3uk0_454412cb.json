@@ -1,0 +1,20 @@
+{
+  "id": "mig_cp3pivenac7n4q9f3uk0",
+  "parentID": "mig_cp216sqiarusft7jv9qg",
+  "checksum": "1:454412cb64a375cfb00c740300647ced12c09bef34ecb12da48f7c4343a1467d",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "blockchainTransaction",
+          "type": "link",
+          "link": {
+            "table": "BlockchainTransactionLog"
+          },
+          "unique": true
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

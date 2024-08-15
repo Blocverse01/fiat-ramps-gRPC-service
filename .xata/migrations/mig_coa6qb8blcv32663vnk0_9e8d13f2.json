@@ -1,0 +1,13 @@
+{
+  "id": "mig_coa6qb8blcv32663vnk0",
+  "parentID": "mig_coa6q7bpa7504nlt1e1g",
+  "checksum": "1:9e8d13f21b46efedebc36d6668a23266f3c8e4616345d2017af3eb99d597f15a",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "withdrawalBatchId",
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

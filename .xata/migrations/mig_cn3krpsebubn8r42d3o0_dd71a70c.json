@@ -1,0 +1,13 @@
+{
+  "id": "mig_cn3krpsebubn8r42d3o0",
+  "parentID": "mig_cn3krd0gq5mo5cdej44g",
+  "checksum": "1:dd71a70caaf3843128758c8720dcc78612e52dcae9ba7e7da77517c1a93deacb",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "localAmount",
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

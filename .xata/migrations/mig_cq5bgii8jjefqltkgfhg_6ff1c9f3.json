@@ -1,0 +1,13 @@
+{
+  "id": "mig_cq5bgii8jjefqltkgfhg",
+  "parentID": "mig_cq5bg528jjefqltkgfgg",
+  "checksum": "1:6ff1c9f362584e7786eaf33e9fa9c840ef9489dc141a47ac3537a7afdfdcf635",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "asset",
+        "table": "MerchantDepositMasterWallet"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "mig_cp3pq0mnac7n4q9f3ung",
+  "parentID": "mig_cp3ppuc2a0mp8q8v10u0",
+  "checksum": "1:9f11a5bd2d48c07a7b94c1dcfc2f9cc3fc0dce03e27393660e2dda4a79d48c7f",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "hash",
+        "table": "BlockchainTransactionLog"
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "mig_cpo38nl3l6trsu4qggeg",
+  "parentID": "mig_cpenen2mod590u5oidtg",
+  "checksum": "1:856a6c04d5fbae22b9dbb207d9565a7e4f89d2fbcce00d0a1130126489c45c71",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "businessId",
+          "type": "string",
+          "unique": true
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

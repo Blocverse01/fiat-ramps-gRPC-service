@@ -1,0 +1,17 @@
+{
+  "id": "mig_cpejofih8qg72krp9560",
+  "parentID": "mig_cpejhd37g140b3b25a20",
+  "checksum": "1:16f67b98486c4d70f8132f183caefb352a6d68087d958ade24deeaa5cf08f0c6",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "status",
+          "type": "bool",
+          "defaultValue": "true"
+        },
+        "table": "MerchantDepositWalletAddress"
+      }
+    }
+  ]
+}

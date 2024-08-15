@@ -1,0 +1,19 @@
+{
+  "id": "mig_cn3ksde7hjqr7ucjqhag",
+  "parentID": "mig_cn3ks4kebubn8r42d3sg",
+  "checksum": "1:824e0757e5a1873391cb9035283e2605b5e448823aac5731be6b4f3513f0d9d3",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "beneficiary",
+          "type": "link",
+          "link": {
+            "table": "YellowCardBeneficiary"
+          }
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

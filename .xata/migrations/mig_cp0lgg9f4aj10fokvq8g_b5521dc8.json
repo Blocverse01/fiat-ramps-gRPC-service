@@ -1,0 +1,12 @@
+{
+  "id": "mig_cp0lgg9f4aj10fokvq8g",
+  "parentID": "mig_covogll7j4sqr5b8ofr0",
+  "checksum": "1:b5521dc8836d6d5149608b405d3b5de6c52b616275653f59245f111c20d7b667",
+  "operations": [
+    {
+      "addTable": {
+        "table": "GlobachianCountryTransactionFees"
+      }
+    }
+  ]
+}

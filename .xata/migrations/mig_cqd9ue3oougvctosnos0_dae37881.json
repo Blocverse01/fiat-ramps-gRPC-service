@@ -1,0 +1,13 @@
+{
+  "id": "mig_cqd9ue3oougvctosnos0",
+  "parentID": "mig_cqd9glv2b91h0qbgjrug",
+  "checksum": "1:dae378810cf77ec2adc4963fb356a80c84ba44224e8b8a1304ae583a93bfe3f8",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "payments",
+        "table": "RefundRequest"
+      }
+    }
+  ]
+}

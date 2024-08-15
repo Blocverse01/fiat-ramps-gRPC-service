@@ -1,0 +1,12 @@
+{
+  "id": "mig_cogf5ic6btciiaoq80fg",
+  "parentID": "mig_coco1946btciiaoq6rcg",
+  "checksum": "1:550efe139ab520f82e5a2ee2d360009f8439c097af7093dd47bb113c7b3bc181",
+  "operations": [
+    {
+      "removeTable": {
+        "table": "ThresholdWithdrawalTransactions"
+      }
+    }
+  ]
+}

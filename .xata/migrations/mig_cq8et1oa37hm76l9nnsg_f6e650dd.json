@@ -1,0 +1,12 @@
+{
+  "id": "mig_cq8et1oa37hm76l9nnsg",
+  "parentID": "mig_cq848fu5loh6r3qn5t2g",
+  "checksum": "1:f6e650ddcd9f284dd284c10a1ff50480fe8f17239ba8e20af0ab0b8aeae75293",
+  "operations": [
+    {
+      "addTable": {
+        "table": "MerchantTransactionFees"
+      }
+    }
+  ]
+}

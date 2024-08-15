@@ -1,0 +1,18 @@
+{
+  "id": "mig_coo5bis6gogk8759v3k0",
+  "parentID": "mig_coo5batsttk6euej72ng",
+  "checksum": "1:9c615b0b29cea87f1806149fa8cf42cad9677a5b6adb14bf65c2eef8e944dc97",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "hasTwoFactorAuthEnabled",
+          "type": "bool",
+          "notNull": true,
+          "defaultValue": "false"
+        },
+        "table": "Admin"
+      }
+    }
+  ]
+}

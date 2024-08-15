@@ -1,0 +1,17 @@
+{
+  "id": "mig_cpp4ip51niu6k8aqlke0",
+  "parentID": "mig_cpp3hudhc6vlibrjp8hg",
+  "checksum": "1:2f9942f8658076d0f1503331d3e4c99fb2768e7822a7ef6fa2c40deddf3e3e09",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "businessId",
+          "type": "string",
+          "unique": true
+        },
+        "table": "sdk_user"
+      }
+    }
+  ]
+}

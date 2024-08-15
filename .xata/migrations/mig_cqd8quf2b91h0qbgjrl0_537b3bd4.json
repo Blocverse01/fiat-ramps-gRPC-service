@@ -1,0 +1,19 @@
+{
+  "id": "mig_cqd8quf2b91h0qbgjrl0",
+  "parentID": "mig_cqd60738kqllttmo7sug",
+  "checksum": "1:537b3bd45a8cfc32cdaa1e8212f89fec854cdc8b3940f9f52721d3c9e4adcb39",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "payments",
+          "type": "link",
+          "link": {
+            "table": "CashierTransactionLog"
+          }
+        },
+        "table": "RefundRequest"
+      }
+    }
+  ]
+}

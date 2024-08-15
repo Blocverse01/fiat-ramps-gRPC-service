@@ -1,0 +1,40 @@
+{
+  "id": "mig_cqaijb6a437rsaqn4j80",
+  "parentID": "mig_cq8g4e6p9nttc8i6j8b0",
+  "checksum": "1:2701e362a962eab6d0fc4d4d0553e31949e4d0ba6aad319d03ad461105c21922",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "conversionRate",
+          "type": "float",
+          "notNull": true,
+          "defaultValue": "0"
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "balanceChangeToken",
+          "type": "text",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "Merchant"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "conversionRate",
+          "type": "float",
+          "notNull": true,
+          "defaultValue": "0"
+        },
+        "table": "MerchantOffRampTransactions"
+      }
+    }
+  ]
+}

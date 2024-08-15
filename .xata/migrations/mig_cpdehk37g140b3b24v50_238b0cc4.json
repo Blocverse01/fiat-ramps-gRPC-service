@@ -1,0 +1,19 @@
+{
+  "id": "mig_cpdehk37g140b3b24v50",
+  "parentID": "mig_cpdehcj7g140b3b24v40",
+  "checksum": "1:238b0cc4ba7ea6f632cf50503e695f644074d9b1fe4eb29159f3ef0fe6efcdc9",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "merchant",
+          "type": "link",
+          "link": {
+            "table": "Merchant"
+          }
+        },
+        "table": "MerchantBankDetails"
+      }
+    }
+  ]
+}

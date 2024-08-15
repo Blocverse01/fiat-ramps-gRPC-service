@@ -1,0 +1,12 @@
+{
+  "id": "mig_cqqpkehjf1qjn0fvtkng",
+  "parentID": "mig_cqodb4n3dug2o1piv450",
+  "checksum": "1:3f894d9e64c3bb318d1da91c688684735ea52f91f81ee274a94fbfed49ab6799",
+  "operations": [
+    {
+      "addTable": {
+        "table": "system_report_email_log"
+      }
+    }
+  ]
+}

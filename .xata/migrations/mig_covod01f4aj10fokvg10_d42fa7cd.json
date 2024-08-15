@@ -1,0 +1,12 @@
+{
+  "id": "mig_covod01f4aj10fokvg10",
+  "parentID": "mig_cothpqjqmmd2mnsd1tog",
+  "checksum": "1:d42fa7cde1333280e06baf84335320e5c920580dd5717bf06a59747fa08a3c0b",
+  "operations": [
+    {
+      "addTable": {
+        "table": "MerchantDepositWalletAddress"
+      }
+    }
+  ]
+}

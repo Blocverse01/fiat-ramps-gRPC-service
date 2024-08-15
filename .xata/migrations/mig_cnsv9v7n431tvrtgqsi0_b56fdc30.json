@@ -1,0 +1,17 @@
+{
+  "id": "mig_cnsv9v7n431tvrtgqsi0",
+  "parentID": "mig_cnsv9aj102to4fu6jg40",
+  "checksum": "1:b56fdc30140afadd9906bd5ddd477f2449398ba3bf60acf2e3e01efa7c9c8ca9",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "nonce",
+          "type": "string",
+          "unique": true
+        },
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

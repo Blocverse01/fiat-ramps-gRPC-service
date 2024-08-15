@@ -5,21 +5,58 @@ option go_package = "github.com/blocverse01/globachain-ramps-grpc-service/fiatra
 package fiatramps;
 
 service FiatRamps {
-  rpc GetSupportedCountries(SupportedCountriesRequest) returns (GetSupportedCountriesResponse) {};
+  rpc GetSupportedCountries(GetSupportedCountriesRequest) returns (GetSupportedCountriesResponse) {};
+  rpc GetQuotes(FiatConfig) returns (GetQuotesResponse) {};
+  rpc GetRates(GetRatesRequest) returns (GetRatesResponse) {};
+  rpc GetTransactionFee(GetTransactionFeeRequest) returns (CountryTransactionFee) {};
 }
 
-message SupportedCountriesRequest {
+message GetSupportedCountriesRequest {
 }
 
 message SupportedCountry {
   string id = 1;
   string name = 2;
-  string country_code = 3;
-  string currency_symbol = 4;
-  string currency_name = 5;
-  string flag_url = 6;
+  string code = 3;
+  string currencySymbol = 4;
+  string currencyName = 5;
+  string flag = 6;
 }
 
 message GetSupportedCountriesResponse {
   repeated SupportedCountry countries = 1;
+}
+
+message GetRatesRequest {
+  repeated string targetCurrencies = 1;
+}
+
+message GetRatesResponse {
+  repeated Rate rates = 1;
+}
+
+message FiatConfig {
+  string countryCode = 1;
+  string currencySymbol = 2;
+}
+
+message Rate {
+  float buy = 1;
+  float sell = 2;
+  string code = 3;
+  string locale = 4;
+}
+
+message CountryTransactionFee {
+  float onrampFeePercentage = 2;
+  float offrampFeePercentage = 3;
+}
+
+message GetQuotesResponse {
+  Rate rate = 1;
+  CountryTransactionFee fees = 2;
+}
+
+message GetTransactionFeeRequest {
+  string countryCode = 1;
 }

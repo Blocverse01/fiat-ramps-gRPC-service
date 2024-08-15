@@ -1,0 +1,13 @@
+{
+  "id": "mig_cp0lh19f4aj10fokvq9g",
+  "parentID": "mig_cp0lgg9f4aj10fokvq8g",
+  "checksum": "1:f39513b7812a1f1cf43593ecc7c68c4987767f8662fd63650cf5801ff8289e37",
+  "operations": [
+    {
+      "renameTable": {
+        "newName": "CountryTransactionFees",
+        "oldName": "GlobachianCountryTransactionFees"
+      }
+    }
+  ]
+}

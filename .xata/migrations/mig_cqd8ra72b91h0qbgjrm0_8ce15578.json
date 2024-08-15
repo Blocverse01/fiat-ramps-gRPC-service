@@ -1,0 +1,16 @@
+{
+  "id": "mig_cqd8ra72b91h0qbgjrm0",
+  "parentID": "mig_cqd8quf2b91h0qbgjrl0",
+  "checksum": "1:8ce15578a4c8b65c7701ad62d84192b70e4b06d311be90da541cc92d19763d73",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "amountToRufund",
+          "type": "float"
+        },
+        "table": "RefundRequest"
+      }
+    }
+  ]
+}

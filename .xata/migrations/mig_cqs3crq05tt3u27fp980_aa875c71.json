@@ -1,0 +1,18 @@
+{
+  "id": "mig_cqs3crq05tt3u27fp980",
+  "parentID": "mig_cqqpl01jf1qjn0fvtkog",
+  "checksum": "1:aa875c7193f51ff8414d90393b85a03546ff59e6c489b7dbba2aa6472aff60ef",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "sdkUserCustomerId",
+          "type": "text",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "YellowCardOnRampTransactions"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "mig_co2vcjsfiil5rc1uaao0",
+  "parentID": "mig_co2vcfsfiil5rc1uaan0",
+  "checksum": "1:8b74f4ccb8a3dbeb11ad5a354814eaa8745bce2d8af9cbf399f9edad752d7bfd",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "withdrawalPrefix",
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

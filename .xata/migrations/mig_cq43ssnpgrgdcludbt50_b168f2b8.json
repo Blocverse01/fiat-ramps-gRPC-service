@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq43ssnpgrgdcludbt50",
+  "parentID": "mig_cq43pmvarnk9e285t240",
+  "checksum": "1:b168f2b8b05306427748a244417ac10113866dd2497bb386f293183ca1809d02",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "address",
+          "type": "string"
+        },
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

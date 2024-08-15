@@ -1,0 +1,18 @@
+{
+  "id": "mig_cqqpl01jf1qjn0fvtkog",
+  "parentID": "mig_cqqpkehjf1qjn0fvtkng",
+  "checksum": "1:7f18056317030c8cbe99b471e130c089bbef3a41a10672d4314422de2c99da94",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "lastSentAt",
+          "type": "datetime",
+          "notNull": true,
+          "defaultValue": "now"
+        },
+        "table": "system_report_email_log"
+      }
+    }
+  ]
+}

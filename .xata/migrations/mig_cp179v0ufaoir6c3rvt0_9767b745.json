@@ -1,0 +1,14 @@
+{
+  "id": "mig_cp179v0ufaoir6c3rvt0",
+  "parentID": "mig_cp179t8ufaoir6c3rvs0",
+  "checksum": "1:9767b74568f40364ea7cf4824492bbc38ef99efbcc8d7c1f490aae5d9a211976",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "onrampFeePercentage",
+        "oldName": "onrampPercentage",
+        "table": "CountryTransactionFees"
+      }
+    }
+  ]
+}

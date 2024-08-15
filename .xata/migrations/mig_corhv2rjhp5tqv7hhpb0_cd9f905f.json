@@ -1,0 +1,17 @@
+{
+  "id": "mig_corhv2rjhp5tqv7hhpb0",
+  "parentID": "mig_corhuafufjs7i8p7gbgg",
+  "checksum": "1:cd9f905f0dddb0b1a51fa36cbc57f14b516800ca34931773b4bcb86a9db9f453",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "kycStatus",
+          "type": "string",
+          "defaultValue": "PENDING"
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

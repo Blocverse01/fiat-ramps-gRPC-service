@@ -1,0 +1,17 @@
+{
+  "id": "mig_cn4qt8sebubn8r42de50",
+  "parentID": "mig_cn3kt44ebubn8r42d3ug",
+  "checksum": "1:38ae9f41985baebc0c65aa53d6b6739805aa434cf162f1511b7351f9087aa468",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "yellowCardStatus",
+          "type": "string",
+          "defaultValue": "PENDING"
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

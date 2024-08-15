@@ -1,0 +1,16 @@
+{
+  "id": "mig_cqeit4n2b91h0qbgk7i0",
+  "parentID": "mig_cqd9uqboougvctosnot0",
+  "checksum": "1:fbbce3f90b759dd7d222ac449e60fe6922c908216a7d4ae44520de81991727a8",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "reasonForDecline",
+          "type": "string"
+        },
+        "table": "RefundRequest"
+      }
+    }
+  ]
+}

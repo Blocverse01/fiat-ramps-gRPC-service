@@ -1,0 +1,18 @@
+{
+  "id": "mig_cqhqpp345f2rpe31h2gg",
+  "parentID": "mig_cqg6lrphog7etfkqb4eg",
+  "checksum": "1:c723b93467fb7eb5ce0f1e1f1a3bda40cf61ad84748b9e42bcb39cd640e86312",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "amountSent",
+          "type": "float",
+          "notNull": true,
+          "defaultValue": "0"
+        },
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

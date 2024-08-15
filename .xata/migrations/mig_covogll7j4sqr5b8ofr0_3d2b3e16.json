@@ -1,0 +1,19 @@
+{
+  "id": "mig_covogll7j4sqr5b8ofr0",
+  "parentID": "mig_covoeghf4aj10fokvg30",
+  "checksum": "1:3d2b3e1677c052779bb5c409966bd13631ce0e162e3e1169cce1de58822d2853",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "User"
+          }
+        },
+        "table": "MerchantDepositWalletAddress"
+      }
+    }
+  ]
+}

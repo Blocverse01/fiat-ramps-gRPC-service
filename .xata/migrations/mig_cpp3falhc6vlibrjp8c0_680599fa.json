@@ -1,0 +1,18 @@
+{
+  "id": "mig_cpp3falhc6vlibrjp8c0",
+  "parentID": "mig_cpp3e96mvg39n5urg8fg",
+  "checksum": "1:680599fab8d76d10c4500319974be46ed3f85de1d5db7cea0139fb7ec055d96c",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "authToken",
+          "type": "text",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "sdk_user"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "mig_cpejh7j7g140b3b25a10",
+  "parentID": "mig_cpdlujf52b9ujk4dofe0",
+  "checksum": "1:be21fe0d57446dbcd1ffa843115efb799c7c7952590f99a9d3839096196aa79e",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "user",
+        "table": "MerchantDepositWalletAddress"
+      }
+    }
+  ]
+}

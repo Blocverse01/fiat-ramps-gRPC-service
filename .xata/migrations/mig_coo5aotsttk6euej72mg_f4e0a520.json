@@ -1,0 +1,17 @@
+{
+  "id": "mig_coo5aotsttk6euej72mg",
+  "parentID": "mig_coo5ah5sttk6euej72lg",
+  "checksum": "1:f4e0a520d56eaf7bc8519bf3186103b37b65459181eb0cfa1890f7e52ecb288c",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "email",
+          "type": "email",
+          "unique": true
+        },
+        "table": "Admin"
+      }
+    }
+  ]
+}

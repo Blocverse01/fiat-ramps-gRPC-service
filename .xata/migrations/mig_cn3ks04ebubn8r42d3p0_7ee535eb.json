@@ -1,0 +1,16 @@
+{
+  "id": "mig_cn3ks04ebubn8r42d3p0",
+  "parentID": "mig_cn3krse7hjqr7ucjqh90",
+  "checksum": "1:7ee535ebd445697cbfa056a7e769bb0fb85e7c4d6fc0b6a83aaf2e4bde4bb2fa",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "sequenceId",
+          "type": "string"
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

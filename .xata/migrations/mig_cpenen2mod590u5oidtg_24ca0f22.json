@@ -1,0 +1,19 @@
+{
+  "id": "mig_cpenen2mod590u5oidtg",
+  "parentID": "mig_cpejofih8qg72krp9560",
+  "checksum": "1:24ca0f229d25d80985e01267a18fcd3baa2863b355c7244c148b3dbb701005e0",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "merchant",
+          "type": "link",
+          "link": {
+            "table": "Merchant"
+          }
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

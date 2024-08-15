@@ -1,0 +1,17 @@
+{
+  "id": "mig_coa6s0rpa7504nlt1e80",
+  "parentID": "mig_coa6rrrpa7504nlt1e40",
+  "checksum": "1:a63d394a7875a625b98d36ee90104d964b76720570d70b86bc1772183d8d519b",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "status",
+          "type": "int",
+          "defaultValue": "1"
+        },
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

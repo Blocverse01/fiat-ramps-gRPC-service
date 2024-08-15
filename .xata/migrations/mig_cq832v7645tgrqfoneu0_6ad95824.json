@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq832v7645tgrqfoneu0",
+  "parentID": "mig_cq832s7645tgrqfonet0",
+  "checksum": "1:6ad95824d15f3e740db15bcc3fd2fb1846d76a60a33992fbadd205ff7c9a499b",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "tokenName",
+          "type": "string"
+        },
+        "table": "MerchantOffRampTransactions"
+      }
+    }
+  ]
+}

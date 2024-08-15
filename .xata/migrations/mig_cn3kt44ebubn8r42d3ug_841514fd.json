@@ -1,0 +1,16 @@
+{
+  "id": "mig_cn3kt44ebubn8r42d3ug",
+  "parentID": "mig_cn3kt00gq5mo5cdej470",
+  "checksum": "1:841514fdb25f7209d3e6d4b86a4e0696f52e86a07aa82b6fa1ab6f44897d1a10",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "userWalletAddress",
+          "type": "string"
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

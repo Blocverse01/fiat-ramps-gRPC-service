@@ -1,0 +1,17 @@
+{
+  "id": "mig_corh1uhf1lrsht4tdaig",
+  "parentID": "mig_corh149f1lrsht4tdae0",
+  "checksum": "1:879f5706d90a3eb7e6e92cff6bbcbf020364beeb6dbca6506a89f62f60b004d6",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "email",
+          "type": "string",
+          "unique": true
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

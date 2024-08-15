@@ -1,0 +1,12 @@
+{
+  "id": "mig_coco1946btciiaoq6rcg",
+  "parentID": "mig_coa6s0rpa7504nlt1e80",
+  "checksum": "1:eb477289a8dcae6060328fd47e0b49d1ea7b600be74f7d14c596f2937dd3dea0",
+  "operations": [
+    {
+      "removeTable": {
+        "table": "WithdrawalBatch"
+      }
+    }
+  ]
+}

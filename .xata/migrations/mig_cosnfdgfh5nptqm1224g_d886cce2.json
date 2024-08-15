@@ -1,0 +1,16 @@
+{
+  "id": "mig_cosnfdgfh5nptqm1224g",
+  "parentID": "mig_cosne76ej3gag4el63hg",
+  "checksum": "1:d886cce29ebc579739f1a7872be672823dce9e00a34225c8a493dc6d19921acf",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "emailOtpExpiresAt",
+          "type": "datetime"
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

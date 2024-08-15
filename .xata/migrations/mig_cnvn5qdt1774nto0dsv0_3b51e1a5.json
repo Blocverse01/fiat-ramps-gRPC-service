@@ -1,0 +1,16 @@
+{
+  "id": "mig_cnvn5qdt1774nto0dsv0",
+  "parentID": "mig_cntph2jij48b5dd5k2t0",
+  "checksum": "1:3b51e1a5893a42ba1bedb1ff1ff0239c94b27c2229f85bc487a388cb5f3f4b6c",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "walletId",
+          "type": "string"
+        },
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

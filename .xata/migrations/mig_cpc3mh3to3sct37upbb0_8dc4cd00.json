@@ -1,0 +1,19 @@
+{
+  "id": "mig_cpc3mh3to3sct37upbb0",
+  "parentID": "mig_cpc2joq8c3hl3sjrpn00",
+  "checksum": "1:8dc4cd00d63c7bd5204aa9dd70e0393ba42666ae3e4fa4e435f863a80556e1fa",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "merchant",
+          "type": "link",
+          "link": {
+            "table": "Merchant"
+          }
+        },
+        "table": "Cashier"
+      }
+    }
+  ]
+}

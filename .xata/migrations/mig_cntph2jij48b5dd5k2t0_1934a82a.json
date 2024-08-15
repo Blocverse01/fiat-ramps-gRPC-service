@@ -1,0 +1,17 @@
+{
+  "id": "mig_cntph2jij48b5dd5k2t0",
+  "parentID": "mig_cntpgt3ij48b5dd5k2s0",
+  "checksum": "1:1934a82a19b6306518ac80d4e69c71d8de33fe3a8b295c5c65817cf6f800b95a",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "status",
+          "type": "string",
+          "defaultValue": "PENDING"
+        },
+        "table": "ThresholdWithdrawalTransactions"
+      }
+    }
+  ]
+}

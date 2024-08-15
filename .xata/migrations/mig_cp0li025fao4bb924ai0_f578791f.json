@@ -1,0 +1,18 @@
+{
+  "id": "mig_cp0li025fao4bb924ai0",
+  "parentID": "mig_cp0lhk1f4aj10fokvqcg",
+  "checksum": "1:f578791f4bbba0538f9396cecf5e8350bec56f99263cc5f767e425d9c5489e07",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "countryCode",
+          "type": "string",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "CountryTransactionFees"
+      }
+    }
+  ]
+}

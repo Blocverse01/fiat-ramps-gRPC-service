@@ -1,0 +1,13 @@
+{
+  "id": "mig_cp3pohslhtuo95ht8o10",
+  "parentID": "mig_cp3pivenac7n4q9f3uk0",
+  "checksum": "1:e146783fa5259c1753389eda6a9ebe8359bdd447ca69359d723de283a604636f",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "status",
+        "table": "BlockchainTransactionLog"
+      }
+    }
+  ]
+}

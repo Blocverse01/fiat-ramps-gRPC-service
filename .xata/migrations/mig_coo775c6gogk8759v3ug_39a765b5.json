@@ -1,0 +1,14 @@
+{
+  "id": "mig_coo775c6gogk8759v3ug",
+  "parentID": "mig_coo6lsfi2dvuig28vmt0",
+  "checksum": "1:39a765b54b2bd2ed10b9c88c97b0a7fa1839167ad68c1ab2a4f3fc0bbaa4fbfb",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "twoFactorAuthSecret",
+        "oldName": "twoFactorSecret",
+        "table": "Admin"
+      }
+    }
+  ]
+}

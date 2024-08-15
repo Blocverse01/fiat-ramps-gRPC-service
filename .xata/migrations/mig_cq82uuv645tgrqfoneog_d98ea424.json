@@ -1,0 +1,12 @@
+{
+  "id": "mig_cq82uuv645tgrqfoneog",
+  "parentID": "mig_cq6ipkndgd5bjvgc5pdg",
+  "checksum": "1:d98ea4247632ea31a977cdf741b813b52f78f6bb7f5da9e73f92f7bd9c302589",
+  "operations": [
+    {
+      "addTable": {
+        "table": "MerchantOffRampTransactions"
+      }
+    }
+  ]
+}

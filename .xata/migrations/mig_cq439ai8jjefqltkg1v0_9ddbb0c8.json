@@ -1,0 +1,12 @@
+{
+  "id": "mig_cq439ai8jjefqltkg1v0",
+  "parentID": "mig_cq41r6npgrgdcludbseg",
+  "checksum": "1:9ddbb0c8e8c3e3a96eb9c0a777b485a9fe7a18d9c269170e4109a774b1a85385",
+  "operations": [
+    {
+      "addTable": {
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

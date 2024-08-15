@@ -1,0 +1,12 @@
+{
+  "id": "mig_cpdecvv52b9ujk4do3lg",
+  "parentID": "mig_cpcbn5r7g140b3b24fgg",
+  "checksum": "1:a224eeb5db02abb87cb35530e2b52d7c65ecd483955e674f03a9f5b5b1aa6836",
+  "operations": [
+    {
+      "addTable": {
+        "table": "MerchantBankDetails"
+      }
+    }
+  ]
+}

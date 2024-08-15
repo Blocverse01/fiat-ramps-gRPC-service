@@ -1,27 +1,126 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
+	pb "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/countries"
+	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/quotes"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"log"
 	"net"
-
-	pb "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
 )
 
 var (
-	port = flag.Int("port", 5005, "The server port")
+	port     = flag.Int("port", 50051, "The server port")
+	tls      = flag.Bool("tls", false, "Connection uses TLS if true, else plain TCP")
+	certFile = flag.String("cert_file", "", "The TLS cert file")
+	keyFile  = flag.String("key_file", "", "The TLS key file")
+	envFile  = flag.String("env_path", ".env", "The path to the .env file")
 )
 
 type fiatRampsServer struct {
 	pb.UnimplementedFiatRampsServer
 }
 
+func (server *fiatRampsServer) GetSupportedCountries(_ context.Context, _ *pb.GetSupportedCountriesRequest) (*pb.GetSupportedCountriesResponse, error) {
+	supportedCountries := countries.GetSupportedCountries()
+
+	return &pb.GetSupportedCountriesResponse{Countries: supportedCountries}, nil
+}
+
+func (server *fiatRampsServer) GetQuotes(_ context.Context, req *pb.FiatConfig) (*pb.GetQuotesResponse, error) {
+	// Get the quotes
+	fiatQuotes := quotes.GetQuotes(quotes.FiatConfig{
+		CountryCode:    *req.CountryCode,
+		CurrencySymbol: *req.CurrencySymbol,
+	})
+
+	return &pb.GetQuotesResponse{
+		Fees: &pb.CountryTransactionFee{
+			OnrampFeePercentage:  &fiatQuotes.Fees.OnrampFeePercentage,
+			OfframpFeePercentage: &fiatQuotes.Fees.OfframpFeePercentage,
+		},
+		Rate: &pb.Rate{
+			Buy:    &fiatQuotes.Rate.Buy,
+			Sell:   &fiatQuotes.Rate.Sell,
+			Locale: &fiatQuotes.Rate.Locale,
+			Code:   &fiatQuotes.Rate.Code,
+		},
+	}, nil
+}
+
+func (server *fiatRampsServer) GetRates(_ context.Context, req *pb.GetRatesRequest) (*pb.GetRatesResponse, error) {
+	// Get all rates
+	allRates := quotes.GetRates()
+	filteredRates := quotes.FilterRatesByCurrencies(allRates, req.TargetCurrencies)
+
+	// Convert filtered rates to the format expected by the response
+	var ratesResponse []*pb.Rate
+	for _, rate := range filteredRates {
+		ratesResponse = append(ratesResponse, &pb.Rate{
+			Buy:    &rate.Buy,
+			Sell:   &rate.Sell,
+			Locale: &rate.Locale,
+			Code:   &rate.Code,
+		})
+	}
+
+	return &pb.GetRatesResponse{
+		Rates: ratesResponse,
+	}, nil
+}
+
+func (server *fiatRampsServer) GetTransactionFee(_ context.Context, req *pb.GetTransactionFeeRequest) (*pb.CountryTransactionFee, error) {
+	fees, err := quotes.GetTransactionFee(*req.CountryCode)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.CountryTransactionFee{
+		OnrampFeePercentage:  &fees.OnrampFeePercentage,
+		OfframpFeePercentage: &fees.OfframpFeePercentage,
+	}, nil
+}
+
 func main() {
+	// Parse command-line flags
+	flag.Parse()
+
+	pb.LoadEnv(*envFile)
+
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	var opts []grpc.ServerOption
+
+	if *tls {
+		if *certFile == "" || *keyFile == "" {
+			log.Fatalf("cert_file and key_file must be set when tls is enabled")
+		}
+		creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
+		if err != nil {
+			log.Fatalf("failed to load TLS credentials: %v", err)
+		}
+		opts = append(opts, grpc.Creds(creds))
+	}
+
+	// Create a new gRPC server instance
+	grpcServer := grpc.NewServer(opts...)
+
+	// Create an instance of fiatRampsServer
+	server := &fiatRampsServer{}
+
+	// Register the fiatRampsServer with the gRPC server
+	pb.RegisterFiatRampsServer(grpcServer, server)
+
+	// Start the gRPC server to listen for incoming requests
+	log.Printf("server listening at %v", lis.Addr())
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
 }

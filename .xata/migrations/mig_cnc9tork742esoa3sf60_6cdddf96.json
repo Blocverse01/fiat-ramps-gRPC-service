@@ -1,0 +1,16 @@
+{
+  "id": "mig_cnc9tork742esoa3sf60",
+  "parentID": "mig_cnc9tlbpcgg0a6vn1sog",
+  "checksum": "1:6cdddf9664a8aecb66c977ffcf080d521d685876e64d905ee77f872462587fa6",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "status",
+          "type": "bool"
+        },
+        "table": "BlockchainTransactionLog"
+      }
+    }
+  ]
+}

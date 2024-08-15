@@ -1,0 +1,13 @@
+{
+  "id": "mig_cq5bg528jjefqltkgfgg",
+  "parentID": "mig_cq4bm1varnk9e285t51g",
+  "checksum": "1:16a33fcc10af360257c764579f5b76681192937e3dbc5cda9ea8cd2082abb585",
+  "operations": [
+    {
+      "renameTable": {
+        "newName": "MerchantDepositMasterWallet",
+        "oldName": "MerchantMasterWallet"
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "mig_cqd60738kqllttmo7sug",
+  "parentID": "mig_cqcuotb8kqllttmo7nn0",
+  "checksum": "1:bafc3c569877231291de9ccb943590cce4efb58eb9c50d979936c8bb6feed3de",
+  "operations": [
+    {
+      "addTable": {
+        "table": "RefundRequest"
+      }
+    }
+  ]
+}

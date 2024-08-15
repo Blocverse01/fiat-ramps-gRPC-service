@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq43pffpgrgdcludbt10",
+  "parentID": "mig_cq43ndfarnk9e285t210",
+  "checksum": "1:33accb53ad44f775cc84cd87b7d05728612c9781567ef76c86aa537eddad9743",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "asset",
+          "type": "string"
+        },
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

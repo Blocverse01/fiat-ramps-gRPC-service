@@ -1,0 +1,17 @@
+{
+  "id": "mig_cothpqjqmmd2mnsd1tog",
+  "parentID": "mig_cothp2rau89t34h77gi0",
+  "checksum": "1:107651db1b0f63094a45019b4153cad23f62f86491cf31044bf17f7a74800f8f",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "isTwoFactorAuthEnabled",
+          "type": "bool",
+          "defaultValue": "false"
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

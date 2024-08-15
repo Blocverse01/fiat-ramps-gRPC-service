@@ -1,0 +1,17 @@
+{
+  "id": "mig_cq43t0farnk9e285t260",
+  "parentID": "mig_cq43ssnpgrgdcludbt50",
+  "checksum": "1:abde46a32975cafc682f4ef215d1dac3ecb29884e780864faaa56a50b84dc5d4",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "status",
+          "type": "string",
+          "defaultValue": "pending"
+        },
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

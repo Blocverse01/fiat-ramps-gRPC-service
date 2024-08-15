@@ -1,0 +1,17 @@
+{
+  "id": "mig_cqd9gdboougvctosnoqg",
+  "parentID": "mig_cqd90of2b91h0qbgjrog",
+  "checksum": "1:d494091ef19fc8aaa4c0d5761741896c3618c934358b32d53e32c4d05fbf9077",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "status",
+          "type": "string",
+          "defaultValue": "pending"
+        },
+        "table": "RefundRequest"
+      }
+    }
+  ]
+}

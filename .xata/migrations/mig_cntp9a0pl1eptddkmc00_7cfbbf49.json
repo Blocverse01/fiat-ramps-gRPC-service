@@ -1,0 +1,16 @@
+{
+  "id": "mig_cntp9a0pl1eptddkmc00",
+  "parentID": "mig_cntp908pl1eptddkmbv0",
+  "checksum": "1:7cfbbf4944c5ddc0b9cfb43ad85a074fec3494d5fa07409f814d0a4666d9c178",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "networkId",
+          "type": "string"
+        },
+        "table": "ThresholdWithdrawalTransactions"
+      }
+    }
+  ]
+}

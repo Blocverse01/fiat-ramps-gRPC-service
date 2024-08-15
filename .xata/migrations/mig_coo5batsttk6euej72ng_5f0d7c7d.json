@@ -1,0 +1,18 @@
+{
+  "id": "mig_coo5batsttk6euej72ng",
+  "parentID": "mig_coo5aotsttk6euej72mg",
+  "checksum": "1:5f0d7c7d8dced52d234349b76ed1638e33a31cc5c30029934ddee46d13c9201c",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "role",
+          "type": "int",
+          "notNull": true,
+          "defaultValue": "2"
+        },
+        "table": "Admin"
+      }
+    }
+  ]
+}

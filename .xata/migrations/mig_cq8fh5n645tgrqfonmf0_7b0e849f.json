@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq8fh5n645tgrqfonmf0",
+  "parentID": "mig_cq8eu20a37hm76l9nntg",
+  "checksum": "1:7b0e849f852c1e236251f98ff68a3ed2e4d2519937c2fb41a8fef418851c0e1b",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "platformPercentage",
+          "type": "float"
+        },
+        "table": "MerchantOffRampTransactions"
+      }
+    }
+  ]
+}

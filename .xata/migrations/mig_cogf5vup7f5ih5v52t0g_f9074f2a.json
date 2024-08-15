@@ -1,0 +1,20 @@
+{
+  "id": "mig_cogf5vup7f5ih5v52t0g",
+  "parentID": "mig_cogf5nk6btciiaoq80gg",
+  "checksum": "1:f9074f2ab2318400a837f9fc1607db623c4563fa45a1c4f65d3622adcd40c8ae",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "WithdrawalOrderId",
+          "type": "link",
+          "link": {
+            "table": "WithdrawalOrder"
+          },
+          "unique": true
+        },
+        "table": "YellowCardOnRampTransactions"
+      }
+    }
+  ]
+}

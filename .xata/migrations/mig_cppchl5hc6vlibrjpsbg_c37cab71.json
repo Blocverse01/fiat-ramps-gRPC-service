@@ -1,0 +1,71 @@
+{
+  "id": "mig_cppchl5hc6vlibrjpsbg",
+  "parentID": "mig_cpp4iv5hc6vlibrjp8ug",
+  "checksum": "1:c37cab7104652a6bbf3538629ad402dc102382f720b09ea410cb1f7c7446dc97",
+  "operations": [
+    {
+      "addTable": {
+        "table": "sdk_user_beneficiary"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "sdkUser",
+          "type": "link",
+          "link": {
+            "table": "sdk_user"
+          }
+        },
+        "table": "YellowCardBeneficiary"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "sdkUser",
+          "type": "link",
+          "link": {
+            "table": "sdk_user"
+          }
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "sdkUser",
+          "type": "link",
+          "link": {
+            "table": "sdk_user"
+          }
+        },
+        "table": "YellowCardOnRampTransactions"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "ownerId",
+          "type": "string",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "sdk_user_beneficiary"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "yellowCardBeneficiary",
+          "type": "link",
+          "link": {
+            "table": "YellowCardBeneficiary"
+          }
+        },
+        "table": "sdk_user_beneficiary"
+      }
+    }
+  ]
+}

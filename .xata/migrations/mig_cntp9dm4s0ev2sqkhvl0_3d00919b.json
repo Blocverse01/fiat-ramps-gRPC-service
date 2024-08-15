@@ -1,0 +1,16 @@
+{
+  "id": "mig_cntp9dm4s0ev2sqkhvl0",
+  "parentID": "mig_cntp9a0pl1eptddkmc00",
+  "checksum": "1:3d00919b4ffa739674ef13260d9eb5302e002b86d0ca106d5b52b6b70c833416",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "sequenceId",
+          "type": "string"
+        },
+        "table": "ThresholdWithdrawalTransactions"
+      }
+    }
+  ]
+}

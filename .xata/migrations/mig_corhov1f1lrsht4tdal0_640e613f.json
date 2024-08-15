@@ -1,0 +1,16 @@
+{
+  "id": "mig_corhov1f1lrsht4tdal0",
+  "parentID": "mig_corh2chf1lrsht4tdajg",
+  "checksum": "1:640e613f2f44fb47fc5c4c28c2d8908ab1a3f49c7084b442a0f38233fa2c10a9",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "refreshToken",
+          "type": "string"
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

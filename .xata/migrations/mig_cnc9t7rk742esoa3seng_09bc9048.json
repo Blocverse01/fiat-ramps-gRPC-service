@@ -1,0 +1,12 @@
+{
+  "id": "mig_cnc9t7rk742esoa3seng",
+  "parentID": "mig_cn4qt8sebubn8r42de50",
+  "checksum": "1:09bc90485253028da581fe0aa629f715a7ce81e3fe816c058b3d025658ae7484",
+  "operations": [
+    {
+      "addTable": {
+        "table": "BlockchainTransactionLog"
+      }
+    }
+  ]
+}

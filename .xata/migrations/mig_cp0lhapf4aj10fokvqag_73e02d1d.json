@@ -1,0 +1,18 @@
+{
+  "id": "mig_cp0lhapf4aj10fokvqag",
+  "parentID": "mig_cp0lh19f4aj10fokvq9g",
+  "checksum": "1:73e02d1d6e9d1df5298f11a9839d6ec2fb0c5f75b3698af3bc85b0571ae106e9",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "onrampPercentage",
+          "type": "float",
+          "notNull": true,
+          "defaultValue": "0"
+        },
+        "table": "CountryTransactionFees"
+      }
+    }
+  ]
+}

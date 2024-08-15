@@ -1,0 +1,17 @@
+{
+  "id": "mig_cpcbn5r7g140b3b24fgg",
+  "parentID": "mig_cpcbms37g140b3b24ffg",
+  "checksum": "1:d27d0e0a58a4fe0fa3b69b3352eba79ee42a7af43624b17f4b27fcdfde776971",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "deactivated",
+          "type": "bool",
+          "defaultValue": "false"
+        },
+        "table": "Cashier"
+      }
+    }
+  ]
+}

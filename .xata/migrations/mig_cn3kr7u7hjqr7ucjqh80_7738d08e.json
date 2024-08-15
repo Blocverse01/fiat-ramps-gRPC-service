@@ -1,0 +1,16 @@
+{
+  "id": "mig_cn3kr7u7hjqr7ucjqh80",
+  "parentID": "mig_cn3kq3e7hjqr7ucjqh70",
+  "checksum": "1:7738d08e9a1f488de9e1dbcb4e0167d7e65c0d53273b994dd834d213c81abd27",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "usdAmount",
+          "type": "float"
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

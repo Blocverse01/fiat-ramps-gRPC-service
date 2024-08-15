@@ -1,0 +1,17 @@
+{
+  "id": "mig_cq6b157qrg0lse1mn1gg",
+  "parentID": "mig_cq5bgii8jjefqltkgfhg",
+  "checksum": "1:70dabb1326840e9bdbd933fab583bae7bc2a8e2892aa41e400464f3bd63ccf61",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "walletBalance",
+          "type": "float",
+          "defaultValue": "0.00"
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

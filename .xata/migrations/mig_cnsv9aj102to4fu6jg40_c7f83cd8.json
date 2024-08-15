@@ -1,0 +1,17 @@
+{
+  "id": "mig_cnsv9aj102to4fu6jg40",
+  "parentID": "mig_cnsv92gf9u9jo4catuf0",
+  "checksum": "1:c7f83cd8b047e826df4275207df27729c08193938d0dcb26376a243ae8b92953",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "status",
+          "type": "int",
+          "defaultValue": "1"
+        },
+        "table": "WithdrawalBatch"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "mig_cogf5nk6btciiaoq80gg",
+  "parentID": "mig_cogf5ic6btciiaoq80fg",
+  "checksum": "1:9d2ec5229f275da7776a16b7cd9fdf2605dda3f51b1133e8b9350135675630e9",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "platformStatus",
+        "table": "YellowCardOnRampTransactions"
+      }
+    }
+  ]
+}

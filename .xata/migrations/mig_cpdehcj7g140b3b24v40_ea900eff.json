@@ -1,0 +1,16 @@
+{
+  "id": "mig_cpdehcj7g140b3b24v40",
+  "parentID": "mig_cpdeh7752b9ujk4do49g",
+  "checksum": "1:ea900effd0b29eca82ba4f4d97e200e33a3c5d5cb43bf17367a88a5065ab186f",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "accountType",
+          "type": "string"
+        },
+        "table": "MerchantBankDetails"
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "mig_cq836fga37hm76l9nim0",
+  "parentID": "mig_cq833465loh6r3qn5sf0",
+  "checksum": "1:70bc87702256d1f72481c23ec61641aee020106fb8c743dbbb2cca931dd4de6e",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "status",
+          "type": "string",
+          "defaultValue": "PENDING"
+        },
+        "table": "MerchantOffRampTransactions"
+      }
+    }
+  ]
+}

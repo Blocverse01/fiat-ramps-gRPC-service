@@ -1,0 +1,17 @@
+{
+  "id": "mig_cqodb4n3dug2o1piv450",
+  "parentID": "mig_cqinrqu3dlp0or168uk0",
+  "checksum": "1:8ad19f88847679a6bf668cf3d75e6f6a341ea31d0e90d3c28d113ad91455741b",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "email",
+          "type": "email",
+          "unique": true
+        },
+        "table": "sdk_user"
+      }
+    }
+  ]
+}

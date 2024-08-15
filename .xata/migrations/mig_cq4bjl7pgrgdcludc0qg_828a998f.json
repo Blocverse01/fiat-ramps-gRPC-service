@@ -1,0 +1,12 @@
+{
+  "id": "mig_cq4bjl7pgrgdcludc0qg",
+  "parentID": "mig_cq43td7pgrgdcludbt60",
+  "checksum": "1:828a998fd71ed952093cd45de099246cf11cc49de2f63984196e83128ce8a37f",
+  "operations": [
+    {
+      "addTable": {
+        "table": "MarchantMasterWallet"
+      }
+    }
+  ]
+}

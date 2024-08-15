@@ -1,0 +1,16 @@
+{
+  "id": "mig_cqg6lrphog7etfkqb4eg",
+  "parentID": "mig_cqeit9f2b91h0qbgk7j0",
+  "checksum": "1:87335480d00bb56231b62fbd5f913126e70798416217c44fbdecd01814cabf04",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "transactionWebhookUrl",
+          "type": "string"
+        },
+        "table": "sdk_user"
+      }
+    }
+  ]
+}

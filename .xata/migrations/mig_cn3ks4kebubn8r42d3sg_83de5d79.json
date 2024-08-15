@@ -1,0 +1,16 @@
+{
+  "id": "mig_cn3ks4kebubn8r42d3sg",
+  "parentID": "mig_cn3ks04ebubn8r42d3p0",
+  "checksum": "1:83de5d797aff0035e9b3928daffff473b239349e569c33363c054185b8c2c67c",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "platformPercentage",
+          "type": "float"
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

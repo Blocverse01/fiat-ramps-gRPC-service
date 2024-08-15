@@ -1,0 +1,13 @@
+{
+  "id": "mig_cntpgt3ij48b5dd5k2s0",
+  "parentID": "mig_cntpgp64s0ev2sqkhvo0",
+  "checksum": "1:fc36c7b04534b6e9add159cd65cc8f92502572158a96e23b2af2fa0c5ea3cc59",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "Status",
+        "table": "ThresholdWithdrawalTransactions"
+      }
+    }
+  ]
+}

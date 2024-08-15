@@ -1,0 +1,18 @@
+{
+  "id": "mig_cpp3hudhc6vlibrjp8hg",
+  "parentID": "mig_cpp3falhc6vlibrjp8c0",
+  "checksum": "1:f5232f8a7d3e90cb938b6b2e87a4e23d5a8b0e8b0428ff9c54444ecb4cb4c41d",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "projectName",
+          "type": "string",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "sdk_user"
+      }
+    }
+  ]
+}

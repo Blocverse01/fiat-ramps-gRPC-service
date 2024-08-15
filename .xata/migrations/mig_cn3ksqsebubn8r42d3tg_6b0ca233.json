@@ -1,0 +1,16 @@
+{
+  "id": "mig_cn3ksqsebubn8r42d3tg",
+  "parentID": "mig_cn3ksiogq5mo5cdej460",
+  "checksum": "1:6b0ca2333448f66f43c55ed83b7f61df5a89dad25845ea007aba6dde46550e6f",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "hotWalletAddress",
+          "type": "string"
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

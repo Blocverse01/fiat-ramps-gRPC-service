@@ -1,0 +1,16 @@
+{
+  "id": "mig_co580jkfiil5rc1ub22g",
+  "parentID": "mig_co2vcmcfiil5rc1uaap0",
+  "checksum": "1:85cb4d5c4c63231ed9aef13b5519feaeab48dd201748bfa66678d2e64f2095c7",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "chainName",
+          "type": "string"
+        },
+        "table": "WithdrawalBatch"
+      }
+    }
+  ]
+}

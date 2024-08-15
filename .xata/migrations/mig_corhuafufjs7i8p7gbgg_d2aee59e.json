@@ -1,0 +1,16 @@
+{
+  "id": "mig_corhuafufjs7i8p7gbgg",
+  "parentID": "mig_corhu2pf1lrsht4tdap0",
+  "checksum": "1:d2aee59ee9f35f9d2ea135d999fbc1ecf9ba18e5dbf671e5c329f4c830c9fa54",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "businessName",
+          "type": "string"
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

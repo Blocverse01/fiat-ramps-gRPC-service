@@ -1,0 +1,16 @@
+{
+  "id": "mig_cosne76ej3gag4el63hg",
+  "parentID": "mig_cos321nufjs7i8p7gfqg",
+  "checksum": "1:0fe9893e5f74c0c7b019d7bd70dfdb4c89dd24d224f49da31743d1ae3682e06e",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "emailOtp",
+          "type": "string"
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "mig_cosvqpcc4esmhu0tusjg",
+  "parentID": "mig_cosvqlcc4esmhu0tusig",
+  "checksum": "1:69ea9384ba268f9c6637950b366a0d5d4e7815a9a1468db5aabe6ce70c0676a7",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "token",
+          "type": "multiple"
+        },
+        "table": "MerchantSupportedChain"
+      }
+    }
+  ]
+}

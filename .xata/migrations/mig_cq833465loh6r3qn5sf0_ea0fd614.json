@@ -1,0 +1,16 @@
+{
+  "id": "mig_cq833465loh6r3qn5sf0",
+  "parentID": "mig_cq832v7645tgrqfoneu0",
+  "checksum": "1:ea0fd614f5db2e1f110018fe946113aec7255938b28e8dd4a40efd3fef6f9d86",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "chainName",
+          "type": "string"
+        },
+        "table": "MerchantOffRampTransactions"
+      }
+    }
+  ]
+}

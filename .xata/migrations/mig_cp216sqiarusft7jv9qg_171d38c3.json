@@ -1,0 +1,18 @@
+{
+  "id": "mig_cp216sqiarusft7jv9qg",
+  "parentID": "mig_cp179v0ufaoir6c3rvt0",
+  "checksum": "1:171d38c3b72f91dd432fba0d2423d5b314f3bf175a80ab564e1e80f255a0eadc",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "name",
+          "type": "string",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "Admin"
+      }
+    }
+  ]
+}

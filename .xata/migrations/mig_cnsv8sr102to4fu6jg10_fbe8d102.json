@@ -1,0 +1,12 @@
+{
+  "id": "mig_cnsv8sr102to4fu6jg10",
+  "parentID": "mig_cnc9tork742esoa3sf60",
+  "checksum": "1:fbe8d1020e8cbe96e3e6c3c7332e1ddf44ae0423a84e894fc28c16dd65980c31",
+  "operations": [
+    {
+      "addTable": {
+        "table": "WithdrawalBatch"
+      }
+    }
+  ]
+}

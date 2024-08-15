@@ -1,0 +1,16 @@
+{
+  "id": "mig_cntp9p8pl1eptddkmc2g",
+  "parentID": "mig_cntp9j3ij48b5dd5k2o0",
+  "checksum": "1:32f37a8895d7da84ca71c6124067c5d06b94479c7df9d26bff57e857e3f02a79",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "localAmount",
+          "type": "string"
+        },
+        "table": "ThresholdWithdrawalTransactions"
+      }
+    }
+  ]
+}

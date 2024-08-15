@@ -1,0 +1,18 @@
+{
+  "id": "mig_coo6lsfi2dvuig28vmt0",
+  "parentID": "mig_coo5botsttk6euej72og",
+  "checksum": "1:f3778f9a5436b46ebfd9a30c1725f5a93d5cdbaec06b7971d34a29887b7ac9a4",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "twoFactorSecret",
+          "type": "text",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "Admin"
+      }
+    }
+  ]
+}

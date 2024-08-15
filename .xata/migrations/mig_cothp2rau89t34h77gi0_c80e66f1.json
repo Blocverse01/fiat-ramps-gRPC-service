@@ -1,0 +1,16 @@
+{
+  "id": "mig_cothp2rau89t34h77gi0",
+  "parentID": "mig_cot6kgrqmmd2mnsd1qug",
+  "checksum": "1:c80e66f1e1315d010101ae6660b78fcd82e1727e80ddedd47c54e0491bd24dc9",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "twoFactorAuthSecret",
+          "type": "string"
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

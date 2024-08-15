@@ -1,0 +1,29 @@
+{
+  "id": "mig_cq6hiunl1v73gdut7ctg",
+  "parentID": "mig_cq6b5ot2v5o3411qkt8g",
+  "checksum": "1:c3580445addafe520352bf5bc42ca9f0dc40b6b26931fb37fea4fcbc16a06907",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "customerWalletAddress",
+          "type": "string",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "CashierTransactionLog"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "transactionHash",
+          "type": "string",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

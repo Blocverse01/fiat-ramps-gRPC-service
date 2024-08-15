@@ -1,0 +1,18 @@
+{
+  "id": "mig_cpsuekdi0764oi9po150",
+  "parentID": "mig_cpsuedn9r9l21ejn110g",
+  "checksum": "1:3890703bdb105360a16b8b3016ae5ea00b7e567525c7b2f3864ceac9e9550265",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "tokenId",
+          "type": "string",
+          "notNull": true,
+          "defaultValue": ""
+        },
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

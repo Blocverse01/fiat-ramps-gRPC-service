@@ -1,0 +1,16 @@
+{
+  "id": "mig_cn3krse7hjqr7ucjqh90",
+  "parentID": "mig_cn3krpsebubn8r42d3o0",
+  "checksum": "1:47b04ddbffd5aef91b74e37b372fa5cfa799e551697bc678835a86e88f69bb1c",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "localAmount",
+          "type": "float"
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

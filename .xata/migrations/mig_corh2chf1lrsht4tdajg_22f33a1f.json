@@ -1,0 +1,16 @@
+{
+  "id": "mig_corh2chf1lrsht4tdajg",
+  "parentID": "mig_corh1uhf1lrsht4tdaig",
+  "checksum": "1:22f33a1fa04ae2065847670355f4934078b5fbf3b9d344e6e17a3650c45efb6f",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "password",
+          "type": "string"
+        },
+        "table": "Merchant"
+      }
+    }
+  ]
+}

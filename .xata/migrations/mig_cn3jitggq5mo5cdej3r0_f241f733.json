@@ -1,0 +1,16 @@
+{
+  "id": "mig_cn3jitggq5mo5cdej3r0",
+  "parentID": "mig_cn3jiqggq5mo5cdej3q0",
+  "checksum": "1:f241f7338896c0eac643c2c5ef5c2bbd446f17a9f8383367e955521b95a6413b",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "mobileProviderCode",
+          "type": "string"
+        },
+        "table": "YellowCardBeneficiary"
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "mig_cptdl79uin8uv19s76g0",
+  "parentID": "mig_cpsuekdi0764oi9po150",
+  "checksum": "1:71921567fc1906c0495c1699f4e5d74412e549db4382ad9e9b1933d370c525ee",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "networkId",
+        "table": "WithdrawalOrder"
+      }
+    },
+    {
+      "removeColumn": {
+        "column": "userId",
+        "table": "WithdrawalOrder"
+      }
+    },
+    {
+      "renameColumn": {
+        "newName": "tokenName",
+        "oldName": "tokenId",
+        "table": "WithdrawalOrder"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "chainName",
+          "type": "string"
+        },
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

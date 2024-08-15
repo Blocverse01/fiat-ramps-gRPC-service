@@ -1,0 +1,19 @@
+{
+  "id": "mig_cnsvb3gf9u9jo4catul0",
+  "parentID": "mig_cnsvasgf9u9jo4catuk0",
+  "checksum": "1:190ca156905a95742a1babb0d93a30f1acdc078bba1a336e990dc4606eef5e24",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "userId",
+          "type": "link",
+          "link": {
+            "table": "User"
+          }
+        },
+        "table": "WithdrawalOrder"
+      }
+    }
+  ]
+}

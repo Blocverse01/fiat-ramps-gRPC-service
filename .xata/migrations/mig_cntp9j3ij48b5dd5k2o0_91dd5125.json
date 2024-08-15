@@ -1,0 +1,16 @@
+{
+  "id": "mig_cntp9j3ij48b5dd5k2o0",
+  "parentID": "mig_cntp9dm4s0ev2sqkhvl0",
+  "checksum": "1:91dd51252ec152406c1bff992e4e822cd23de0a3fb41f6cf873da80747a2c1c7",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "userWalletAddress",
+          "type": "string"
+        },
+        "table": "ThresholdWithdrawalTransactions"
+      }
+    }
+  ]
+}

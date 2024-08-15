@@ -1,0 +1,19 @@
+{
+  "id": "mig_cn3ksiogq5mo5cdej460",
+  "parentID": "mig_cn3ksde7hjqr7ucjqhag",
+  "checksum": "1:dcf613716f96e21deddc3f998323e8aea97bbc02bd639e37915f6a6332b87810",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "User"
+          }
+        },
+        "table": "YellowCardOffRampTransactions"
+      }
+    }
+  ]
+}

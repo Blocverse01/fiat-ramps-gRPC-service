@@ -1,0 +1,16 @@
+{
+  "id": "mig_cn3jj2ogq5mo5cdej3t0",
+  "parentID": "mig_cn3jj00gq5mo5cdej3s0",
+  "checksum": "1:d709c147fa887ce1b93f4bc8f42115669998e6c69de338f64d11e3c881883661",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "channelId",
+          "type": "string"
+        },
+        "table": "YellowCardBeneficiary"
+      }
+    }
+  ]
+}

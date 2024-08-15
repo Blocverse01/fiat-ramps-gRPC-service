@@ -1,0 +1,18 @@
+{
+  "id": "mig_cqcuotb8kqllttmo7nn0",
+  "parentID": "mig_cqaijb6a437rsaqn4j80",
+  "checksum": "1:e9f99e6de2b02c3d4b1a1c2b9252e6bb49046107f5757c7bec948c063bd4736a",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "confirmBlocks",
+          "type": "int",
+          "notNull": true,
+          "defaultValue": "0"
+        },
+        "table": "CashierTransactionLog"
+      }
+    }
+  ]
+}

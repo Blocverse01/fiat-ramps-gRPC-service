@@ -1,0 +1,16 @@
+{
+  "id": "mig_cnsvh00f9u9jo4catuq0",
+  "parentID": "mig_cnsvbh7n431tvrtgqsk0",
+  "checksum": "1:0bb431f649d40a13c3859b56ba85a5d50bddb40a6c4de68d00a241ffb2aaebd6",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "networkId",
+          "type": "string"
+        },
+        "table": "WithdrawalBatch"
+      }
+    }
+  ]
+}
