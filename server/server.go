@@ -12,6 +12,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 )
 
 var (
@@ -91,7 +92,10 @@ func main() {
 	// Parse command-line flags
 	flag.Parse()
 
-	pb.LoadEnv(*envFile)
+	val, ok := os.LookupEnv("DEPLOYED_ON_RENDER")
+	if !ok || val != "true" {
+		pb.LoadEnv(*envFile)
+	}
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
@@ -125,7 +129,14 @@ func main() {
 		log.Fatalf("failed to serve: %v", err)
 	}
 
-	err = http.ListenAndServe(":8080", nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
+	mux := http.NewServeMux()
+
+	err = http.ListenAndServe(":"+port, mux)
 
 	if err != nil {
 		log.Fatalf("failed to serve: %v", err)
