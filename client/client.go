@@ -7,7 +7,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/protobuf/proto"
 	"log"
 	"time"
 )
@@ -19,7 +18,7 @@ var (
 	serverHostOverride = flag.String("server_host_override", "x.test.example.com", "The server name used to verify the hostname returned by the TLS handshake")
 )
 
-func printSupportedCountries(client pb.FiatRampsClient) {
+func printSupportedCountries(client pb.FiatRampsServiceClient) {
 	log.Printf("Getting supported countries")
 	req := &pb.GetSupportedCountriesRequest{}
 	ctx := context.Background()
@@ -38,10 +37,10 @@ func printSupportedCountries(client pb.FiatRampsClient) {
 	log.Printf("Supported countries: %v", res.Countries)
 }
 
-func printTransactionFee(client pb.FiatRampsClient) {
+func printTransactionFee(client pb.FiatRampsServiceClient) {
 	log.Printf("Getting transaction fee")
 	req := &pb.GetTransactionFeeRequest{
-		CountryCode: proto.String("NG"),
+		CountryCode: "NG",
 	}
 	ctx := context.Background()
 	startReqTime := time.Now()
@@ -56,10 +55,10 @@ func printTransactionFee(client pb.FiatRampsClient) {
 		log.Fatalf("Failed to get transaction fee: %v", err)
 	}
 
-	log.Printf("Transaction Fees:\nOnramp:%d, Offramp:%d", res.OnrampFeePercentage, res.OfframpFeePercentage)
+	log.Printf("Transaction Fees:\nOnramp:%f, Offramp:%f", res.OnrampFeePercentage, res.OfframpFeePercentage)
 }
 
-func printRates(client pb.FiatRampsClient) {
+func printRates(client pb.FiatRampsServiceClient) {
 	log.Printf("Getting rates")
 	req := &pb.GetRatesRequest{
 		TargetCurrencies: []string{"NGN"},
@@ -80,11 +79,11 @@ func printRates(client pb.FiatRampsClient) {
 	log.Printf("Rates: %v", res.Rates)
 }
 
-func printQuotes(client pb.FiatRampsClient) {
+func printQuotes(client pb.FiatRampsServiceClient) {
 	log.Printf("Getting quotes")
-	req := &pb.FiatConfig{
-		CountryCode:    proto.String("NG"),
-		CurrencySymbol: proto.String("NGN"),
+	req := &pb.GetQuotesRequest{
+		CountryCode:    "NG",
+		CurrencySymbol: "NGN",
 	}
 	ctx := context.Background()
 	startReqTime := time.Now()
@@ -132,7 +131,7 @@ func main() {
 		}
 	}(conn)
 
-	client := pb.NewFiatRampsClient(conn)
+	client := pb.NewFiatRampsServiceClient(conn)
 
 	printSupportedCountries(client)
 	printTransactionFee(client)

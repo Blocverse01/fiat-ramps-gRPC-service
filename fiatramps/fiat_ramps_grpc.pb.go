@@ -19,215 +19,215 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	FiatRamps_GetSupportedCountries_FullMethodName = "/fiatramps.FiatRamps/GetSupportedCountries"
-	FiatRamps_GetQuotes_FullMethodName             = "/fiatramps.FiatRamps/GetQuotes"
-	FiatRamps_GetRates_FullMethodName              = "/fiatramps.FiatRamps/GetRates"
-	FiatRamps_GetTransactionFee_FullMethodName     = "/fiatramps.FiatRamps/GetTransactionFee"
+	FiatRampsService_GetSupportedCountries_FullMethodName = "/fiatramps.v1.FiatRampsService/GetSupportedCountries"
+	FiatRampsService_GetQuotes_FullMethodName             = "/fiatramps.v1.FiatRampsService/GetQuotes"
+	FiatRampsService_GetRates_FullMethodName              = "/fiatramps.v1.FiatRampsService/GetRates"
+	FiatRampsService_GetTransactionFee_FullMethodName     = "/fiatramps.v1.FiatRampsService/GetTransactionFee"
 )
 
-// FiatRampsClient is the client API for FiatRamps service.
+// FiatRampsServiceClient is the client API for FiatRampsService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type FiatRampsClient interface {
+type FiatRampsServiceClient interface {
 	GetSupportedCountries(ctx context.Context, in *GetSupportedCountriesRequest, opts ...grpc.CallOption) (*GetSupportedCountriesResponse, error)
-	GetQuotes(ctx context.Context, in *FiatConfig, opts ...grpc.CallOption) (*GetQuotesResponse, error)
+	GetQuotes(ctx context.Context, in *GetQuotesRequest, opts ...grpc.CallOption) (*GetQuotesResponse, error)
 	GetRates(ctx context.Context, in *GetRatesRequest, opts ...grpc.CallOption) (*GetRatesResponse, error)
-	GetTransactionFee(ctx context.Context, in *GetTransactionFeeRequest, opts ...grpc.CallOption) (*CountryTransactionFee, error)
+	GetTransactionFee(ctx context.Context, in *GetTransactionFeeRequest, opts ...grpc.CallOption) (*GetTransactionFeeResponse, error)
 }
 
-type fiatRampsClient struct {
+type fiatRampsServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewFiatRampsClient(cc grpc.ClientConnInterface) FiatRampsClient {
-	return &fiatRampsClient{cc}
+func NewFiatRampsServiceClient(cc grpc.ClientConnInterface) FiatRampsServiceClient {
+	return &fiatRampsServiceClient{cc}
 }
 
-func (c *fiatRampsClient) GetSupportedCountries(ctx context.Context, in *GetSupportedCountriesRequest, opts ...grpc.CallOption) (*GetSupportedCountriesResponse, error) {
+func (c *fiatRampsServiceClient) GetSupportedCountries(ctx context.Context, in *GetSupportedCountriesRequest, opts ...grpc.CallOption) (*GetSupportedCountriesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetSupportedCountriesResponse)
-	err := c.cc.Invoke(ctx, FiatRamps_GetSupportedCountries_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, FiatRampsService_GetSupportedCountries_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fiatRampsClient) GetQuotes(ctx context.Context, in *FiatConfig, opts ...grpc.CallOption) (*GetQuotesResponse, error) {
+func (c *fiatRampsServiceClient) GetQuotes(ctx context.Context, in *GetQuotesRequest, opts ...grpc.CallOption) (*GetQuotesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetQuotesResponse)
-	err := c.cc.Invoke(ctx, FiatRamps_GetQuotes_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, FiatRampsService_GetQuotes_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fiatRampsClient) GetRates(ctx context.Context, in *GetRatesRequest, opts ...grpc.CallOption) (*GetRatesResponse, error) {
+func (c *fiatRampsServiceClient) GetRates(ctx context.Context, in *GetRatesRequest, opts ...grpc.CallOption) (*GetRatesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetRatesResponse)
-	err := c.cc.Invoke(ctx, FiatRamps_GetRates_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, FiatRampsService_GetRates_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fiatRampsClient) GetTransactionFee(ctx context.Context, in *GetTransactionFeeRequest, opts ...grpc.CallOption) (*CountryTransactionFee, error) {
+func (c *fiatRampsServiceClient) GetTransactionFee(ctx context.Context, in *GetTransactionFeeRequest, opts ...grpc.CallOption) (*GetTransactionFeeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CountryTransactionFee)
-	err := c.cc.Invoke(ctx, FiatRamps_GetTransactionFee_FullMethodName, in, out, cOpts...)
+	out := new(GetTransactionFeeResponse)
+	err := c.cc.Invoke(ctx, FiatRampsService_GetTransactionFee_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// FiatRampsServer is the server API for FiatRamps service.
-// All implementations must embed UnimplementedFiatRampsServer
+// FiatRampsServiceServer is the server API for FiatRampsService service.
+// All implementations must embed UnimplementedFiatRampsServiceServer
 // for forward compatibility.
-type FiatRampsServer interface {
+type FiatRampsServiceServer interface {
 	GetSupportedCountries(context.Context, *GetSupportedCountriesRequest) (*GetSupportedCountriesResponse, error)
-	GetQuotes(context.Context, *FiatConfig) (*GetQuotesResponse, error)
+	GetQuotes(context.Context, *GetQuotesRequest) (*GetQuotesResponse, error)
 	GetRates(context.Context, *GetRatesRequest) (*GetRatesResponse, error)
-	GetTransactionFee(context.Context, *GetTransactionFeeRequest) (*CountryTransactionFee, error)
-	mustEmbedUnimplementedFiatRampsServer()
+	GetTransactionFee(context.Context, *GetTransactionFeeRequest) (*GetTransactionFeeResponse, error)
+	mustEmbedUnimplementedFiatRampsServiceServer()
 }
 
-// UnimplementedFiatRampsServer must be embedded to have
+// UnimplementedFiatRampsServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedFiatRampsServer struct{}
+type UnimplementedFiatRampsServiceServer struct{}
 
-func (UnimplementedFiatRampsServer) GetSupportedCountries(context.Context, *GetSupportedCountriesRequest) (*GetSupportedCountriesResponse, error) {
+func (UnimplementedFiatRampsServiceServer) GetSupportedCountries(context.Context, *GetSupportedCountriesRequest) (*GetSupportedCountriesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSupportedCountries not implemented")
 }
-func (UnimplementedFiatRampsServer) GetQuotes(context.Context, *FiatConfig) (*GetQuotesResponse, error) {
+func (UnimplementedFiatRampsServiceServer) GetQuotes(context.Context, *GetQuotesRequest) (*GetQuotesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetQuotes not implemented")
 }
-func (UnimplementedFiatRampsServer) GetRates(context.Context, *GetRatesRequest) (*GetRatesResponse, error) {
+func (UnimplementedFiatRampsServiceServer) GetRates(context.Context, *GetRatesRequest) (*GetRatesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRates not implemented")
 }
-func (UnimplementedFiatRampsServer) GetTransactionFee(context.Context, *GetTransactionFeeRequest) (*CountryTransactionFee, error) {
+func (UnimplementedFiatRampsServiceServer) GetTransactionFee(context.Context, *GetTransactionFeeRequest) (*GetTransactionFeeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionFee not implemented")
 }
-func (UnimplementedFiatRampsServer) mustEmbedUnimplementedFiatRampsServer() {}
-func (UnimplementedFiatRampsServer) testEmbeddedByValue()                   {}
+func (UnimplementedFiatRampsServiceServer) mustEmbedUnimplementedFiatRampsServiceServer() {}
+func (UnimplementedFiatRampsServiceServer) testEmbeddedByValue()                          {}
 
-// UnsafeFiatRampsServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to FiatRampsServer will
+// UnsafeFiatRampsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to FiatRampsServiceServer will
 // result in compilation errors.
-type UnsafeFiatRampsServer interface {
-	mustEmbedUnimplementedFiatRampsServer()
+type UnsafeFiatRampsServiceServer interface {
+	mustEmbedUnimplementedFiatRampsServiceServer()
 }
 
-func RegisterFiatRampsServer(s grpc.ServiceRegistrar, srv FiatRampsServer) {
-	// If the following call pancis, it indicates UnimplementedFiatRampsServer was
+func RegisterFiatRampsServiceServer(s grpc.ServiceRegistrar, srv FiatRampsServiceServer) {
+	// If the following call pancis, it indicates UnimplementedFiatRampsServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&FiatRamps_ServiceDesc, srv)
+	s.RegisterService(&FiatRampsService_ServiceDesc, srv)
 }
 
-func _FiatRamps_GetSupportedCountries_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _FiatRampsService_GetSupportedCountries_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetSupportedCountriesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FiatRampsServer).GetSupportedCountries(ctx, in)
+		return srv.(FiatRampsServiceServer).GetSupportedCountries(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FiatRamps_GetSupportedCountries_FullMethodName,
+		FullMethod: FiatRampsService_GetSupportedCountries_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FiatRampsServer).GetSupportedCountries(ctx, req.(*GetSupportedCountriesRequest))
+		return srv.(FiatRampsServiceServer).GetSupportedCountries(ctx, req.(*GetSupportedCountriesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FiatRamps_GetQuotes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FiatConfig)
+func _FiatRampsService_GetQuotes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetQuotesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FiatRampsServer).GetQuotes(ctx, in)
+		return srv.(FiatRampsServiceServer).GetQuotes(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FiatRamps_GetQuotes_FullMethodName,
+		FullMethod: FiatRampsService_GetQuotes_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FiatRampsServer).GetQuotes(ctx, req.(*FiatConfig))
+		return srv.(FiatRampsServiceServer).GetQuotes(ctx, req.(*GetQuotesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FiatRamps_GetRates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _FiatRampsService_GetRates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetRatesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FiatRampsServer).GetRates(ctx, in)
+		return srv.(FiatRampsServiceServer).GetRates(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FiatRamps_GetRates_FullMethodName,
+		FullMethod: FiatRampsService_GetRates_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FiatRampsServer).GetRates(ctx, req.(*GetRatesRequest))
+		return srv.(FiatRampsServiceServer).GetRates(ctx, req.(*GetRatesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FiatRamps_GetTransactionFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _FiatRampsService_GetTransactionFee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetTransactionFeeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FiatRampsServer).GetTransactionFee(ctx, in)
+		return srv.(FiatRampsServiceServer).GetTransactionFee(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FiatRamps_GetTransactionFee_FullMethodName,
+		FullMethod: FiatRampsService_GetTransactionFee_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FiatRampsServer).GetTransactionFee(ctx, req.(*GetTransactionFeeRequest))
+		return srv.(FiatRampsServiceServer).GetTransactionFee(ctx, req.(*GetTransactionFeeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// FiatRamps_ServiceDesc is the grpc.ServiceDesc for FiatRamps service.
+// FiatRampsService_ServiceDesc is the grpc.ServiceDesc for FiatRampsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var FiatRamps_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "fiatramps.FiatRamps",
-	HandlerType: (*FiatRampsServer)(nil),
+var FiatRampsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "fiatramps.v1.FiatRampsService",
+	HandlerType: (*FiatRampsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetSupportedCountries",
-			Handler:    _FiatRamps_GetSupportedCountries_Handler,
+			Handler:    _FiatRampsService_GetSupportedCountries_Handler,
 		},
 		{
 			MethodName: "GetQuotes",
-			Handler:    _FiatRamps_GetQuotes_Handler,
+			Handler:    _FiatRampsService_GetQuotes_Handler,
 		},
 		{
 			MethodName: "GetRates",
-			Handler:    _FiatRamps_GetRates_Handler,
+			Handler:    _FiatRampsService_GetRates_Handler,
 		},
 		{
 			MethodName: "GetTransactionFee",
-			Handler:    _FiatRamps_GetTransactionFee_Handler,
+			Handler:    _FiatRampsService_GetTransactionFee_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

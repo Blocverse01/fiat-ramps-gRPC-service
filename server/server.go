@@ -23,7 +23,7 @@ var (
 )
 
 type fiatRampsServer struct {
-	pb.UnimplementedFiatRampsServer
+	pb.UnimplementedFiatRampsServiceServer
 }
 
 func (server *fiatRampsServer) GetSupportedCountries(_ context.Context, _ *pb.GetSupportedCountriesRequest) (*pb.GetSupportedCountriesResponse, error) {
@@ -32,23 +32,23 @@ func (server *fiatRampsServer) GetSupportedCountries(_ context.Context, _ *pb.Ge
 	return &pb.GetSupportedCountriesResponse{Countries: supportedCountries}, nil
 }
 
-func (server *fiatRampsServer) GetQuotes(_ context.Context, req *pb.FiatConfig) (*pb.GetQuotesResponse, error) {
+func (server *fiatRampsServer) GetQuotes(_ context.Context, req *pb.GetQuotesRequest) (*pb.GetQuotesResponse, error) {
 	// Get the quotes
 	fiatQuotes := quotes.GetQuotes(quotes.FiatConfig{
-		CountryCode:    *req.CountryCode,
-		CurrencySymbol: *req.CurrencySymbol,
+		CountryCode:    req.CountryCode,
+		CurrencySymbol: req.CurrencySymbol,
 	})
 
 	return &pb.GetQuotesResponse{
-		Fees: &pb.CountryTransactionFee{
-			OnrampFeePercentage:  &fiatQuotes.Fees.OnrampFeePercentage,
-			OfframpFeePercentage: &fiatQuotes.Fees.OfframpFeePercentage,
+		Fees: &pb.GetTransactionFeeResponse{
+			OnrampFeePercentage:  fiatQuotes.Fees.OnrampFeePercentage,
+			OfframpFeePercentage: fiatQuotes.Fees.OfframpFeePercentage,
 		},
 		Rate: &pb.Rate{
-			Buy:    &fiatQuotes.Rate.Buy,
-			Sell:   &fiatQuotes.Rate.Sell,
-			Locale: &fiatQuotes.Rate.Locale,
-			Code:   &fiatQuotes.Rate.Code,
+			Buy:    fiatQuotes.Rate.Buy,
+			Sell:   fiatQuotes.Rate.Sell,
+			Locale: fiatQuotes.Rate.Locale,
+			Code:   fiatQuotes.Rate.Code,
 		},
 	}, nil
 }
@@ -62,10 +62,10 @@ func (server *fiatRampsServer) GetRates(_ context.Context, req *pb.GetRatesReque
 	var ratesResponse []*pb.Rate
 	for _, rate := range filteredRates {
 		ratesResponse = append(ratesResponse, &pb.Rate{
-			Buy:    &rate.Buy,
-			Sell:   &rate.Sell,
-			Locale: &rate.Locale,
-			Code:   &rate.Code,
+			Buy:    rate.Buy,
+			Sell:   rate.Sell,
+			Locale: rate.Locale,
+			Code:   rate.Code,
 		})
 	}
 
@@ -74,16 +74,16 @@ func (server *fiatRampsServer) GetRates(_ context.Context, req *pb.GetRatesReque
 	}, nil
 }
 
-func (server *fiatRampsServer) GetTransactionFee(_ context.Context, req *pb.GetTransactionFeeRequest) (*pb.CountryTransactionFee, error) {
-	fees, err := quotes.GetTransactionFee(*req.CountryCode)
+func (server *fiatRampsServer) GetTransactionFee(_ context.Context, req *pb.GetTransactionFeeRequest) (*pb.GetTransactionFeeResponse, error) {
+	fees, err := quotes.GetTransactionFee(req.CountryCode)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.CountryTransactionFee{
-		OnrampFeePercentage:  &fees.OnrampFeePercentage,
-		OfframpFeePercentage: &fees.OfframpFeePercentage,
+	return &pb.GetTransactionFeeResponse{
+		OnrampFeePercentage:  fees.OnrampFeePercentage,
+		OfframpFeePercentage: fees.OfframpFeePercentage,
 	}, nil
 }
 
@@ -116,7 +116,7 @@ func main() {
 
 	grpcServer := grpc.NewServer(opts...)
 	server := &fiatRampsServer{}
-	pb.RegisterFiatRampsServer(grpcServer, server)
+	pb.RegisterFiatRampsServiceServer(grpcServer, server)
 
 	log.Printf("gRPC server listening at %v", lis.Addr())
 	if err := grpcServer.Serve(lis); err != nil {
