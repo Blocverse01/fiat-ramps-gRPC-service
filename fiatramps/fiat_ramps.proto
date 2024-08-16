@@ -81,4 +81,5 @@ message Beneficiary {
   string channel_id = 6;
   string network_id = 7;
   SupportedCountry country = 8;
+  string provider_description = 9;
 }

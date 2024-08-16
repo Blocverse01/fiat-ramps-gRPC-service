@@ -25,18 +25,19 @@ type BeneficiaryCountry struct {
 }
 
 type YellowCardBeneficiary struct {
-	FirstName      string             `json:"firstName"`
-	LastName       string             `json:"lastName"`
-	AccountNumber  string             `json:"accountNumber"`
-	BankName       string             `json:"bankName"`
-	AccountName    string             `json:"accountName"`
-	AccountType    string             `json:"accountType"`
-	NetworkId      string             `json:"networkId"`
-	ChannelId      string             `json:"channelId"`
-	Country        BeneficiaryCountry `json:"country"`
-	MobileProvider string             `json:"mobileProvider"`
-	MobileNumber   string             `json:"mobileNumber"`
-	Id             string             `json:"id"`
+	FirstName          string             `json:"firstName"`
+	LastName           string             `json:"lastName"`
+	AccountNumber      string             `json:"accountNumber"`
+	BankName           string             `json:"bankName"`
+	AccountName        string             `json:"accountName"`
+	AccountType        string             `json:"accountType"`
+	NetworkId          string             `json:"networkId"`
+	ChannelId          string             `json:"channelId"`
+	Country            BeneficiaryCountry `json:"country"`
+	MobileProvider     string             `json:"mobileProvider"`
+	MobileProviderCode string             `json:"mobileProviderCode"`
+	MobileNumber       string             `json:"mobileNumber"`
+	Id                 string             `json:"id"`
 }
 
 type SdkBeneficiary struct {

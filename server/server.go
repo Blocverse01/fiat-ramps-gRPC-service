@@ -122,12 +122,13 @@ func (server *fiatRampsServer) GetBeneficiaries(_ context.Context, req *pb.GetBe
 				Id:             beneficiary.Country.Id,
 				Flag:           beneficiary.Country.Flag,
 			},
-			AccountType:   beneficiary.AccountType,
-			AccountName:   accountName,
-			AccountNumber: accountNumber,
-			ProviderName:  providerName,
-			NetworkId:     beneficiary.NetworkId,
-			ChannelId:     beneficiary.ChannelId,
+			AccountType:         beneficiary.AccountType,
+			AccountName:         accountName,
+			AccountNumber:       accountNumber,
+			ProviderName:        providerName,
+			NetworkId:           beneficiary.NetworkId,
+			ChannelId:           beneficiary.ChannelId,
+			ProviderDescription: beneficiary.MobileProviderCode,
 		})
 	}
 
