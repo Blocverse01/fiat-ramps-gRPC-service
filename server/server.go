@@ -137,6 +137,47 @@ func (server *fiatRampsServer) GetBeneficiaries(_ context.Context, req *pb.GetBe
 	}, nil
 }
 
+func (server *fiatRampsServer) GetBeneficiary(_ context.Context, req *pb.GetBeneficiaryRequest) (*pb.Beneficiary, error) {
+	beneficiary, err := beneficiaries.GetBeneficiary(req.BeneficiaryId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var accountName string
+	var accountNumber string
+	var providerName string
+
+	if beneficiary.AccountType == "bank" {
+		accountName = beneficiary.AccountName
+		accountNumber = beneficiary.AccountNumber
+		providerName = beneficiary.BankName
+	} else {
+		accountName = fmt.Sprintf("%s %s", beneficiary.FirstName, beneficiary.LastName)
+		accountNumber = beneficiary.MobileNumber
+		providerName = beneficiary.MobileProvider
+	}
+
+	return &pb.Beneficiary{
+		Id: req.BeneficiaryId,
+		Country: &pb.SupportedCountry{
+			Code:           beneficiary.Country.Code,
+			Country:        beneficiary.Country.Country,
+			CurrencySymbol: beneficiary.Country.CurrencySymbol,
+			CurrencyName:   beneficiary.Country.CurrencyName,
+			Id:             beneficiary.Country.Id,
+			Flag:           beneficiary.Country.Flag,
+		},
+		AccountType:         beneficiary.AccountType,
+		AccountName:         accountName,
+		AccountNumber:       accountNumber,
+		ProviderName:        providerName,
+		NetworkId:           beneficiary.NetworkId,
+		ChannelId:           beneficiary.ChannelId,
+		ProviderDescription: beneficiary.MobileProviderCode,
+	}, nil
+}
+
 func main() {
 	// Parse command-line flags
 	flag.Parse()
