@@ -6,7 +6,6 @@ import (
 
 	pb "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
 	"github.com/xataio/xata-go/xata"
-	"google.golang.org/protobuf/proto"
 )
 
 var tableName = "YellowCardSupportedCurrency"
@@ -55,12 +54,12 @@ func GetSupportedCountries() []*pb.SupportedCountry {
 
 		// Create the SupportedCountry object
 		country := &pb.SupportedCountry{
-			Id:             proto.String(id),
-			Name:           proto.String(countryName),
-			Code:           proto.String(countryCode),
-			CurrencySymbol: proto.String(currencySymbol),
-			CurrencyName:   proto.String(currencyName),
-			Flag:           proto.String(flag),
+			Id:             id,
+			Name:           countryName,
+			Code:           countryCode,
+			CurrencySymbol: currencySymbol,
+			CurrencyName:   currencyName,
+			Flag:           flag,
 		}
 
 		// Append the pointer to the slice
