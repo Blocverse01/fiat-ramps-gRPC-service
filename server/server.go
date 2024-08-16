@@ -56,7 +56,13 @@ func (server *fiatRampsServer) GetQuotes(_ context.Context, req *pb.GetQuotesReq
 func (server *fiatRampsServer) GetRates(_ context.Context, req *pb.GetRatesRequest) (*pb.GetRatesResponse, error) {
 	// Get all rates
 	allRates := quotes.GetRates()
-	filteredRates := quotes.FilterRatesByCurrencies(allRates, req.TargetCurrencies)
+	var filteredRates []quotes.Rate
+
+	if len(req.TargetCurrencies) > 0 {
+		filteredRates = quotes.FilterRatesByCurrencies(allRates, req.TargetCurrencies)
+	} else {
+		filteredRates = allRates
+	}
 
 	// Convert filtered rates to the format expected by the response
 	var ratesResponse []*pb.Rate
