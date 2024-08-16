@@ -23,6 +23,7 @@ const (
 	FiatRampsService_GetQuotes_FullMethodName             = "/fiatramps.v1.FiatRampsService/GetQuotes"
 	FiatRampsService_GetRates_FullMethodName              = "/fiatramps.v1.FiatRampsService/GetRates"
 	FiatRampsService_GetTransactionFee_FullMethodName     = "/fiatramps.v1.FiatRampsService/GetTransactionFee"
+	FiatRampsService_GetBeneficiaries_FullMethodName      = "/fiatramps.v1.FiatRampsService/GetBeneficiaries"
 )
 
 // FiatRampsServiceClient is the client API for FiatRampsService service.
@@ -33,6 +34,7 @@ type FiatRampsServiceClient interface {
 	GetQuotes(ctx context.Context, in *GetQuotesRequest, opts ...grpc.CallOption) (*GetQuotesResponse, error)
 	GetRates(ctx context.Context, in *GetRatesRequest, opts ...grpc.CallOption) (*GetRatesResponse, error)
 	GetTransactionFee(ctx context.Context, in *GetTransactionFeeRequest, opts ...grpc.CallOption) (*GetTransactionFeeResponse, error)
+	GetBeneficiaries(ctx context.Context, in *GetBeneficiariesRequest, opts ...grpc.CallOption) (*GetBeneficiariesResponse, error)
 }
 
 type fiatRampsServiceClient struct {
@@ -83,6 +85,16 @@ func (c *fiatRampsServiceClient) GetTransactionFee(ctx context.Context, in *GetT
 	return out, nil
 }
 
+func (c *fiatRampsServiceClient) GetBeneficiaries(ctx context.Context, in *GetBeneficiariesRequest, opts ...grpc.CallOption) (*GetBeneficiariesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetBeneficiariesResponse)
+	err := c.cc.Invoke(ctx, FiatRampsService_GetBeneficiaries_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FiatRampsServiceServer is the server API for FiatRampsService service.
 // All implementations must embed UnimplementedFiatRampsServiceServer
 // for forward compatibility.
@@ -91,6 +103,7 @@ type FiatRampsServiceServer interface {
 	GetQuotes(context.Context, *GetQuotesRequest) (*GetQuotesResponse, error)
 	GetRates(context.Context, *GetRatesRequest) (*GetRatesResponse, error)
 	GetTransactionFee(context.Context, *GetTransactionFeeRequest) (*GetTransactionFeeResponse, error)
+	GetBeneficiaries(context.Context, *GetBeneficiariesRequest) (*GetBeneficiariesResponse, error)
 	mustEmbedUnimplementedFiatRampsServiceServer()
 }
 
@@ -112,6 +125,9 @@ func (UnimplementedFiatRampsServiceServer) GetRates(context.Context, *GetRatesRe
 }
 func (UnimplementedFiatRampsServiceServer) GetTransactionFee(context.Context, *GetTransactionFeeRequest) (*GetTransactionFeeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionFee not implemented")
+}
+func (UnimplementedFiatRampsServiceServer) GetBeneficiaries(context.Context, *GetBeneficiariesRequest) (*GetBeneficiariesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBeneficiaries not implemented")
 }
 func (UnimplementedFiatRampsServiceServer) mustEmbedUnimplementedFiatRampsServiceServer() {}
 func (UnimplementedFiatRampsServiceServer) testEmbeddedByValue()                          {}
@@ -206,6 +222,24 @@ func _FiatRampsService_GetTransactionFee_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FiatRampsService_GetBeneficiaries_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBeneficiariesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FiatRampsServiceServer).GetBeneficiaries(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FiatRampsService_GetBeneficiaries_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FiatRampsServiceServer).GetBeneficiaries(ctx, req.(*GetBeneficiariesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FiatRampsService_ServiceDesc is the grpc.ServiceDesc for FiatRampsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -228,6 +262,10 @@ var FiatRampsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTransactionFee",
 			Handler:    _FiatRampsService_GetTransactionFee_Handler,
+		},
+		{
+			MethodName: "GetBeneficiaries",
+			Handler:    _FiatRampsService_GetBeneficiaries_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -101,6 +101,22 @@ func printQuotes(client pb.FiatRampsServiceClient) {
 	log.Printf("Quotes: %v", res)
 }
 
+func printBeneficiaries(client pb.FiatRampsServiceClient) {
+	log.Printf("Getting beneficiaries")
+	req := &pb.GetBeneficiariesRequest{
+		CountryCode: "NG",
+		OwnerId:     "2348143100808",
+	}
+	ctx := context.Background()
+	res, err := client.GetBeneficiaries(ctx, req)
+
+	if err != nil {
+		log.Fatalf("Failed to get beneficiaries: %v", err)
+	}
+
+	log.Printf("Beneficiaries: %v", res)
+}
+
 func main() {
 	flag.Parse()
 
@@ -135,6 +151,11 @@ func main() {
 
 	printSupportedCountries(client)
 	printTransactionFee(client)
-	printRates(client)
-	printQuotes(client)
+
+	if *serverAddr != "localhost:50051" {
+		printRates(client)
+		printQuotes(client)
+	}
+
+	printBeneficiaries(client)
 }

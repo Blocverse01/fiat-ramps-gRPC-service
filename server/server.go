@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	pb "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
 	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/countries"
 	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/quotes"
 	"google.golang.org/grpc"
@@ -90,6 +91,48 @@ func (server *fiatRampsServer) GetTransactionFee(_ context.Context, req *pb.GetT
 	return &pb.GetTransactionFeeResponse{
 		OnrampFeePercentage:  fees.OnrampFeePercentage,
 		OfframpFeePercentage: fees.OfframpFeePercentage,
+	}, nil
+}
+
+func (server *fiatRampsServer) GetBeneficiaries(_ context.Context, req *pb.GetBeneficiariesRequest) (*pb.GetBeneficiariesResponse, error) {
+	ownerBeneficiaries := beneficiaries.GetBeneficiaries(req.OwnerId, req.CountryCode, req.AccountType)
+
+	var beneficiariesResponse []*pb.Beneficiary
+	for _, beneficiary := range ownerBeneficiaries {
+		var accountName string
+		var accountNumber string
+		var providerName string
+
+		if beneficiary.AccountType == "bank" {
+			accountName = beneficiary.AccountName
+			accountNumber = beneficiary.AccountNumber
+			providerName = beneficiary.BankName
+		} else {
+			accountName = fmt.Sprintf("%s %s", beneficiary.FirstName, beneficiary.LastName)
+			accountNumber = beneficiary.MobileNumber
+			providerName = beneficiary.MobileProvider
+		}
+		beneficiariesResponse = append(beneficiariesResponse, &pb.Beneficiary{
+			Id: beneficiary.Id,
+			Country: &pb.SupportedCountry{
+				Code:           beneficiary.Country.Code,
+				Country:        beneficiary.Country.Country,
+				CurrencySymbol: beneficiary.Country.CurrencySymbol,
+				CurrencyName:   beneficiary.Country.CurrencyName,
+				Id:             beneficiary.Country.Id,
+				Flag:           beneficiary.Country.Flag,
+			},
+			AccountType:   beneficiary.AccountType,
+			AccountName:   accountName,
+			AccountNumber: accountNumber,
+			ProviderName:  providerName,
+			NetworkId:     beneficiary.NetworkId,
+			ChannelId:     beneficiary.ChannelId,
+		})
+	}
+
+	return &pb.GetBeneficiariesResponse{
+		Beneficiaries: beneficiariesResponse,
 	}, nil
 }
 
