@@ -86,7 +86,8 @@ func GetRates() []Rate {
 		log.Fatalf("Request failed with response: %v", resp)
 	}
 
-	// Return a dummy Rate for now
+	log.Printf("Rates: %v", response.Rates)
+
 	return response.Rates
 }
 
