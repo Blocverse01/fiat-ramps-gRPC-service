@@ -55,7 +55,7 @@ func GetSupportedCountries() []*pb.SupportedCountry {
 		// Create the SupportedCountry object
 		country := &pb.SupportedCountry{
 			Id:             id,
-			Name:           countryName,
+			Country:        countryName,
 			Code:           countryCode,
 			CurrencySymbol: currencySymbol,
 			CurrencyName:   currencyName,
