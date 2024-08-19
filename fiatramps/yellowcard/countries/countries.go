@@ -14,7 +14,8 @@ func GetSupportedCountries() []*pb.SupportedCountry {
 	// Initialize Xata search client
 	searchClient, err := xata.NewSearchAndFilterClient()
 	if err != nil {
-		log.Fatalf("Failed to create Xata client: %v", err)
+		log.Printf("Failed to create Xata client: %v", err)
+		return nil
 	}
 
 	// Perform the query
@@ -28,12 +29,14 @@ func GetSupportedCountries() []*pb.SupportedCountry {
 		},
 	})
 	if err != nil {
-		log.Fatalf("Failed to query Xata: %v", err)
+		log.Printf("Failed to query Xata: %v", err)
+		return nil
 	}
 
 	// Check if data.Records is nil
 	if data.Records == nil {
-		log.Fatalf("No records found in the Xata response")
+		log.Printf("No records found in the Xata response")
+		return nil
 	}
 
 	// Initialize an empty slice to hold the supported countries

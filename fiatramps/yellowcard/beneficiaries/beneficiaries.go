@@ -51,7 +51,7 @@ type GetBeneficiariesResponse struct {
 
 var beneficiariesTableName = "sdk_user_beneficiary"
 
-func GetBeneficiaries(ownerId string, countryCode string, accountType string) []YellowCardBeneficiary {
+func GetBeneficiaries(ownerId string, countryCode string, accountType string) ([]YellowCardBeneficiary, error) {
 	endpoint := fmt.Sprintf("%s/query", beneficiariesTableName)
 
 	var filter map[string]string
@@ -74,18 +74,23 @@ func GetBeneficiaries(ownerId string, countryCode string, accountType string) []
 		Filter:  filter,
 	}
 
-	bodyData := fiatramps.BufferBodyData(reqBody)
+	bodyData, err := fiatramps.BufferBodyData(reqBody)
+
+	if err != nil {
+		return nil, err
+	}
 
 	resp, err := database.MakeTablesRequest("POST", endpoint, bodyData)
 
 	if err != nil {
-		log.Fatalf("Error making database request: %v", err)
+		log.Printf("Error making database request: %v", err)
+		return nil, err
 	}
 
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
-			log.Fatalf("Error closing body %v", err)
+			log.Printf("Error closing body %v", err)
 		}
 	}(resp.Body)
 
@@ -94,13 +99,15 @@ func GetBeneficiaries(ownerId string, countryCode string, accountType string) []
 
 	if resp.StatusCode != http.StatusOK {
 		fiatramps.HandleFailedResponse(resp)
+		return nil, fmt.Errorf("failed response with status: %s", resp.Status)
 	}
 
 	var response GetBeneficiariesResponse
 
 	// Use json.NewDecoder to decode the response body into the response struct
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-		log.Fatalf("Failed to decode response body: %v", err)
+		log.Printf("Failed to decode response body: %v", err)
+		return nil, err
 	}
 
 	var beneficiaries []YellowCardBeneficiary
@@ -109,7 +116,7 @@ func GetBeneficiaries(ownerId string, countryCode string, accountType string) []
 		beneficiaries = append(beneficiaries, beneficiary.YellowCardBeneficiary)
 	}
 
-	return beneficiaries
+	return beneficiaries, nil
 }
 
 func GetBeneficiary(beneficiaryId string) (YellowCardBeneficiary, error) {
@@ -122,33 +129,40 @@ func GetBeneficiary(beneficiaryId string) (YellowCardBeneficiary, error) {
 		},
 	}
 
-	bodyData := fiatramps.BufferBodyData(reqBody)
+	bodyData, err := fiatramps.BufferBodyData(reqBody)
+
+	if err != nil {
+		return YellowCardBeneficiary{}, err
+	}
 
 	resp, err := database.MakeTablesRequest("POST", endpoint, bodyData)
 
 	if err != nil {
-		log.Fatalf("Error making database request: %v", err)
+		log.Printf("Error making database request: %v", err)
+		return YellowCardBeneficiary{}, err
 	}
 
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
-			log.Fatalf("Error closing body %v", err)
+			log.Printf("Error closing body %v", err)
 		}
 	}(resp.Body)
 
 	// Handle the response
-	log.Printf("Response status: %s", resp.Status)
+	log.Printf("Response status for request [%s]: %s", endpoint, resp.Status)
 
 	if resp.StatusCode != http.StatusOK {
 		fiatramps.HandleFailedResponse(resp)
+		return YellowCardBeneficiary{}, fmt.Errorf("failed response with status: %s", resp.Status)
 	}
 
 	var response GetBeneficiariesResponse
 
 	// Use json.NewDecoder to decode the response body into the response struct
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-		log.Fatalf("Failed to decode response body: %v", err)
+		log.Printf("Failed to decode response body: %v", err)
+		return YellowCardBeneficiary{}, err
 	}
 
 	if len(response.Records) == 0 {

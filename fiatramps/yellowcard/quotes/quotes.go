@@ -55,38 +55,37 @@ func GetQuotes(config FiatConfig) Quote {
 	}
 }
 
-func GetRates() []Rate {
-	const endpoint = "/business/rates"
+const ratesEndpoint = "/business/rates"
 
-	resp, err := yellowcard.MakeYellowCardRequest("GET", endpoint, "", map[string]string{})
+func GetRates() []Rate {
+	resp, err := yellowcard.MakeYellowCardRequest("GET", ratesEndpoint, "", map[string]string{})
 
 	if err != nil {
-		log.Fatalf("failed to send request: %v", err)
+		log.Printf("failed to send request: %v", err)
+		return nil
 	}
 
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
-			log.Fatalf("Failed to close body stream: %v", err)
+			log.Printf("Failed to close body stream: %v", err)
 		}
 	}(resp.Body)
+
+	log.Printf("Response status for request [%s]: %s", ratesEndpoint, resp.Status)
+	if resp.StatusCode != http.StatusOK {
+		fiatramps.HandleFailedResponse(resp)
+		return nil
+	}
 
 	// Initialize a variable to hold the decoded response
 	var response RatesResponse
 
 	// Use json.NewDecoder to decode the response body into the response struct
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-		log.Fatalf("Failed to decode response body: %v", err)
+		log.Printf("Failed to decode response body: %v", err)
+		return nil
 	}
-
-	// Handle the response
-	log.Printf("Response status: %s", resp.Status)
-
-	if resp.StatusCode != 200 {
-		log.Fatalf("Request failed with response: %v", resp)
-	}
-
-	log.Printf("Rates: %v", response.Rates)
 
 	return response.Rates
 }
@@ -148,7 +147,11 @@ func GetTransactionFee(countryCode string) (TransactionFee, error) {
 		},
 	}
 
-	bodyData := fiatramps.BufferBodyData(reqBody)
+	bodyData, err := fiatramps.BufferBodyData(reqBody)
+
+	if err != nil {
+		return TransactionFee{}, err
+	}
 
 	resp, err := database.MakeTablesRequest("POST", endpoint, bodyData)
 
@@ -164,10 +167,11 @@ func GetTransactionFee(countryCode string) (TransactionFee, error) {
 	}(resp.Body)
 
 	// Handle the response
-	log.Printf("Response status: %s", resp.Status)
+	log.Printf("Response status for request %s: %s", endpoint, resp.Status)
 
 	if resp.StatusCode != http.StatusOK {
 		fiatramps.HandleFailedResponse(resp)
+		return TransactionFee{}, fmt.Errorf("failed response with status: %s", resp.Status)
 	}
 
 	// Initialize a variable to hold the decoded response
@@ -175,7 +179,8 @@ func GetTransactionFee(countryCode string) (TransactionFee, error) {
 
 	// Use json.NewDecoder to decode the response body into the response struct
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-		log.Fatalf("Failed to decode response body: %v", err)
+		log.Printf("Failed to decode response body: %v", err)
+		return TransactionFee{}, err
 	}
 
 	if len(response.Records) == 0 {

@@ -7,6 +7,7 @@ import (
 	pb "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
 	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
 	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/countries"
+	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/payment_methods"
 	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/quotes"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -95,7 +96,11 @@ func (server *fiatRampsServer) GetTransactionFee(_ context.Context, req *pb.GetT
 }
 
 func (server *fiatRampsServer) GetBeneficiaries(_ context.Context, req *pb.GetBeneficiariesRequest) (*pb.GetBeneficiariesResponse, error) {
-	ownerBeneficiaries := beneficiaries.GetBeneficiaries(req.OwnerId, req.CountryCode, req.AccountType)
+	ownerBeneficiaries, err := beneficiaries.GetBeneficiaries(req.OwnerId, req.CountryCode, req.AccountType)
+
+	if err != nil {
+		return nil, err
+	}
 
 	var beneficiariesResponse []*pb.Beneficiary
 	for _, beneficiary := range ownerBeneficiaries {
@@ -175,6 +180,31 @@ func (server *fiatRampsServer) GetBeneficiary(_ context.Context, req *pb.GetBene
 		NetworkId:           beneficiary.NetworkId,
 		ChannelId:           beneficiary.ChannelId,
 		ProviderDescription: beneficiary.MobileProviderCode,
+	}, nil
+}
+
+func (server *fiatRampsServer) GetPaymentMethods(_ context.Context, req *pb.GetPaymentMethodsRequest) (*pb.GetPaymentMethodsResponse, error) {
+	paymentMethods, err := payment_methods.GetPaymentMethods(req.CountryCode, req.Route)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var paymentChannels []*pb.PaymentChannel
+
+	for _, channel := range paymentMethods.PaymentMethods {
+		paymentChannels = append(paymentChannels, &pb.PaymentChannel{
+			ChannelName: channel.ChannelName,
+			ChannelId:   channel.ChannelId,
+		})
+	}
+
+	return &pb.GetPaymentMethodsResponse{
+		Channels: paymentChannels,
+		Limits: &pb.CountryFiatLimits{
+			Min: float32(paymentMethods.Limits.Min),
+			Max: float32(paymentMethods.Limits.Max),
+		},
 	}, nil
 }
 
