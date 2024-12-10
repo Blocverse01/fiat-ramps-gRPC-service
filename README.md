@@ -1,1 +1,1 @@
-# globachain-ramps-gRPC-service
+# Ramps-gRPC-service
