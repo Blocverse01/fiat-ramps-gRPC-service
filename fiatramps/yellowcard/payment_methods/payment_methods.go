@@ -3,8 +3,8 @@ package payment_methods
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"io"
 	"log"
 	"net/http"
@@ -60,7 +60,7 @@ const channelsEndpoint = "/business/channels"
 // GetPaymentMethods retrieves the payment methods for a given country and route.
 // It returns the selected payment methods or an error if something goes wrong.
 func GetPaymentMethods(countryCode string, route string) (GetPaymentMethodsResponse, error) {
-	resp, err := yellowcard.MakeYellowCardRequest("GET", channelsEndpoint, "", map[string]string{
+	resp, err := yellowcard.MakeYellowCardRequest("GET", channelsEndpoint, nil, map[string]string{
 		"country": countryCode,
 	})
 	if err != nil {

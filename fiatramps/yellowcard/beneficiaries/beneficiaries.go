@@ -3,8 +3,9 @@ package beneficiaries
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/database"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/countries"
 	"io"
 	"log"
 	"net/http"
@@ -15,41 +16,23 @@ type GetBeneficiariesRequestBody struct {
 	Filter  map[string]string `json:"filter"`
 }
 
-type BeneficiaryCountry struct {
-	Code           string `json:"code"`
-	Country        string `json:"country"`
-	CurrencySymbol string `json:"currencySymbol"`
-	CurrencyName   string `json:"currencyName"`
-	Id             string `json:"id"`
-	Flag           string `json:"flag"`
-}
-
 type YellowCardBeneficiary struct {
-	FirstName          string             `json:"firstName"`
-	LastName           string             `json:"lastName"`
-	AccountNumber      string             `json:"accountNumber"`
-	BankName           string             `json:"bankName"`
-	AccountName        string             `json:"accountName"`
-	AccountType        string             `json:"accountType"`
-	NetworkId          string             `json:"networkId"`
-	ChannelId          string             `json:"channelId"`
-	Country            BeneficiaryCountry `json:"country"`
-	MobileProvider     string             `json:"mobileProvider"`
-	MobileProviderCode string             `json:"mobileProviderCode"`
-	MobileNumber       string             `json:"mobileNumber"`
-	Id                 string             `json:"id"`
-}
-
-type SdkBeneficiary struct {
-	OwnerId               string                `json:"ownerId"`
-	YellowCardBeneficiary YellowCardBeneficiary `json:"yellowCardBeneficiary"`
+	AccountNumber string `json:"accountNumber"`
+	AccountName   string `json:"accountName"`
+	AccountType   string `json:"accountType"`
+	NetworkId     string `json:"networkId"`
+	NetworkName   string `json:"networkName"`
+	ChannelId     string `json:"channelId"`
+	Country       string `json:"country"`
+	Id            string `json:"id"`
+	OwnerId       string `json:"ownerId"`
 }
 
 type GetBeneficiariesResponse struct {
-	Records []SdkBeneficiary `json:"records"`
+	Records []YellowCardBeneficiary `json:"records"`
 }
 
-var beneficiariesTableName = "sdk_user_beneficiary"
+var beneficiariesTableName = "yellowcard_beneficiary"
 
 func GetBeneficiaries(ownerId string, countryCode string, accountType string) ([]YellowCardBeneficiary, error) {
 	endpoint := fmt.Sprintf("%s/query", beneficiariesTableName)
@@ -58,19 +41,19 @@ func GetBeneficiaries(ownerId string, countryCode string, accountType string) ([
 
 	if accountType != "" {
 		filter = map[string]string{
-			"ownerId":                            ownerId,
-			"yellowCardBeneficiary.country.code": countryCode,
-			"yellowCardBeneficiary.accountType":  accountType,
+			"ownerId":     ownerId,
+			"country":     countryCode,
+			"accountType": accountType,
 		}
 	} else {
 		filter = map[string]string{
-			"ownerId":                            ownerId,
-			"yellowCardBeneficiary.country.code": countryCode,
+			"ownerId": ownerId,
+			"country": countryCode,
 		}
 	}
 
 	reqBody := GetBeneficiariesRequestBody{
-		Columns: []string{"yellowCardBeneficiary.*", "yellowCardBeneficiary.country.*"},
+		Columns: []string{"*"},
 		Filter:  filter,
 	}
 
@@ -110,22 +93,16 @@ func GetBeneficiaries(ownerId string, countryCode string, accountType string) ([
 		return nil, err
 	}
 
-	var beneficiaries []YellowCardBeneficiary
-
-	for _, beneficiary := range response.Records {
-		beneficiaries = append(beneficiaries, beneficiary.YellowCardBeneficiary)
-	}
-
-	return beneficiaries, nil
+	return response.Records, nil
 }
 
 func GetBeneficiary(beneficiaryId string) (YellowCardBeneficiary, error) {
 	endpoint := fmt.Sprintf("%s/query", beneficiariesTableName)
 
 	reqBody := GetBeneficiariesRequestBody{
-		Columns: []string{"yellowCardBeneficiary.*", "yellowCardBeneficiary.country.*"},
+		Columns: []string{"*", "country"},
 		Filter: map[string]string{
-			"yellowCardBeneficiary.id": beneficiaryId,
+			"id": beneficiaryId,
 		},
 	}
 
@@ -169,5 +146,67 @@ func GetBeneficiary(beneficiaryId string) (YellowCardBeneficiary, error) {
 		return YellowCardBeneficiary{}, fmt.Errorf("no beneficiary with ID: %v found", beneficiaryId)
 	}
 
-	return response.Records[0].YellowCardBeneficiary, nil
+	return response.Records[0], nil
+}
+
+type AddBeneficiaryRequestBody struct {
+	AccountNumber string `json:"accountNumber"`
+	AccountName   string `json:"accountName"`
+	AccountType   string `json:"accountType"`
+	NetworkId     string `json:"networkId"`
+	NetworkName   string `json:"networkName"`
+	ChannelId     string `json:"channelId"`
+	Country       string `json:"country"`
+	OwnerId       string `json:"ownerId"`
+}
+
+type AddBeneficiaryResponse struct {
+	Id string `json:"id"`
+}
+
+func AddBeneficiary(beneficiary AddBeneficiaryRequestBody) (string, error) {
+	_, err := countries.GetCountryByCode(beneficiary.Country)
+
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := fmt.Sprintf("%s/data", beneficiariesTableName)
+
+	bodyData, err := fiatramps.BufferBodyData(beneficiary)
+
+	if err != nil {
+		return "", err
+	}
+
+	resp, err := database.MakeTablesRequest("POST", endpoint, bodyData)
+
+	if err != nil {
+		log.Printf("Error making database request: %v", err)
+		return "", err
+	}
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Printf("Error closing body %v", err)
+		}
+	}(resp.Body)
+
+	// Handle the response
+	log.Printf("Response status for request [%s]: %s", endpoint, resp.Status)
+
+	if resp.StatusCode != http.StatusCreated {
+		fiatramps.HandleFailedResponse(resp)
+		return "", fmt.Errorf("failed response with status: %s", resp.Status)
+	}
+
+	var response AddBeneficiaryResponse
+
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		log.Printf("Failed to decode response body: %v", err)
+		return "", err
+	}
+
+	return response.Id, nil
 }

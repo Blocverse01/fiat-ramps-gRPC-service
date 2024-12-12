@@ -3,7 +3,7 @@ package database
 import (
 	"bytes"
 	"fmt"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
 	"net/http"
 )
 
@@ -30,4 +30,9 @@ func MakeTablesRequest(method string, endpoint string, bodyData *bytes.Buffer) (
 	}
 
 	return resp, nil
+}
+
+type TableDataQueryRequestBody struct {
+	Columns []string          `json:"columns"`
+	Filter  map[string]string `json:"filter"`
 }

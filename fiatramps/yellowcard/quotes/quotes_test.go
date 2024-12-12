@@ -1,7 +1,7 @@
 package quotes
 
 import (
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
 	"testing"
 )
 

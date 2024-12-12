@@ -1,52 +1,44 @@
 package yellowcard
 
 import (
+	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
-	"io"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
 	"net/http"
 	"net/url"
-	"strings"
 	"time"
 )
-
-// apiBaseUrl YellowCardApiBaseUrl YellowCard config
-const apiBaseUrl = "https://api.yellowcard.io"
 
 type AuthenticationCredentials struct {
 	Date          string
 	Authorization string
 }
 
-func generateAuthenticationCredentials(path string, method string, body string) AuthenticationCredentials {
-	var apiKey = fiatramps.GetEnvConfig("YELLOW_CARD_API_KEY")
+func generateAuthenticationCredentials(path string, method string, body *bytes.Buffer) AuthenticationCredentials {
+	var publicKey = fiatramps.GetEnvConfig("YELLOW_CARD_PUBLIC_KEY")
 	var secretKey = fiatramps.GetEnvConfig("YELLOW_CARD_SECRET_KEY")
 
-	date := time.Now().UTC().Format(time.RFC1123)
+	var date = time.Now().UTC().Format("2006-01-02T15:04:05Z07:00")
+	var message = fmt.Sprintf("%s%s%s", date, path, method)
 
 	// Create a new HMAC by defining the hash type and the key (as byte array)
 	h := hmac.New(sha256.New, []byte(secretKey))
 
-	// Write the data to the HMAC object
-	h.Write([]byte(date))
-	h.Write([]byte(path))
-	h.Write([]byte(method))
-
 	// If there is a body, hash it and add to HMAC
-	if len(body) > 0 {
-		bodyBytes, _ := json.Marshal(body)
-		bodyHash := sha256.Sum256(bodyBytes)
+	if len(body.String()) > 0 {
+		bodyHash := sha256.Sum256(body.Bytes())
 		bodyHmac := base64.StdEncoding.EncodeToString(bodyHash[:])
-		h.Write([]byte(bodyHmac))
+		message += bodyHmac
 	}
+
+	h.Write([]byte(message))
 
 	// Get the final HMAC as a base64 string
 	signature := base64.StdEncoding.EncodeToString(h.Sum(nil))
-	authorization := fmt.Sprintf("YcHmacV1 %s:%s", apiKey, signature)
+	authorization := fmt.Sprintf("YcHmacV1 %s:%s", publicKey, signature)
 
 	return AuthenticationCredentials{
 		Date:          date,
@@ -59,7 +51,7 @@ type RequestOptions struct {
 	Headers map[string]string
 }
 
-func CreateRequestOptions(path string, method string, body string) RequestOptions {
+func CreateRequestOptions(path string, method string, body *bytes.Buffer) RequestOptions {
 	credentials := generateAuthenticationCredentials(path, method, body)
 
 	headers := map[string]string{
@@ -76,7 +68,8 @@ func CreateRequestOptions(path string, method string, body string) RequestOption
 }
 
 // MakeYellowCardRequest is a reusable wrapper for making YellowCard API requests.
-func MakeYellowCardRequest(method, endpoint, body string, queryParams map[string]string) (*http.Response, error) {
+func MakeYellowCardRequest(method, endpoint string, body *bytes.Buffer, queryParams map[string]string) (*http.Response, error) {
+	apiBaseUrl := fiatramps.GetEnvConfig("YELLOWCARD_BASE_URL")
 	requestUrl := apiBaseUrl + endpoint
 
 	// Add query parameters to the URL
@@ -93,16 +86,14 @@ func MakeYellowCardRequest(method, endpoint, body string, queryParams map[string
 		requestUrl = u.String()
 	}
 
-	requestOptions := CreateRequestOptions(endpoint, method, body)
-
-	// Convert the body string to an io.Reader
-	var bodyReader io.Reader
-	if body != "" {
-		bodyReader = strings.NewReader(body)
+	if body == nil {
+		body = bytes.NewBuffer([]byte{}) // This ensures an empty body if needed
 	}
 
+	requestOptions := CreateRequestOptions(endpoint, method, body)
+
 	// Create a new HTTP request
-	req, err := http.NewRequest(requestOptions.Method, requestUrl, bodyReader)
+	req, err := http.NewRequest(requestOptions.Method, requestUrl, body)
 	if err != nil {
 		return nil, err
 	}

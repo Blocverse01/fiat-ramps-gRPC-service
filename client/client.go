@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"flag"
-	pb "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
+	pb "github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"

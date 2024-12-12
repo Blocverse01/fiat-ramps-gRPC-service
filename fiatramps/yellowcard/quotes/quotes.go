@@ -3,15 +3,15 @@ package quotes
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/database"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"io"
 	"log"
 	"net/http"
 )
 
-var transactionFeeTableName = "CountryTransactionFees"
+var transactionFeeTableName = "fiat_ramps_transaction_fee"
 
 type FiatConfig struct {
 	CountryCode    string `json:"countryCode"`
@@ -58,7 +58,7 @@ func GetQuotes(config FiatConfig) Quote {
 const ratesEndpoint = "/business/rates"
 
 func GetRates() []Rate {
-	resp, err := yellowcard.MakeYellowCardRequest("GET", ratesEndpoint, "", map[string]string{})
+	resp, err := yellowcard.MakeYellowCardRequest("GET", ratesEndpoint, nil, map[string]string{})
 
 	if err != nil {
 		log.Printf("failed to send request: %v", err)
@@ -143,7 +143,7 @@ func GetTransactionFee(countryCode string) (TransactionFee, error) {
 	reqBody := GetTransactionFeeRequestBody{
 		Columns: []string{"onrampFeePercentage", "offrampFeePercentage"},
 		Filter: map[string]string{
-			"countryCode": countryCode,
+			"country": countryCode,
 		},
 	}
 

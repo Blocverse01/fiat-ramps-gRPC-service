@@ -2,13 +2,18 @@ package countries
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
+	"io"
 	"log"
+	"net/http"
 
-	pb "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
+	pb "github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
 	"github.com/xataio/xata-go/xata"
 )
 
-var tableName = "YellowCardSupportedCurrency"
+var tableName = "yellowcard_supported_country"
 
 func GetSupportedCountries() []*pb.SupportedCountry {
 	// Initialize Xata search client
@@ -22,9 +27,9 @@ func GetSupportedCountries() []*pb.SupportedCountry {
 	data, err := searchClient.Query(context.TODO(), xata.QueryTableRequest{
 		TableName: tableName,
 		Payload: xata.QueryTableRequestPayload{
-			Columns: []string{"country", "id", "flag", "currencyName", "currencySymbol", "code"},
+			Columns: []string{"name", "xata_id", "flag", "currencyName", "currencySymbol", "code"},
 			Sort: xata.NewSortExpressionFromStringSortOrderMapList([]map[string]xata.SortOrder{
-				{"country": xata.SortOrderAsc},
+				{"name": xata.SortOrderAsc},
 			}),
 		},
 	})
@@ -48,8 +53,8 @@ func GetSupportedCountries() []*pb.SupportedCountry {
 		record := *rec
 
 		// Safely extract fields and handle missing keys
-		countryName, _ := record["country"].(string)
-		id, _ := record["id"].(string)
+		countryName, _ := record["name"].(string)
+		id, _ := record["xata_id"].(string)
 		flag, _ := record["flag"].(string)
 		currencyName, _ := record["currencyName"].(string)
 		currencySymbol, _ := record["currencySymbol"].(string)
@@ -58,7 +63,7 @@ func GetSupportedCountries() []*pb.SupportedCountry {
 		// Create the SupportedCountry object
 		country := &pb.SupportedCountry{
 			Id:             id,
-			Country:        countryName,
+			Name:           countryName,
 			Code:           countryCode,
 			CurrencySymbol: currencySymbol,
 			CurrencyName:   currencyName,
@@ -71,4 +76,73 @@ func GetSupportedCountries() []*pb.SupportedCountry {
 
 	// Return the list of supported countries
 	return supportedCountries
+}
+
+type GetCountryRequestBody struct {
+	Columns []string          `json:"columns"`
+	Filter  map[string]string `json:"filter"`
+}
+type CountryRecord struct {
+	Name           string `json:"name"`
+	Code           string `json:"code"`
+	Flag           string `json:"flag"`
+	CurrencyName   string `json:"currencyName"`
+	CurrencySymbol string `json:"currencySymbol"`
+	Id             string `json:"id"`
+}
+type GetCountryResponse struct {
+	Records []CountryRecord `json:"records"`
+}
+
+func GetCountryByCode(countryCode string) (CountryRecord, error) {
+	endpoint := fmt.Sprintf("%s/query", tableName)
+
+	reqBody := GetCountryRequestBody{
+		Columns: []string{"*"},
+		Filter: map[string]string{
+			"code": countryCode,
+		},
+	}
+
+	bodyData, err := pb.BufferBodyData(reqBody)
+
+	if err != nil {
+		return CountryRecord{}, err
+	}
+
+	resp, err := database.MakeTablesRequest("POST", endpoint, bodyData)
+
+	if err != nil {
+		log.Printf("Error making database request: %v", err)
+		return CountryRecord{}, err
+	}
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Printf("Error closing body %v", err)
+		}
+	}(resp.Body)
+
+	// Handle the response
+	log.Printf("Response status for request [%s]: %s", endpoint, resp.Status)
+
+	if resp.StatusCode != http.StatusOK {
+		pb.HandleFailedResponse(resp)
+		return CountryRecord{}, fmt.Errorf("failed response with status: %s", resp.Status)
+	}
+
+	var response GetCountryResponse
+
+	// Use json.NewDecoder to decode the response body into the response struct
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		log.Printf("Failed to decode response body: %v", err)
+		return CountryRecord{}, err
+	}
+
+	if len(response.Records) == 0 {
+		return CountryRecord{}, fmt.Errorf("no country with code: %v found", countryCode)
+	}
+
+	return response.Records[0], nil
 }

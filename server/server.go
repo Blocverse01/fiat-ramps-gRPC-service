@@ -4,11 +4,13 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	pb "github.com/blocverse01/globachain-ramps-grpc-service/fiatramps"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/countries"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/payment_methods"
-	"github.com/blocverse01/globachain-ramps-grpc-service/fiatramps/yellowcard/quotes"
+	pb "github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/countries"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/payment_methods"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/payment_networks"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/payments"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/quotes"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"log"
@@ -104,36 +106,26 @@ func (server *fiatRampsServer) GetBeneficiaries(_ context.Context, req *pb.GetBe
 
 	var beneficiariesResponse []*pb.Beneficiary
 	for _, beneficiary := range ownerBeneficiaries {
-		var accountName string
-		var accountNumber string
-		var providerName string
-
-		if beneficiary.AccountType == "bank" {
-			accountName = beneficiary.AccountName
-			accountNumber = beneficiary.AccountNumber
-			providerName = beneficiary.BankName
-		} else {
-			accountName = fmt.Sprintf("%s %s", beneficiary.FirstName, beneficiary.LastName)
-			accountNumber = beneficiary.MobileNumber
-			providerName = beneficiary.MobileProvider
+		country, err := countries.GetCountryByCode(beneficiary.Country)
+		if err != nil {
+			return nil, err
 		}
 		beneficiariesResponse = append(beneficiariesResponse, &pb.Beneficiary{
 			Id: beneficiary.Id,
 			Country: &pb.SupportedCountry{
-				Code:           beneficiary.Country.Code,
-				Country:        beneficiary.Country.Country,
-				CurrencySymbol: beneficiary.Country.CurrencySymbol,
-				CurrencyName:   beneficiary.Country.CurrencyName,
-				Id:             beneficiary.Country.Id,
-				Flag:           beneficiary.Country.Flag,
+				Code:           country.Code,
+				Name:           country.Name,
+				CurrencySymbol: country.CurrencySymbol,
+				CurrencyName:   country.CurrencyName,
+				Id:             country.Id,
+				Flag:           country.Flag,
 			},
-			AccountType:         beneficiary.AccountType,
-			AccountName:         accountName,
-			AccountNumber:       accountNumber,
-			ProviderName:        providerName,
-			NetworkId:           beneficiary.NetworkId,
-			ChannelId:           beneficiary.ChannelId,
-			ProviderDescription: beneficiary.MobileProviderCode,
+			AccountType:   beneficiary.AccountType,
+			AccountName:   beneficiary.AccountName,
+			AccountNumber: beneficiary.AccountNumber,
+			ProviderName:  beneficiary.NetworkName,
+			NetworkId:     beneficiary.NetworkId,
+			ChannelId:     beneficiary.ChannelId,
 		})
 	}
 
@@ -149,37 +141,66 @@ func (server *fiatRampsServer) GetBeneficiary(_ context.Context, req *pb.GetBene
 		return nil, err
 	}
 
-	var accountName string
-	var accountNumber string
-	var providerName string
+	country, err := countries.GetCountryByCode(beneficiary.Country)
 
-	if beneficiary.AccountType == "bank" {
-		accountName = beneficiary.AccountName
-		accountNumber = beneficiary.AccountNumber
-		providerName = beneficiary.BankName
-	} else {
-		accountName = fmt.Sprintf("%s %s", beneficiary.FirstName, beneficiary.LastName)
-		accountNumber = beneficiary.MobileNumber
-		providerName = beneficiary.MobileProvider
+	if err != nil {
+		return nil, err
 	}
 
 	return &pb.Beneficiary{
 		Id: req.BeneficiaryId,
 		Country: &pb.SupportedCountry{
-			Code:           beneficiary.Country.Code,
-			Country:        beneficiary.Country.Country,
-			CurrencySymbol: beneficiary.Country.CurrencySymbol,
-			CurrencyName:   beneficiary.Country.CurrencyName,
-			Id:             beneficiary.Country.Id,
-			Flag:           beneficiary.Country.Flag,
+			Code:           country.Code,
+			Name:           country.Name,
+			CurrencySymbol: country.CurrencySymbol,
+			CurrencyName:   country.CurrencyName,
+			Id:             country.Id,
+			Flag:           country.Flag,
 		},
-		AccountType:         beneficiary.AccountType,
-		AccountName:         accountName,
-		AccountNumber:       accountNumber,
-		ProviderName:        providerName,
-		NetworkId:           beneficiary.NetworkId,
-		ChannelId:           beneficiary.ChannelId,
-		ProviderDescription: beneficiary.MobileProviderCode,
+		AccountType:   beneficiary.AccountType,
+		AccountName:   beneficiary.AccountName,
+		AccountNumber: beneficiary.AccountNumber,
+		ProviderName:  beneficiary.NetworkName,
+		NetworkId:     beneficiary.NetworkId,
+		ChannelId:     beneficiary.ChannelId,
+	}, nil
+}
+
+func (server *fiatRampsServer) GetSupportedCountryByCode(_ context.Context, req *pb.GetSupportedCountryRequest) (*pb.SupportedCountry, error) {
+	country, err := countries.GetCountryByCode(req.CountryCode)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.SupportedCountry{
+		Id:             country.Id,
+		Code:           country.Code,
+		Name:           country.Name,
+		CurrencySymbol: country.CurrencySymbol,
+		CurrencyName:   country.CurrencyName,
+		Flag:           country.Flag,
+	}, nil
+}
+
+func (server *fiatRampsServer) AddBeneficiary(_ context.Context, req *pb.AddBeneficiaryRequest) (*pb.AddBeneficiaryResponse, error) {
+	newBeneficiaryId, err := beneficiaries.AddBeneficiary(beneficiaries.AddBeneficiaryRequestBody{
+		AccountNumber: req.AccountNumber,
+		AccountType:   req.AccountType,
+		AccountName:   req.AccountName,
+		ChannelId:     req.ChannelId,
+		NetworkId:     req.NetworkId,
+		Country:       req.Country,
+		OwnerId:       req.OwnerId,
+		NetworkName:   req.NetworkName,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.AddBeneficiaryResponse{
+		NewBeneficiaryId: newBeneficiaryId,
 	}, nil
 }
 
@@ -205,6 +226,130 @@ func (server *fiatRampsServer) GetPaymentMethods(_ context.Context, req *pb.GetP
 			Min: float32(paymentMethods.Limits.Min),
 			Max: float32(paymentMethods.Limits.Max),
 		},
+	}, nil
+}
+
+func (server *fiatRampsServer) GetPaymentNetworks(_ context.Context, req *pb.GetPaymentNetworksRequest) (*pb.GetPaymentNetworksResponse, error) {
+	paymentNetworks, err := payment_networks.GetPaymentNetworks(req.CountryCode, req.ChannelId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var activePaymentNetworks []*pb.ActivePaymentNetwork
+
+	for _, network := range paymentNetworks {
+		activePaymentNetworks = append(activePaymentNetworks, &pb.ActivePaymentNetwork{
+			NetworkId: network.NetworkId,
+			Name:      network.Name,
+			ChannelId: network.ChannelId,
+		})
+	}
+
+	return &pb.GetPaymentNetworksResponse{
+		Networks: activePaymentNetworks,
+	}, nil
+}
+
+func (server *fiatRampsServer) CreateBeneficiaryPaymentRequest(_ context.Context, req *pb.CreateBeneficiaryPaymentRequestInput) (*pb.CreatePaymentRequestResponse, error) {
+	paymentRequestResponse, err := payments.CreateBeneficiaryPaymentRequest(payments.BeneficiaryPaymentRequestInput{
+		BeneficiaryId: req.BeneficiaryId,
+		LocalAmount:   req.LocalAmount,
+		OwnerId:       req.OwnerId,
+		Sender: payments.PaymentRequestSender{
+			Name:               req.Sender.Name,
+			Phone:              req.Sender.Phone,
+			Country:            req.Sender.Country,
+			Address:            req.Sender.Address,
+			Dob:                req.Sender.Dob,
+			IdType:             req.Sender.IdType,
+			IdNumber:           req.Sender.IdNumber,
+			AdditionalIdNumber: req.Sender.AdditionalIdNumber,
+			AdditionalIdType:   req.Sender.AdditionalIdType,
+		},
+		TokenSymbol:           req.TokenSymbol,
+		TokenAddress:          req.TokenAddress,
+		TransactionHash:       req.TransactionHash,
+		BlockchainNetwork:     req.BlockchainNetwork,
+		HotWalletAddress:      req.HotWalletAddress,
+		FromWalletAddress:     req.FromWalletAddress,
+		PlatformFeePercentage: req.PlatformFeePercentage,
+		ConversionRate:        req.ConversionRate,
+		UsdAmount:             req.UsdAmount,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.CreatePaymentRequestResponse{
+		Id:              paymentRequestResponse.Id,
+		ChannelId:       paymentRequestResponse.ChannelId,
+		SequenceId:      paymentRequestResponse.SequenceId,
+		Currency:        paymentRequestResponse.Currency,
+		Country:         paymentRequestResponse.Country,
+		Amount:          paymentRequestResponse.Amount,
+		Reason:          paymentRequestResponse.Reason,
+		ConvertedAmount: paymentRequestResponse.ConvertedAmount,
+		Status:          paymentRequestResponse.Status,
+		Rate:            paymentRequestResponse.Rate,
+		Sender: &pb.PaymentRequestSender{
+			Name:               paymentRequestResponse.Sender.Name,
+			Phone:              paymentRequestResponse.Sender.Phone,
+			Country:            paymentRequestResponse.Sender.Country,
+			Address:            paymentRequestResponse.Sender.Address,
+			Dob:                paymentRequestResponse.Sender.Dob,
+			IdNumber:           paymentRequestResponse.Sender.IdNumber,
+			IdType:             paymentRequestResponse.Sender.IdType,
+			AdditionalIdNumber: paymentRequestResponse.Sender.AdditionalIdNumber,
+			AdditionalIdType:   paymentRequestResponse.Sender.AdditionalIdType,
+		},
+		Destination: &pb.PaymentRequestDestination{
+			AccountNumber: paymentRequestResponse.Destination.AccountNumber,
+			AccountType:   paymentRequestResponse.Destination.AccountType,
+			NetworkId:     paymentRequestResponse.Destination.NetworkId,
+			NetworkName:   paymentRequestResponse.Destination.NetworkName,
+			Country:       paymentRequestResponse.Destination.Country,
+			AccountName:   paymentRequestResponse.Destination.AccountName,
+		},
+	}, nil
+}
+
+func (server *fiatRampsServer) GetPaymentRequestTransaction(_ context.Context, req *pb.GetPaymentRequestTransactionRequest) (*pb.GetPaymentRequestTransactionResponse, error) {
+	paymentRequest, err := payments.GetPaymentRequestTransaction(req.SequenceId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	country, err := countries.GetCountryByCode(paymentRequest.Beneficiary.Country)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.GetPaymentRequestTransactionResponse{
+		SequenceId:          paymentRequest.SequenceId,
+		Status:              paymentRequest.YellowCardStatus,
+		Rate:                paymentRequest.ConversionRate,
+		UsdAmount:           paymentRequest.UsdAmount,
+		LocalAmount:         paymentRequest.LocalAmount,
+		OwnerId:             paymentRequest.OwnerId,
+		TokenSymbol:         paymentRequest.TokenSymbol,
+		BlockchainNetwork:   paymentRequest.BlockchainNetwork,
+		LocalCurrencySymbol: country.CurrencySymbol,
+	}, nil
+}
+
+func (server *fiatRampsServer) GetHotWalletAddress(_ context.Context, req *pb.GetHotWalletAddressRequest) (*pb.GetHotWalletAddressResponse, error) {
+	hotWalletAddress, err := payments.GetHotWalletAddress(req.NetworkType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.GetHotWalletAddressResponse{
+		Address: hotWalletAddress,
 	}, nil
 }
 
