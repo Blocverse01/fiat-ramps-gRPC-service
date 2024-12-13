@@ -32,6 +32,8 @@ const (
 	FiatRampsService_CreateBeneficiaryPaymentRequest_FullMethodName = "/fiatramps.v1.FiatRampsService/CreateBeneficiaryPaymentRequest"
 	FiatRampsService_GetPaymentRequestTransaction_FullMethodName    = "/fiatramps.v1.FiatRampsService/GetPaymentRequestTransaction"
 	FiatRampsService_GetHotWalletAddress_FullMethodName             = "/fiatramps.v1.FiatRampsService/GetHotWalletAddress"
+	FiatRampsService_CreatePlatformCollectionRequest_FullMethodName = "/fiatramps.v1.FiatRampsService/CreatePlatformCollectionRequest"
+	FiatRampsService_GetCollectionRequestTransaction_FullMethodName = "/fiatramps.v1.FiatRampsService/GetCollectionRequestTransaction"
 )
 
 // FiatRampsServiceClient is the client API for FiatRampsService service.
@@ -51,6 +53,8 @@ type FiatRampsServiceClient interface {
 	CreateBeneficiaryPaymentRequest(ctx context.Context, in *CreateBeneficiaryPaymentRequestInput, opts ...grpc.CallOption) (*CreatePaymentRequestResponse, error)
 	GetPaymentRequestTransaction(ctx context.Context, in *GetPaymentRequestTransactionRequest, opts ...grpc.CallOption) (*GetPaymentRequestTransactionResponse, error)
 	GetHotWalletAddress(ctx context.Context, in *GetHotWalletAddressRequest, opts ...grpc.CallOption) (*GetHotWalletAddressResponse, error)
+	CreatePlatformCollectionRequest(ctx context.Context, in *CreatePlatformCollectionRequestInput, opts ...grpc.CallOption) (*CreateCollectionResponse, error)
+	GetCollectionRequestTransaction(ctx context.Context, in *GetCollectionRequestTransactionRequest, opts ...grpc.CallOption) (*GetCollectionRequestResponse, error)
 }
 
 type fiatRampsServiceClient struct {
@@ -191,6 +195,26 @@ func (c *fiatRampsServiceClient) GetHotWalletAddress(ctx context.Context, in *Ge
 	return out, nil
 }
 
+func (c *fiatRampsServiceClient) CreatePlatformCollectionRequest(ctx context.Context, in *CreatePlatformCollectionRequestInput, opts ...grpc.CallOption) (*CreateCollectionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateCollectionResponse)
+	err := c.cc.Invoke(ctx, FiatRampsService_CreatePlatformCollectionRequest_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fiatRampsServiceClient) GetCollectionRequestTransaction(ctx context.Context, in *GetCollectionRequestTransactionRequest, opts ...grpc.CallOption) (*GetCollectionRequestResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetCollectionRequestResponse)
+	err := c.cc.Invoke(ctx, FiatRampsService_GetCollectionRequestTransaction_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FiatRampsServiceServer is the server API for FiatRampsService service.
 // All implementations must embed UnimplementedFiatRampsServiceServer
 // for forward compatibility.
@@ -208,6 +232,8 @@ type FiatRampsServiceServer interface {
 	CreateBeneficiaryPaymentRequest(context.Context, *CreateBeneficiaryPaymentRequestInput) (*CreatePaymentRequestResponse, error)
 	GetPaymentRequestTransaction(context.Context, *GetPaymentRequestTransactionRequest) (*GetPaymentRequestTransactionResponse, error)
 	GetHotWalletAddress(context.Context, *GetHotWalletAddressRequest) (*GetHotWalletAddressResponse, error)
+	CreatePlatformCollectionRequest(context.Context, *CreatePlatformCollectionRequestInput) (*CreateCollectionResponse, error)
+	GetCollectionRequestTransaction(context.Context, *GetCollectionRequestTransactionRequest) (*GetCollectionRequestResponse, error)
 	mustEmbedUnimplementedFiatRampsServiceServer()
 }
 
@@ -256,6 +282,12 @@ func (UnimplementedFiatRampsServiceServer) GetPaymentRequestTransaction(context.
 }
 func (UnimplementedFiatRampsServiceServer) GetHotWalletAddress(context.Context, *GetHotWalletAddressRequest) (*GetHotWalletAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetHotWalletAddress not implemented")
+}
+func (UnimplementedFiatRampsServiceServer) CreatePlatformCollectionRequest(context.Context, *CreatePlatformCollectionRequestInput) (*CreateCollectionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePlatformCollectionRequest not implemented")
+}
+func (UnimplementedFiatRampsServiceServer) GetCollectionRequestTransaction(context.Context, *GetCollectionRequestTransactionRequest) (*GetCollectionRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCollectionRequestTransaction not implemented")
 }
 func (UnimplementedFiatRampsServiceServer) mustEmbedUnimplementedFiatRampsServiceServer() {}
 func (UnimplementedFiatRampsServiceServer) testEmbeddedByValue()                          {}
@@ -512,6 +544,42 @@ func _FiatRampsService_GetHotWalletAddress_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FiatRampsService_CreatePlatformCollectionRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePlatformCollectionRequestInput)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FiatRampsServiceServer).CreatePlatformCollectionRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FiatRampsService_CreatePlatformCollectionRequest_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FiatRampsServiceServer).CreatePlatformCollectionRequest(ctx, req.(*CreatePlatformCollectionRequestInput))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FiatRampsService_GetCollectionRequestTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCollectionRequestTransactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FiatRampsServiceServer).GetCollectionRequestTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FiatRampsService_GetCollectionRequestTransaction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FiatRampsServiceServer).GetCollectionRequestTransaction(ctx, req.(*GetCollectionRequestTransactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FiatRampsService_ServiceDesc is the grpc.ServiceDesc for FiatRampsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -570,6 +638,14 @@ var FiatRampsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetHotWalletAddress",
 			Handler:    _FiatRampsService_GetHotWalletAddress_Handler,
+		},
+		{
+			MethodName: "CreatePlatformCollectionRequest",
+			Handler:    _FiatRampsService_CreatePlatformCollectionRequest_Handler,
+		},
+		{
+			MethodName: "GetCollectionRequestTransaction",
+			Handler:    _FiatRampsService_GetCollectionRequestTransaction_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

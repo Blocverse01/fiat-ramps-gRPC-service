@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+	"unicode"
 )
 
 type AuthenticationCredentials struct {
@@ -49,6 +50,51 @@ func generateAuthenticationCredentials(path string, method string, body *bytes.B
 type RequestOptions struct {
 	Method  string
 	Headers map[string]string
+}
+
+type RetailCustomer struct {
+	Name               string `json:"name"`
+	Phone              string `json:"phone"`
+	Country            string `json:"country"`
+	Address            string `json:"address"`
+	Dob                string `json:"dob"`
+	IdNumber           string `json:"idNumber"`
+	IdType             string `json:"idType"`
+	AdditionalIdType   string `json:"additionalIdType"`
+	AdditionalIdNumber string `json:"additionalIdNumber"`
+}
+
+func (c RetailCustomer) Validate() error {
+	if c.Name == "" {
+		return fmt.Errorf("Sender.Name is required")
+	}
+	if c.Country == "" {
+		return fmt.Errorf("Sender.Country is required")
+	}
+	if _, err := time.Parse("2006/01/02", c.Dob); err != nil {
+		return fmt.Errorf("Sender.Dob should be a valid date: %v", err)
+	}
+	if string(c.Phone[0]) != "+" {
+		return fmt.Errorf("Sender.Phone should be in international format and start with a '+'")
+	}
+	if c.Phone == "" || len(c.Phone) < 8 || len(c.Phone) > 15 {
+		return fmt.Errorf("Sender.Phone should be a valid phone number with 8-15 digits")
+	}
+	for _, r := range c.Phone[1:] {
+		if !unicode.IsDigit(r) {
+			return fmt.Errorf("Sender.Phone should contain only digits")
+		}
+	}
+
+	// Todo: Validate acceptable ID Types and their corresponding lengths
+	if c.IdType == "" {
+		return fmt.Errorf("Sender.IdType is required")
+	}
+	if c.IdNumber == "" {
+		return fmt.Errorf("Sender.IdNumber is required")
+	}
+
+	return nil
 }
 
 func CreateRequestOptions(path string, method string, body *bytes.Buffer) RequestOptions {

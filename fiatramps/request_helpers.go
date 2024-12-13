@@ -10,20 +10,22 @@ import (
 
 func HandleFailedResponse(resp *http.Response) {
 	if resp.StatusCode != http.StatusOK {
+		defer func(Body io.ReadCloser) {
+			err := Body.Close()
+			if err != nil {
+				log.Printf("Error closing body %v", err)
+			}
+		}(resp.Body)
+
 		// Read the response body
-		bodyBytes, err := io.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
+
 		if err != nil {
 			log.Printf("Failed to read response body: %v", err)
 		}
 
-		// Parse the response body as JSON
-		var responseBody map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &responseBody); err != nil {
-			log.Printf("Failed to parse JSON response: %v", err)
-		}
-
 		// Log the parsed response
-		log.Printf("Request failed with status %d and response: %v", resp.StatusCode, responseBody)
+		log.Printf("Request failed with status [%d] and response: %v", resp.StatusCode, string(body))
 	}
 }
 

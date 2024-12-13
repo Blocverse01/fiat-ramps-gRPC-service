@@ -5,7 +5,9 @@ import (
 	"flag"
 	"fmt"
 	pb "github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/collection"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/countries"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/payment_methods"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/payment_networks"
@@ -106,7 +108,9 @@ func (server *fiatRampsServer) GetBeneficiaries(_ context.Context, req *pb.GetBe
 
 	var beneficiariesResponse []*pb.Beneficiary
 	for _, beneficiary := range ownerBeneficiaries {
-		country, err := countries.GetCountryByCode(beneficiary.Country)
+		country, err := countries.GetCountry(map[string]string{
+			"code": beneficiary.Country,
+		})
 		if err != nil {
 			return nil, err
 		}
@@ -141,7 +145,9 @@ func (server *fiatRampsServer) GetBeneficiary(_ context.Context, req *pb.GetBene
 		return nil, err
 	}
 
-	country, err := countries.GetCountryByCode(beneficiary.Country)
+	country, err := countries.GetCountry(map[string]string{
+		"code": beneficiary.Country,
+	})
 
 	if err != nil {
 		return nil, err
@@ -167,7 +173,9 @@ func (server *fiatRampsServer) GetBeneficiary(_ context.Context, req *pb.GetBene
 }
 
 func (server *fiatRampsServer) GetSupportedCountryByCode(_ context.Context, req *pb.GetSupportedCountryRequest) (*pb.SupportedCountry, error) {
-	country, err := countries.GetCountryByCode(req.CountryCode)
+	country, err := countries.GetCountry(map[string]string{
+		"code": req.CountryCode,
+	})
 
 	if err != nil {
 		return nil, err
@@ -256,7 +264,7 @@ func (server *fiatRampsServer) CreateBeneficiaryPaymentRequest(_ context.Context
 		BeneficiaryId: req.BeneficiaryId,
 		LocalAmount:   req.LocalAmount,
 		OwnerId:       req.OwnerId,
-		Sender: payments.PaymentRequestSender{
+		Sender: yellowcard.RetailCustomer{
 			Name:               req.Sender.Name,
 			Phone:              req.Sender.Phone,
 			Country:            req.Sender.Country,
@@ -293,7 +301,7 @@ func (server *fiatRampsServer) CreateBeneficiaryPaymentRequest(_ context.Context
 		ConvertedAmount: paymentRequestResponse.ConvertedAmount,
 		Status:          paymentRequestResponse.Status,
 		Rate:            paymentRequestResponse.Rate,
-		Sender: &pb.PaymentRequestSender{
+		Sender: &pb.YellowCardRetailCustomer{
 			Name:               paymentRequestResponse.Sender.Name,
 			Phone:              paymentRequestResponse.Sender.Phone,
 			Country:            paymentRequestResponse.Sender.Country,
@@ -315,6 +323,73 @@ func (server *fiatRampsServer) CreateBeneficiaryPaymentRequest(_ context.Context
 	}, nil
 }
 
+func (server *fiatRampsServer) CreatePlatformCollectionRequest(_ context.Context, req *pb.CreatePlatformCollectionRequestInput) (*pb.CreateCollectionResponse, error) {
+	collectionRequestResponse, err := collection.CreatePlatformCollectionRequest(collection.PlatformCollectionRequestPayload{
+		LocalAmount: req.LocalAmount,
+		OwnerId:     req.OwnerId,
+		Recipient: yellowcard.RetailCustomer{
+			Name:               req.Recipient.Name,
+			Phone:              req.Recipient.Phone,
+			Country:            req.Recipient.Country,
+			Address:            req.Recipient.Address,
+			Dob:                req.Recipient.Dob,
+			IdType:             req.Recipient.IdType,
+			IdNumber:           req.Recipient.IdNumber,
+			AdditionalIdNumber: req.Recipient.AdditionalIdNumber,
+			AdditionalIdType:   req.Recipient.AdditionalIdType,
+		},
+		Source: collection.Source{
+			AccountNumber: req.Source.AccountNumber,
+			AccountType:   req.Source.AccountType,
+			NetworkId:     req.Source.NetworkId,
+		},
+		TokenSymbol:              req.TokenSymbol,
+		BlockchainNetwork:        req.BlockchainNetwork,
+		DestinationWalletAddress: req.DestinationWalletAddress,
+		PlatformFeePercentage:    req.PlatformFeePercentage,
+		ConversionRate:           req.ConversionRate,
+		UsdAmount:                req.UsdAmount,
+		ChannelId:                req.ChannelId,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.CreateCollectionResponse{
+		Id:              collectionRequestResponse.Id,
+		ChannelId:       collectionRequestResponse.ChannelId,
+		SequenceId:      collectionRequestResponse.SequenceId,
+		Currency:        collectionRequestResponse.Currency,
+		Country:         collectionRequestResponse.Country,
+		Amount:          collectionRequestResponse.Amount,
+		ConvertedAmount: collectionRequestResponse.ConvertedAmount,
+		Status:          collectionRequestResponse.Status,
+		Rate:            collectionRequestResponse.Rate,
+		Recipient: &pb.YellowCardRetailCustomer{
+			Name:               collectionRequestResponse.Recipient.Name,
+			Phone:              collectionRequestResponse.Recipient.Phone,
+			Country:            collectionRequestResponse.Recipient.Country,
+			Address:            collectionRequestResponse.Recipient.Address,
+			Dob:                collectionRequestResponse.Recipient.Dob,
+			IdNumber:           collectionRequestResponse.Recipient.IdNumber,
+			IdType:             collectionRequestResponse.Recipient.IdType,
+			AdditionalIdNumber: collectionRequestResponse.Recipient.AdditionalIdNumber,
+			AdditionalIdType:   collectionRequestResponse.Recipient.AdditionalIdType,
+		},
+		Source: &pb.CollectionSource{
+			AccountNumber: collectionRequestResponse.Source.AccountNumber,
+			AccountType:   collectionRequestResponse.Source.AccountType,
+			NetworkId:     collectionRequestResponse.Source.NetworkId,
+		},
+		BankInfo: &pb.BankInfo{
+			AccountNumber: collectionRequestResponse.BankInfo.AccountNumber,
+			AccountName:   collectionRequestResponse.BankInfo.AccountName,
+			Name:          collectionRequestResponse.BankInfo.Name,
+		},
+	}, nil
+}
+
 func (server *fiatRampsServer) GetPaymentRequestTransaction(_ context.Context, req *pb.GetPaymentRequestTransactionRequest) (*pb.GetPaymentRequestTransactionResponse, error) {
 	paymentRequest, err := payments.GetPaymentRequestTransaction(req.SequenceId)
 
@@ -322,7 +397,9 @@ func (server *fiatRampsServer) GetPaymentRequestTransaction(_ context.Context, r
 		return nil, err
 	}
 
-	country, err := countries.GetCountryByCode(paymentRequest.Beneficiary.Country)
+	country, err := countries.GetCountry(map[string]string{
+		"code": paymentRequest.Beneficiary.Country,
+	})
 
 	if err != nil {
 		return nil, err
@@ -338,6 +415,36 @@ func (server *fiatRampsServer) GetPaymentRequestTransaction(_ context.Context, r
 		TokenSymbol:         paymentRequest.TokenSymbol,
 		BlockchainNetwork:   paymentRequest.BlockchainNetwork,
 		LocalCurrencySymbol: country.CurrencySymbol,
+	}, nil
+}
+
+func (server *fiatRampsServer) GetCollectionRequestTransaction(_ context.Context, req *pb.GetCollectionRequestTransactionRequest) (*pb.GetCollectionRequestResponse, error) {
+	collectionRequest, err := collection.GetCollectionRequestTransaction(req.SequenceId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	country, err := countries.GetCountry(map[string]string{
+		"code": collectionRequest.CollectionCountry,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.GetCollectionRequestResponse{
+		SequenceId:               collectionRequest.SequenceId,
+		Status:                   collectionRequest.YellowCardStatus,
+		ConversionRate:           collectionRequest.ConversionRate,
+		UsdAmount:                collectionRequest.UsdAmount,
+		LocalAmount:              collectionRequest.LocalAmount,
+		OwnerId:                  collectionRequest.OwnerId,
+		TokenSymbol:              collectionRequest.TokenSymbol,
+		BlockchainNetwork:        collectionRequest.BlockchainNetwork,
+		LocalCurrencySymbol:      country.CurrencySymbol,
+		DestinationWalletAddress: collectionRequest.DestinationWalletAddress,
+		CollectionCountry:        collectionRequest.CollectionCountry,
 	}, nil
 }
 

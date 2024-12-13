@@ -13,8 +13,7 @@ import (
 type ChannelStatus string
 
 const (
-	Active   ChannelStatus = "active"
-	Inactive ChannelStatus = "inactive"
+	Active ChannelStatus = "active"
 )
 
 type ChannelType string

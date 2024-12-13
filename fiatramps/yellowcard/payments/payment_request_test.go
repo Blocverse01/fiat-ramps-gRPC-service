@@ -2,6 +2,7 @@ package payments
 
 import (
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/quotes"
 	"github.com/shopspring/decimal"
 	"testing"
@@ -10,7 +11,7 @@ import (
 func TestCreateBeneficiaryPaymentRequest(t *testing.T) {
 	fiatramps.LoadEnv("../../../.env")
 
-	const phoneNumberForTesting = "2348143100808"
+	const phoneNumberForTesting = "+2348143100808"
 	//"2348123456789"
 	const sampleAddress = "202 Gingseng street, LLama city, Lagos state, Nigeria."
 
@@ -33,7 +34,7 @@ func TestCreateBeneficiaryPaymentRequest(t *testing.T) {
 			BeneficiaryId: beneficiaryId,
 			LocalAmount:   localAmount.InexactFloat64(),
 			OwnerId:       ownerId,
-			Sender: PaymentRequestSender{
+			Sender: yellowcard.RetailCustomer{
 				Name:     "Joshua Avoaja",
 				Phone:    senderPhone,
 				Country:  "NG",

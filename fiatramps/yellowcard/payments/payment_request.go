@@ -9,18 +9,6 @@ import (
 	"net/http"
 )
 
-type PaymentRequestSender struct {
-	Name               string `json:"name"`
-	Phone              string `json:"phone"`
-	Country            string `json:"country"`
-	Address            string `json:"address"`
-	Dob                string `json:"dob"`
-	IdNumber           string `json:"idNumber"`
-	IdType             string `json:"idType"`
-	AdditionalIdType   string `json:"additionalIdType"`
-	AdditionalIdNumber string `json:"additionalIdNumber"`
-}
-
 type PaymentRequestDestination struct {
 	AccountNumber string `json:"accountNumber"`
 	AccountType   string `json:"accountType"`
@@ -35,7 +23,7 @@ type PaymentRequestInput struct {
 	SequenceId   string                    `json:"sequenceId"`
 	ChannelId    string                    `json:"channelId"`
 	Reason       string                    `json:"reason"`
-	Sender       PaymentRequestSender      `json:"sender"`
+	Sender       yellowcard.RetailCustomer `json:"sender"`
 	Destination  PaymentRequestDestination `json:"destination"`
 	ForceAccept  bool                      `json:"forceAccept"`
 	CustomerType string                    `json:"customerType"`
@@ -52,7 +40,7 @@ type CreatePaymentRequestResponse struct {
 	ConvertedAmount float64                   `json:"convertedAmount"`
 	Status          string                    `json:"status"`
 	Rate            float64                   `json:"rate"`
-	Sender          PaymentRequestSender      `json:"sender"`
+	Sender          yellowcard.RetailCustomer `json:"sender"`
 	Destination     PaymentRequestDestination `json:"destination"`
 }
 

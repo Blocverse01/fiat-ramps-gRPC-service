@@ -2,26 +2,25 @@ package payments
 
 import (
 	"fmt"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
 	"github.com/shopspring/decimal"
-	"time"
-	"unicode"
 )
 
 type BeneficiaryPaymentRequestInput struct {
-	BeneficiaryId         string               `json:"beneficiaryId"`
-	LocalAmount           float64              `json:"localAmount"`
-	OwnerId               string               `json:"ownerId"`
-	Sender                PaymentRequestSender `json:"sender"`
-	TokenSymbol           string               `json:"tokenSymbol"`
-	BlockchainNetwork     string               `json:"blockchainNetwork"`
-	TokenAddress          string               `json:"tokenAddress"`
-	HotWalletAddress      string               `json:"hotWalletAddress"`
-	FromWalletAddress     string               `json:"fromWalletAddress"`
-	TransactionHash       string               `json:"transactionHash"`
-	PlatformFeePercentage float64              `json:"platformFeePercentage"`
-	ConversionRate        float64              `json:"conversionRate"`
-	UsdAmount             float64              `json:"usdAmount"` // Total USD amount including transaction fees.
+	BeneficiaryId         string                    `json:"beneficiaryId"`
+	LocalAmount           float64                   `json:"localAmount"`
+	OwnerId               string                    `json:"ownerId"`
+	Sender                yellowcard.RetailCustomer `json:"sender"`
+	TokenSymbol           string                    `json:"tokenSymbol"`
+	BlockchainNetwork     string                    `json:"blockchainNetwork"`
+	TokenAddress          string                    `json:"tokenAddress"`
+	HotWalletAddress      string                    `json:"hotWalletAddress"`
+	FromWalletAddress     string                    `json:"fromWalletAddress"`
+	TransactionHash       string                    `json:"transactionHash"`
+	PlatformFeePercentage float64                   `json:"platformFeePercentage"`
+	ConversionRate        float64                   `json:"conversionRate"`
+	UsdAmount             float64                   `json:"usdAmount"` // Total USD amount including transaction fees.
 }
 
 func (b BeneficiaryPaymentRequestInput) Validate() error {
@@ -34,29 +33,8 @@ func (b BeneficiaryPaymentRequestInput) Validate() error {
 	if b.OwnerId == "" {
 		return fmt.Errorf("OwnerId is required")
 	}
-	if b.Sender.Name == "" {
-		return fmt.Errorf("Sender.Name is required")
-	}
-	if b.Sender.Country == "" {
-		return fmt.Errorf("Sender.Country is required")
-	}
-	if _, err := time.Parse("2006/01/02", b.Sender.Dob); err != nil {
-		return fmt.Errorf("Sender.Dob should be a valid date: %v", err)
-	}
-	if b.Sender.Phone == "" || len(b.Sender.Phone) < 8 || len(b.Sender.Phone) > 15 {
-		return fmt.Errorf("Sender.Phone should be a valid phone number with 8-15 digits")
-	}
-	for _, r := range b.Sender.Phone {
-		if !unicode.IsDigit(r) {
-			return fmt.Errorf("Sender.Phone should contain only digits")
-		}
-	}
-	// Todo: Validate acceptable ID Types and their corresponding lengths
-	if b.Sender.IdType == "" {
-		return fmt.Errorf("Sender.IdType is required")
-	}
-	if b.Sender.IdNumber == "" {
-		return fmt.Errorf("Sender.IdNumber is required")
+	if err := b.Sender.Validate(); err != nil {
+		return err
 	}
 	if b.TokenSymbol == "" {
 		return fmt.Errorf("TokenSymbol is required")
@@ -165,7 +143,7 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 		BlockchainNetwork:     input.BlockchainNetwork,
 		TransactionHash:       input.TransactionHash,
 		PlatformFeePercentage: input.PlatformFeePercentage,
-		ConversionRate:        input.ConversionRate,
+		ConversionRate:        paymentRequest.Rate,
 		UsdAmount:             input.UsdAmount,
 		SequenceId:            sequenceId,
 		YellowCardStatus:      paymentRequest.Status,

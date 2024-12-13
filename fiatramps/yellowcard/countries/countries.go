@@ -94,14 +94,12 @@ type GetCountryResponse struct {
 	Records []CountryRecord `json:"records"`
 }
 
-func GetCountryByCode(countryCode string) (CountryRecord, error) {
+func GetCountry(filter map[string]string) (CountryRecord, error) {
 	endpoint := fmt.Sprintf("%s/query", tableName)
 
 	reqBody := GetCountryRequestBody{
 		Columns: []string{"*"},
-		Filter: map[string]string{
-			"code": countryCode,
-		},
+		Filter:  filter,
 	}
 
 	bodyData, err := pb.BufferBodyData(reqBody)
@@ -141,7 +139,7 @@ func GetCountryByCode(countryCode string) (CountryRecord, error) {
 	}
 
 	if len(response.Records) == 0 {
-		return CountryRecord{}, fmt.Errorf("no country with code: %v found", countryCode)
+		return CountryRecord{}, fmt.Errorf("no country with filter: %v found", filter)
 	}
 
 	return response.Records[0], nil

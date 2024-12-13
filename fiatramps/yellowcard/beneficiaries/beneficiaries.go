@@ -165,7 +165,9 @@ type AddBeneficiaryResponse struct {
 }
 
 func AddBeneficiary(beneficiary AddBeneficiaryRequestBody) (string, error) {
-	_, err := countries.GetCountryByCode(beneficiary.Country)
+	_, err := countries.GetCountry(map[string]string{
+		"code": beneficiary.Country,
+	})
 
 	if err != nil {
 		return "", err

@@ -75,15 +75,8 @@ func StoreBeneficiaryPaymentRequest(input PaymentRequestRecord) (string, error) 
 	return response.Id, nil
 }
 
-type GetPaymentRequestInputBody struct {
-	Columns []string          `json:"columns"`
-	Filter  map[string]string `json:"filter"`
-}
 type GetPaymentRequestResponse struct {
 	Records []StoredPaymentRequestRecord `json:"records"`
-}
-
-type PaymentRequestBeneficiary struct {
 }
 
 type StoredPaymentRequestRecord struct {
@@ -112,7 +105,7 @@ func GetPaymentRequestTransaction(sequenceId string) (StoredPaymentRequestRecord
 		"sequenceId": sequenceId,
 	}
 
-	reqBody := GetPaymentRequestInputBody{
+	reqBody := database.TableDataQueryRequestBody{
 		Columns: []string{"*", "beneficiary"},
 		Filter:  filter,
 	}
