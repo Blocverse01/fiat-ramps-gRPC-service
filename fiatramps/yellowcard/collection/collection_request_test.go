@@ -4,7 +4,6 @@ import (
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/payment_methods"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/payments"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/quotes"
 	"github.com/shopspring/decimal"
 	"testing"
@@ -41,7 +40,7 @@ func TestCreateCollectionRequest(t *testing.T) {
 		}
 
 		localAmount := amountToBuy.Mul(decimal.NewFromFloat(float64(quote.Rate.Buy)))
-		sequenceId, err := payments.GenerateCollectionSequenceId(sequenceIdPrefix)
+		sequenceId, err := yellowcard.GenerateCollectionSequenceId(sequenceIdPrefix)
 
 		if err != nil {
 			t.Fatalf("error generating sequence id: %v", err)
@@ -60,7 +59,7 @@ func TestCreateCollectionRequest(t *testing.T) {
 				Name:     "Joshua Avoaja",
 				Phone:    phoneNumberForTesting,
 				Country:  "NG",
-				Dob:      "1999/01/01",
+				Dob:      "1999/12/01",
 				IdNumber: "80812345678",
 				IdType:   "NIN",
 			},

@@ -27,7 +27,7 @@ func TestCreateBeneficiaryPaymentRequest(t *testing.T) {
 
 		platformFeePercentage := decimal.NewFromFloat(float64(quote.Fees.OfframpFeePercentage))
 		localAmount := amountToSell.Mul(decimal.NewFromFloat(float64(quote.Rate.Sell)))
-		transactionFee := amountToSell.Mul(platformFeePercentage.Div(Percent))
+		transactionFee := amountToSell.Mul(platformFeePercentage.Div(yellowcard.Percent))
 		usdAmount := amountToSell.Add(transactionFee)
 
 		paymentRequest, err := CreateBeneficiaryPaymentRequest(BeneficiaryPaymentRequestInput{
@@ -39,13 +39,13 @@ func TestCreateBeneficiaryPaymentRequest(t *testing.T) {
 				Phone:    senderPhone,
 				Country:  "NG",
 				Address:  sampleAddress,
-				Dob:      "1999/01/01",
+				Dob:      "1999/12/01",
 				IdNumber: "80812345678",
 				IdType:   "NIN",
 			},
 			TokenSymbol:           "USDC",
 			TokenAddress:          "0x00000000000000000000000000000",
-			TransactionHash:       "0x1516f1b307f63567703daa5434354d909c5055e016db66bdbac958ab0a7a8642",
+			TransactionHash:       "0x1516f1b307f63567703daa5434354d909c5055e016db66bdbac958cb0a9a8942",
 			BlockchainNetwork:     "Base",
 			HotWalletAddress:      "0x62c021e584702C40D0c14923ba6934791a8DaaD3",
 			FromWalletAddress:     "0x4200000000000000000000000000000000000042",

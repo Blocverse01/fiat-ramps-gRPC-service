@@ -58,43 +58,49 @@ func (s Source) Validate() error {
 	return nil
 }
 
-func (r RequestPayload) Validate() error {
+func (r RequestPayload) Validate() (RequestPayload, error) {
 	if r.LocalAmount <= 0 {
-		return fmt.Errorf("LocalAmount must be greater than zero")
+		return RequestPayload{}, fmt.Errorf("LocalAmount must be greater than zero")
 	}
 	if r.SequenceId == "" {
-		return fmt.Errorf("SequenceId is required")
+		return RequestPayload{}, fmt.Errorf("SequenceId is required")
 	}
 	if r.ChannelId == "" {
-		return fmt.Errorf("ChannelId is required")
+		return RequestPayload{}, fmt.Errorf("ChannelId is required")
 	}
 	if r.CustomerType == "" {
-		return fmt.Errorf("CustomerType is required")
+		return RequestPayload{}, fmt.Errorf("CustomerType is required")
 	}
 	if r.CustomerType != "retail" {
-		return fmt.Errorf("CustomerType must be retail")
+		return RequestPayload{}, fmt.Errorf("CustomerType must be retail")
 	}
 
 	if err := r.Source.Validate(); err != nil {
-		return err
+		return RequestPayload{}, err
 	}
-	if err := r.Recipient.Validate(); err != nil {
-		return err
+	validData, err := r.Recipient.Validate()
+
+	if err != nil {
+		return RequestPayload{}, err
 	}
 
-	return nil
+	r.Recipient = validData
+
+	return r, nil
 }
 
 const collectionsEndpoint = "/business/collections"
 
 func CreateCollectionRequest(input RequestPayload) (CreateCollectionResponse, error) {
-	if err := input.Validate(); err != nil {
+	validatedInput, err := input.Validate()
+
+	if err != nil {
 		return CreateCollectionResponse{}, err
 	}
 
-	println("Phone in request body: ", input.Recipient.Phone)
+	println(validatedInput.Recipient.Dob)
 
-	bodyData, err := fiatramps.BufferBodyData(input)
+	bodyData, err := fiatramps.BufferBodyData(validatedInput)
 	if err != nil {
 		return CreateCollectionResponse{}, err
 	}

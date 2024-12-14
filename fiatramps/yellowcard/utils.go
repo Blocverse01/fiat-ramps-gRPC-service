@@ -1,4 +1,4 @@
-package payments
+package yellowcard
 
 import (
 	"crypto/rand"
@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"github.com/shopspring/decimal"
 	"math/big"
+	"regexp"
+	"time"
 )
 
 type PaymentSequenceIdInput struct {
@@ -72,3 +74,46 @@ func GenerateCollectionSequenceId(prefix string) (string, error) {
 }
 
 var Percent = decimal.NewFromFloat(100)
+
+func TransformDateString(dateStr string) (string, error) {
+	// Define regex patterns for the different date formats
+	patterns := []string{
+		`^\d{4}-\d{2}-\d{2}$`, // YYYY-MM-DD
+		`^\d{4}/\d{2}/\d{2}$`, // YYYY/MM/DD
+		`^\d{2}/\d{2}/\d{4}$`, // DD/MM/YYYY
+		`^\d{2}-\d{2}-\d{4}$`, // DD-MM-YYYY
+	}
+
+	// Check if the date string is already in MM/DD/YYYY format
+	if matched, _ := regexp.MatchString(`^\d{2}/\d{2}/\d{4}$`, dateStr); matched {
+		return dateStr, nil
+	}
+
+	// Iterate over the patterns to find a match
+	for _, pattern := range patterns {
+		if matched, _ := regexp.MatchString(pattern, dateStr); matched {
+			var parsedDate time.Time
+			var err error
+
+			switch pattern {
+			case `^\d{4}-\d{2}-\d{2}$`:
+				parsedDate, err = time.Parse("2006-01-02", dateStr)
+			case `^\d{4}/\d{2}/\d{2}$`:
+				parsedDate, err = time.Parse("2006/01/02", dateStr)
+			case `^\d{2}/\d{2}/\d{4}$`:
+				parsedDate, err = time.Parse("02/01/2006", dateStr)
+			case `^\d{2}-\d{2}-\d{4}$`:
+				parsedDate, err = time.Parse("02-01-2006", dateStr)
+			}
+
+			if err != nil {
+				return "", err
+			}
+
+			// Return the date in MM/DD/YYYY format
+			return parsedDate.Format("01/02/2006"), nil
+		}
+	}
+
+	return "", fmt.Errorf("invalid date format: %s", dateStr)
+}

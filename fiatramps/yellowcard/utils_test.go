@@ -1,4 +1,4 @@
-package payments
+package yellowcard
 
 import "testing"
 
@@ -17,5 +17,25 @@ func TestUtils(t *testing.T) {
 		}
 
 		t.Log("sequenceId: ", sequenceId)
+	})
+
+	t.Run("Test date formatter", func(t *testing.T) {
+		var sampleDates = []string{
+			"2000-02-07",
+			"2000/02/07",
+			"07-02-2000",
+			"07/02/2000",
+			"02-07-2000",
+			"02/07/2000",
+		}
+
+		for _, date := range sampleDates {
+			t.Log("date: ", date)
+			transformedDate, err := TransformDateString(date)
+			if err != nil {
+				t.Error(err)
+			}
+			t.Log("transformedDate: ", transformedDate)
+		}
 	})
 }

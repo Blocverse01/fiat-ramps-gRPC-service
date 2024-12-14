@@ -3,7 +3,6 @@ package collection
 import (
 	"fmt"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/payments"
 	"github.com/shopspring/decimal"
 )
 
@@ -24,12 +23,6 @@ type PlatformCollectionRequestPayload struct {
 func (p PlatformCollectionRequestPayload) Validate() error {
 	if p.OwnerId == "" {
 		return fmt.Errorf("OwnerId is required")
-	}
-	if err := p.Source.Validate(); err != nil {
-		return err
-	}
-	if err := p.Recipient.Validate(); err != nil {
-		return err
 	}
 	if p.TokenSymbol == "" {
 		return fmt.Errorf("TokenSymbol is required")
@@ -59,7 +52,7 @@ func (p PlatformCollectionRequestPayload) Validate() error {
 	localAmount := decimal.NewFromFloat(p.LocalAmount)
 	conversionRate := decimal.NewFromFloat(p.ConversionRate)
 	convertedUsdAmount := localAmount.Div(conversionRate)
-	platformFeePercentage := decimal.NewFromFloat(p.PlatformFeePercentage).Div(payments.Percent)
+	platformFeePercentage := decimal.NewFromFloat(p.PlatformFeePercentage).Div(yellowcard.Percent)
 
 	expectedUsdAmount := convertedUsdAmount.Sub(convertedUsdAmount.Mul(platformFeePercentage)).Round(2)
 	inputUsdAmount := decimal.NewFromFloat(p.UsdAmount).Round(2)
@@ -78,7 +71,7 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		return CreateCollectionResponse{}, err
 	}
 
-	sequenceId, err := payments.GenerateCollectionSequenceId(sequenceIdPrefix)
+	sequenceId, err := yellowcard.GenerateCollectionSequenceId(sequenceIdPrefix)
 
 	if err != nil {
 		return CreateCollectionResponse{}, err

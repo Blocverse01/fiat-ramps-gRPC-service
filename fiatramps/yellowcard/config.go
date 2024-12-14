@@ -64,37 +64,39 @@ type RetailCustomer struct {
 	AdditionalIdNumber string `json:"additionalIdNumber"`
 }
 
-func (c RetailCustomer) Validate() error {
+func (c RetailCustomer) Validate() (RetailCustomer, error) {
 	if c.Name == "" {
-		return fmt.Errorf("Sender.Name is required")
+		return RetailCustomer{}, fmt.Errorf("Sender.Name is required")
 	}
 	if c.Country == "" {
-		return fmt.Errorf("Sender.Country is required")
+		return RetailCustomer{}, fmt.Errorf("Sender.Country is required")
 	}
-	if _, err := time.Parse("2006/01/02", c.Dob); err != nil {
-		return fmt.Errorf("Sender.Dob should be a valid date: %v", err)
+	transformedDate, err := TransformDateString(c.Dob)
+	if err != nil {
+		return RetailCustomer{}, fmt.Errorf("Sender.Dob should be a valid date: %v", err)
 	}
+	c.Dob = transformedDate
 	if string(c.Phone[0]) != "+" {
-		return fmt.Errorf("Sender.Phone should be in international format and start with a '+'")
+		return RetailCustomer{}, fmt.Errorf("Sender.Phone should be in international format and start with a '+'")
 	}
 	if c.Phone == "" || len(c.Phone) < 8 || len(c.Phone) > 15 {
-		return fmt.Errorf("Sender.Phone should be a valid phone number with 8-15 digits")
+		return RetailCustomer{}, fmt.Errorf("Sender.Phone should be a valid phone number with 8-15 digits")
 	}
 	for _, r := range c.Phone[1:] {
 		if !unicode.IsDigit(r) {
-			return fmt.Errorf("Sender.Phone should contain only digits")
+			return RetailCustomer{}, fmt.Errorf("Sender.Phone should contain only digits")
 		}
 	}
 
 	// Todo: Validate acceptable ID Types and their corresponding lengths
 	if c.IdType == "" {
-		return fmt.Errorf("Sender.IdType is required")
+		return RetailCustomer{}, fmt.Errorf("Sender.IdType is required")
 	}
 	if c.IdNumber == "" {
-		return fmt.Errorf("Sender.IdNumber is required")
+		return RetailCustomer{}, fmt.Errorf("Sender.IdNumber is required")
 	}
 
-	return nil
+	return c, nil
 }
 
 func CreateRequestOptions(path string, method string, body *bytes.Buffer) RequestOptions {

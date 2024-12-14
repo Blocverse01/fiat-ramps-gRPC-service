@@ -23,60 +23,64 @@ type BeneficiaryPaymentRequestInput struct {
 	UsdAmount             float64                   `json:"usdAmount"` // Total USD amount including transaction fees.
 }
 
-func (b BeneficiaryPaymentRequestInput) Validate() error {
+func (b BeneficiaryPaymentRequestInput) Validate() (BeneficiaryPaymentRequestInput, error) {
 	if b.BeneficiaryId == "" {
-		return fmt.Errorf("BeneficiaryId is required")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("BeneficiaryId is required")
 	}
 	if b.LocalAmount <= 0 {
-		return fmt.Errorf("LocalAmount must be greater than zero")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("LocalAmount must be greater than zero")
 	}
 	if b.OwnerId == "" {
-		return fmt.Errorf("OwnerId is required")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("OwnerId is required")
 	}
-	if err := b.Sender.Validate(); err != nil {
-		return err
+
+	validSender, err := b.Sender.Validate()
+	if err != nil {
+		return BeneficiaryPaymentRequestInput{}, err
 	}
+	b.Sender = validSender
+
 	if b.TokenSymbol == "" {
-		return fmt.Errorf("TokenSymbol is required")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("TokenSymbol is required")
 	}
 	if b.BlockchainNetwork == "" {
-		return fmt.Errorf("BlockchainNetwork is required")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("BlockchainNetwork is required")
 	}
 	if b.TokenAddress == "" {
-		return fmt.Errorf("TokenAddress is required")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("TokenAddress is required")
 	}
 	if b.HotWalletAddress == "" {
-		return fmt.Errorf("HotWalletAddress is required")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("HotWalletAddress is required")
 	}
 	if b.FromWalletAddress == "" {
-		return fmt.Errorf("FromWalletAddress is required")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("FromWalletAddress is required")
 	}
 	if b.TransactionHash == "" {
-		return fmt.Errorf("TransactionHash is required")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("TransactionHash is required")
 	}
 	if b.PlatformFeePercentage < 0 {
-		return fmt.Errorf("PlatformFeePercentage must be greater than zero")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("PlatformFeePercentage must be greater than zero")
 	}
 	if b.ConversionRate <= 0 {
-		return fmt.Errorf("ConversionRate must be greater than zero")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("ConversionRate must be greater than zero")
 	}
 	if b.UsdAmount <= 0 {
-		return fmt.Errorf("UsdAmount must be greater than zero")
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("UsdAmount must be greater than zero")
 	}
 
 	localAmount := decimal.NewFromFloat(b.LocalAmount)
 	conversionRate := decimal.NewFromFloat(b.ConversionRate)
 	convertedUsdAmount := localAmount.Div(conversionRate)
-	platformFeePercentage := decimal.NewFromFloat(b.PlatformFeePercentage).Div(Percent)
+	platformFeePercentage := decimal.NewFromFloat(b.PlatformFeePercentage).Div(yellowcard.Percent)
 
 	expectedUsdAmount := convertedUsdAmount.Add(convertedUsdAmount.Mul(platformFeePercentage)).Round(2)
 	inputUsdAmount := decimal.NewFromFloat(b.UsdAmount).Round(2)
 
 	if !expectedUsdAmount.Equal(inputUsdAmount) {
-		return fmt.Errorf("UsdAmount %s should be equal to expectedUsdAmount %s", inputUsdAmount.String(), expectedUsdAmount.String())
+		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("UsdAmount %s should be equal to expectedUsdAmount %s", inputUsdAmount.String(), expectedUsdAmount.String())
 	}
 
-	return nil
+	return b, nil
 }
 
 const sequenceIdPrefix = "azza-p"
@@ -85,18 +89,19 @@ const retailCustomerType = "retail"
 
 func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (CreatePaymentRequestResponse, error) {
 	// Validate the input
-	if err := input.Validate(); err != nil {
+	validInput, err := input.Validate()
+	if err != nil {
 		return CreatePaymentRequestResponse{}, fmt.Errorf("validation failed: %w", err)
 	}
 
-	beneficiary, err := beneficiaries.GetBeneficiary(input.BeneficiaryId)
+	beneficiary, err := beneficiaries.GetBeneficiary(validInput.BeneficiaryId)
 
 	if err != nil {
 		return CreatePaymentRequestResponse{}, fmt.Errorf("failed to get beneficiary: %w", err)
 	}
 
-	sequenceId, err := GeneratePaymentSequenceId(PaymentSequenceIdInput{
-		TransactionHash: input.TransactionHash,
+	sequenceId, err := yellowcard.GeneratePaymentSequenceId(yellowcard.PaymentSequenceIdInput{
+		TransactionHash: validInput.TransactionHash,
 		Prefix:          sequenceIdPrefix,
 	})
 
@@ -111,9 +116,9 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 	}
 
 	paymentRequest, err := CreatePaymentRequest(PaymentRequestInput{
-		Sender:      input.Sender,
+		Sender:      validInput.Sender,
 		ChannelId:   beneficiary.ChannelId,
-		LocalAmount: input.LocalAmount,
+		LocalAmount: validInput.LocalAmount,
 		SequenceId:  sequenceId,
 		Reason:      defaultPaymentReason,
 		Destination: PaymentRequestDestination{
