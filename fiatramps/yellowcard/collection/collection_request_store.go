@@ -28,6 +28,7 @@ type RequestRecord struct {
 	DestinationWalletAddress string  `json:"destinationWalletAddress"`
 	NetworkId                string  `json:"networkId"`
 	YellowCardStatus         string  `json:"yellowCardStatus"`
+	Id                       string  `json:"id"`
 }
 
 type StoreCollectionRequestResponse struct {
@@ -135,4 +136,48 @@ func GetCollectionRequestTransaction(sequenceId string) (RequestRecord, error) {
 	}
 
 	return response.Records[0], nil
+}
+
+func UpdateCollectionRequestStatus(sequenceId string, status string) error {
+	collectionRequest, err := GetCollectionRequestTransaction(sequenceId)
+
+	if err != nil {
+		return err
+	}
+
+	endpoint := fmt.Sprintf("%s/data/%s", tableName, collectionRequest.Id)
+
+	reqBody := map[string]string{
+		"yellowCardStatus": status,
+	}
+
+	bodyData, err := fiatramps.BufferBodyData(reqBody)
+
+	if err != nil {
+		return err
+	}
+
+	resp, err := database.MakeTablesRequest("PUT", endpoint, bodyData)
+
+	if err != nil {
+		log.Printf("Error making database request: %v", err)
+		return err
+	}
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Printf("Error closing body %v", err)
+		}
+	}(resp.Body)
+
+	// Handle the response
+	log.Printf("Response status: %s", resp.Status)
+
+	if resp.StatusCode != http.StatusOK {
+		fiatramps.HandleFailedResponse(resp)
+		return fmt.Errorf("failed response with status: %s", resp.Status)
+	}
+
+	return nil
 }

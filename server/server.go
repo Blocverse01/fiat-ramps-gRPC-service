@@ -415,6 +415,7 @@ func (server *fiatRampsServer) GetPaymentRequestTransaction(_ context.Context, r
 		TokenSymbol:         paymentRequest.TokenSymbol,
 		BlockchainNetwork:   paymentRequest.BlockchainNetwork,
 		LocalCurrencySymbol: country.CurrencySymbol,
+		TransactionHash:     paymentRequest.TransactionHash,
 	}, nil
 }
 
@@ -457,6 +458,20 @@ func (server *fiatRampsServer) GetHotWalletAddress(_ context.Context, req *pb.Ge
 
 	return &pb.GetHotWalletAddressResponse{
 		Address: hotWalletAddress,
+	}, nil
+}
+
+func (server *fiatRampsServer) UpdateCollectionTransactionStatus(_ context.Context, req *pb.UpdateCollectionTransactionStatusRequest) (*pb.UpdateCollectionTransactionStatusResponse, error) {
+	err := collection.UpdateCollectionRequestStatus(req.SequenceId, req.Status)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.UpdateCollectionTransactionStatusResponse{
+		Status:     req.Status,
+		Success:    true,
+		SequenceId: req.SequenceId,
 	}, nil
 }
 

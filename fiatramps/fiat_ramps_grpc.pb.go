@@ -19,21 +19,22 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	FiatRampsService_GetSupportedCountries_FullMethodName           = "/fiatramps.v1.FiatRampsService/GetSupportedCountries"
-	FiatRampsService_GetQuotes_FullMethodName                       = "/fiatramps.v1.FiatRampsService/GetQuotes"
-	FiatRampsService_GetRates_FullMethodName                        = "/fiatramps.v1.FiatRampsService/GetRates"
-	FiatRampsService_GetTransactionFee_FullMethodName               = "/fiatramps.v1.FiatRampsService/GetTransactionFee"
-	FiatRampsService_GetBeneficiaries_FullMethodName                = "/fiatramps.v1.FiatRampsService/GetBeneficiaries"
-	FiatRampsService_GetBeneficiary_FullMethodName                  = "/fiatramps.v1.FiatRampsService/GetBeneficiary"
-	FiatRampsService_GetPaymentMethods_FullMethodName               = "/fiatramps.v1.FiatRampsService/GetPaymentMethods"
-	FiatRampsService_AddBeneficiary_FullMethodName                  = "/fiatramps.v1.FiatRampsService/AddBeneficiary"
-	FiatRampsService_GetPaymentNetworks_FullMethodName              = "/fiatramps.v1.FiatRampsService/GetPaymentNetworks"
-	FiatRampsService_GetSupportedCountryByCode_FullMethodName       = "/fiatramps.v1.FiatRampsService/GetSupportedCountryByCode"
-	FiatRampsService_CreateBeneficiaryPaymentRequest_FullMethodName = "/fiatramps.v1.FiatRampsService/CreateBeneficiaryPaymentRequest"
-	FiatRampsService_GetPaymentRequestTransaction_FullMethodName    = "/fiatramps.v1.FiatRampsService/GetPaymentRequestTransaction"
-	FiatRampsService_GetHotWalletAddress_FullMethodName             = "/fiatramps.v1.FiatRampsService/GetHotWalletAddress"
-	FiatRampsService_CreatePlatformCollectionRequest_FullMethodName = "/fiatramps.v1.FiatRampsService/CreatePlatformCollectionRequest"
-	FiatRampsService_GetCollectionRequestTransaction_FullMethodName = "/fiatramps.v1.FiatRampsService/GetCollectionRequestTransaction"
+	FiatRampsService_GetSupportedCountries_FullMethodName             = "/fiatramps.v1.FiatRampsService/GetSupportedCountries"
+	FiatRampsService_GetQuotes_FullMethodName                         = "/fiatramps.v1.FiatRampsService/GetQuotes"
+	FiatRampsService_GetRates_FullMethodName                          = "/fiatramps.v1.FiatRampsService/GetRates"
+	FiatRampsService_GetTransactionFee_FullMethodName                 = "/fiatramps.v1.FiatRampsService/GetTransactionFee"
+	FiatRampsService_GetBeneficiaries_FullMethodName                  = "/fiatramps.v1.FiatRampsService/GetBeneficiaries"
+	FiatRampsService_GetBeneficiary_FullMethodName                    = "/fiatramps.v1.FiatRampsService/GetBeneficiary"
+	FiatRampsService_GetPaymentMethods_FullMethodName                 = "/fiatramps.v1.FiatRampsService/GetPaymentMethods"
+	FiatRampsService_AddBeneficiary_FullMethodName                    = "/fiatramps.v1.FiatRampsService/AddBeneficiary"
+	FiatRampsService_GetPaymentNetworks_FullMethodName                = "/fiatramps.v1.FiatRampsService/GetPaymentNetworks"
+	FiatRampsService_GetSupportedCountryByCode_FullMethodName         = "/fiatramps.v1.FiatRampsService/GetSupportedCountryByCode"
+	FiatRampsService_CreateBeneficiaryPaymentRequest_FullMethodName   = "/fiatramps.v1.FiatRampsService/CreateBeneficiaryPaymentRequest"
+	FiatRampsService_GetPaymentRequestTransaction_FullMethodName      = "/fiatramps.v1.FiatRampsService/GetPaymentRequestTransaction"
+	FiatRampsService_GetHotWalletAddress_FullMethodName               = "/fiatramps.v1.FiatRampsService/GetHotWalletAddress"
+	FiatRampsService_CreatePlatformCollectionRequest_FullMethodName   = "/fiatramps.v1.FiatRampsService/CreatePlatformCollectionRequest"
+	FiatRampsService_GetCollectionRequestTransaction_FullMethodName   = "/fiatramps.v1.FiatRampsService/GetCollectionRequestTransaction"
+	FiatRampsService_UpdateCollectionTransactionStatus_FullMethodName = "/fiatramps.v1.FiatRampsService/UpdateCollectionTransactionStatus"
 )
 
 // FiatRampsServiceClient is the client API for FiatRampsService service.
@@ -55,6 +56,7 @@ type FiatRampsServiceClient interface {
 	GetHotWalletAddress(ctx context.Context, in *GetHotWalletAddressRequest, opts ...grpc.CallOption) (*GetHotWalletAddressResponse, error)
 	CreatePlatformCollectionRequest(ctx context.Context, in *CreatePlatformCollectionRequestInput, opts ...grpc.CallOption) (*CreateCollectionResponse, error)
 	GetCollectionRequestTransaction(ctx context.Context, in *GetCollectionRequestTransactionRequest, opts ...grpc.CallOption) (*GetCollectionRequestResponse, error)
+	UpdateCollectionTransactionStatus(ctx context.Context, in *UpdateCollectionTransactionStatusRequest, opts ...grpc.CallOption) (*UpdateCollectionTransactionStatusResponse, error)
 }
 
 type fiatRampsServiceClient struct {
@@ -215,6 +217,16 @@ func (c *fiatRampsServiceClient) GetCollectionRequestTransaction(ctx context.Con
 	return out, nil
 }
 
+func (c *fiatRampsServiceClient) UpdateCollectionTransactionStatus(ctx context.Context, in *UpdateCollectionTransactionStatusRequest, opts ...grpc.CallOption) (*UpdateCollectionTransactionStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateCollectionTransactionStatusResponse)
+	err := c.cc.Invoke(ctx, FiatRampsService_UpdateCollectionTransactionStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FiatRampsServiceServer is the server API for FiatRampsService service.
 // All implementations must embed UnimplementedFiatRampsServiceServer
 // for forward compatibility.
@@ -234,6 +246,7 @@ type FiatRampsServiceServer interface {
 	GetHotWalletAddress(context.Context, *GetHotWalletAddressRequest) (*GetHotWalletAddressResponse, error)
 	CreatePlatformCollectionRequest(context.Context, *CreatePlatformCollectionRequestInput) (*CreateCollectionResponse, error)
 	GetCollectionRequestTransaction(context.Context, *GetCollectionRequestTransactionRequest) (*GetCollectionRequestResponse, error)
+	UpdateCollectionTransactionStatus(context.Context, *UpdateCollectionTransactionStatusRequest) (*UpdateCollectionTransactionStatusResponse, error)
 	mustEmbedUnimplementedFiatRampsServiceServer()
 }
 
@@ -288,6 +301,9 @@ func (UnimplementedFiatRampsServiceServer) CreatePlatformCollectionRequest(conte
 }
 func (UnimplementedFiatRampsServiceServer) GetCollectionRequestTransaction(context.Context, *GetCollectionRequestTransactionRequest) (*GetCollectionRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCollectionRequestTransaction not implemented")
+}
+func (UnimplementedFiatRampsServiceServer) UpdateCollectionTransactionStatus(context.Context, *UpdateCollectionTransactionStatusRequest) (*UpdateCollectionTransactionStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCollectionTransactionStatus not implemented")
 }
 func (UnimplementedFiatRampsServiceServer) mustEmbedUnimplementedFiatRampsServiceServer() {}
 func (UnimplementedFiatRampsServiceServer) testEmbeddedByValue()                          {}
@@ -580,6 +596,24 @@ func _FiatRampsService_GetCollectionRequestTransaction_Handler(srv interface{}, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FiatRampsService_UpdateCollectionTransactionStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateCollectionTransactionStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FiatRampsServiceServer).UpdateCollectionTransactionStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FiatRampsService_UpdateCollectionTransactionStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FiatRampsServiceServer).UpdateCollectionTransactionStatus(ctx, req.(*UpdateCollectionTransactionStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FiatRampsService_ServiceDesc is the grpc.ServiceDesc for FiatRampsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -646,6 +680,10 @@ var FiatRampsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCollectionRequestTransaction",
 			Handler:    _FiatRampsService_GetCollectionRequestTransaction_Handler,
+		},
+		{
+			MethodName: "UpdateCollectionTransactionStatus",
+			Handler:    _FiatRampsService_UpdateCollectionTransactionStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
