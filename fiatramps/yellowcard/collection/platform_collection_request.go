@@ -91,7 +91,7 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		return CreateCollectionResponse{}, err
 	}
 
-	storedRequestId, err := StoreCollectionRequest(RequestRecord{
+	storedRequestId, err := StoreCollectionRequest(StoreCollectionRequestInput{
 		OwnerId:                  input.OwnerId,
 		CollectionCountry:        collectionRequest.Country,
 		CollectionAccountNumber:  collectionRequest.BankInfo.AccountNumber,

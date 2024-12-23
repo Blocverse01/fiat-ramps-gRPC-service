@@ -10,6 +10,26 @@ import (
 	"net/http"
 )
 
+type StoreCollectionRequestInput struct {
+	OwnerId                  string  `json:"ownerId"`
+	CollectionCountry        string  `json:"collectionCountry"`
+	CollectionAccountNumber  string  `json:"collectionAccountNumber"`
+	CollectionBankName       string  `json:"collectionBankName"`
+	CollectionAccountType    string  `json:"collectionAccountType"`
+	CollectionAccountName    string  `json:"collectionAccountName"`
+	ChannelId                string  `json:"channelId"`
+	SequenceId               string  `json:"sequenceId"`
+	BlockchainNetwork        string  `json:"blockchainNetwork"`
+	TokenSymbol              string  `json:"tokenSymbol"`
+	ConversionRate           float64 `json:"conversionRate"`
+	UsdAmount                float64 `json:"usdAmount"`
+	LocalAmount              float64 `json:"localAmount"`
+	PlatformFeePercentage    float64 `json:"platformFeePercentage"`
+	DestinationWalletAddress string  `json:"destinationWalletAddress"`
+	NetworkId                string  `json:"networkId"`
+	YellowCardStatus         string  `json:"yellowCardStatus"`
+}
+
 type RequestRecord struct {
 	OwnerId                  string  `json:"ownerId"`
 	CollectionCountry        string  `json:"collectionCountry"`
@@ -37,7 +57,7 @@ type StoreCollectionRequestResponse struct {
 
 var tableName = "yellowcard_onramp_transaction"
 
-func StoreCollectionRequest(input RequestRecord) (string, error) {
+func StoreCollectionRequest(input StoreCollectionRequestInput) (string, error) {
 	endpoint := fmt.Sprintf("%s/data", tableName)
 
 	bodyData, err := fiatramps.BufferBodyData(input)
@@ -132,7 +152,7 @@ func GetCollectionRequestTransaction(sequenceId string) (RequestRecord, error) {
 	}
 
 	if len(response.Records) == 0 {
-		return RequestRecord{}, fmt.Errorf("no payment request with sequenceId: %v found", sequenceId)
+		return RequestRecord{}, fmt.Errorf("no collection request with sequenceId: %v found", sequenceId)
 	}
 
 	return response.Records[0], nil
