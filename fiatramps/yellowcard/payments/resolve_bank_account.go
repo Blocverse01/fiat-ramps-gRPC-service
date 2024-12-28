@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
+	"io"
 	"log"
 	"net/http"
 )
@@ -40,6 +41,15 @@ func ResolveBankAccount(input ResolveBankAccountInput) (ResolveBankAccountRespon
 		fiatramps.HandleFailedResponse(resp)
 		return ResolveBankAccountResponse{}, fmt.Errorf("failed response with status: %s", resp.Status)
 	}
+
+	body, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		return ResolveBankAccountResponse{}, err
+	}
+
+	fmt.Println(string(body))
 
 	var responseData ResolveBankAccountResponse
 
