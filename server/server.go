@@ -475,6 +475,23 @@ func (server *fiatRampsServer) UpdateCollectionTransactionStatus(_ context.Conte
 	}, nil
 }
 
+func (server *fiatRampsServer) ResolveBankAccount(_ context.Context, req *pb.ResolveBankAccountRequest) (*pb.ResolveBankAccountResponse, error) {
+	response, err := payments.ResolveBankAccount(payments.ResolveBankAccountInput{
+		AccountNumber: req.AccountNumber,
+		NetworkId:     req.NetworkId,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.ResolveBankAccountResponse{
+		AccountName:   response.AccountName,
+		AccountNumber: response.AccountNumber,
+		AccountBank:   response.AccountBank,
+	}, nil
+}
+
 func main() {
 	// Parse command-line flags
 	flag.Parse()

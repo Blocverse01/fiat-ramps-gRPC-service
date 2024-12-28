@@ -35,6 +35,7 @@ const (
 	FiatRampsService_CreatePlatformCollectionRequest_FullMethodName   = "/fiatramps.v1.FiatRampsService/CreatePlatformCollectionRequest"
 	FiatRampsService_GetCollectionRequestTransaction_FullMethodName   = "/fiatramps.v1.FiatRampsService/GetCollectionRequestTransaction"
 	FiatRampsService_UpdateCollectionTransactionStatus_FullMethodName = "/fiatramps.v1.FiatRampsService/UpdateCollectionTransactionStatus"
+	FiatRampsService_ResolveBankAccount_FullMethodName                = "/fiatramps.v1.FiatRampsService/ResolveBankAccount"
 )
 
 // FiatRampsServiceClient is the client API for FiatRampsService service.
@@ -57,6 +58,7 @@ type FiatRampsServiceClient interface {
 	CreatePlatformCollectionRequest(ctx context.Context, in *CreatePlatformCollectionRequestInput, opts ...grpc.CallOption) (*CreateCollectionResponse, error)
 	GetCollectionRequestTransaction(ctx context.Context, in *GetCollectionRequestTransactionRequest, opts ...grpc.CallOption) (*GetCollectionRequestResponse, error)
 	UpdateCollectionTransactionStatus(ctx context.Context, in *UpdateCollectionTransactionStatusRequest, opts ...grpc.CallOption) (*UpdateCollectionTransactionStatusResponse, error)
+	ResolveBankAccount(ctx context.Context, in *ResolveBankAccountRequest, opts ...grpc.CallOption) (*ResolveBankAccountResponse, error)
 }
 
 type fiatRampsServiceClient struct {
@@ -227,6 +229,16 @@ func (c *fiatRampsServiceClient) UpdateCollectionTransactionStatus(ctx context.C
 	return out, nil
 }
 
+func (c *fiatRampsServiceClient) ResolveBankAccount(ctx context.Context, in *ResolveBankAccountRequest, opts ...grpc.CallOption) (*ResolveBankAccountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResolveBankAccountResponse)
+	err := c.cc.Invoke(ctx, FiatRampsService_ResolveBankAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FiatRampsServiceServer is the server API for FiatRampsService service.
 // All implementations must embed UnimplementedFiatRampsServiceServer
 // for forward compatibility.
@@ -247,6 +259,7 @@ type FiatRampsServiceServer interface {
 	CreatePlatformCollectionRequest(context.Context, *CreatePlatformCollectionRequestInput) (*CreateCollectionResponse, error)
 	GetCollectionRequestTransaction(context.Context, *GetCollectionRequestTransactionRequest) (*GetCollectionRequestResponse, error)
 	UpdateCollectionTransactionStatus(context.Context, *UpdateCollectionTransactionStatusRequest) (*UpdateCollectionTransactionStatusResponse, error)
+	ResolveBankAccount(context.Context, *ResolveBankAccountRequest) (*ResolveBankAccountResponse, error)
 	mustEmbedUnimplementedFiatRampsServiceServer()
 }
 
@@ -304,6 +317,9 @@ func (UnimplementedFiatRampsServiceServer) GetCollectionRequestTransaction(conte
 }
 func (UnimplementedFiatRampsServiceServer) UpdateCollectionTransactionStatus(context.Context, *UpdateCollectionTransactionStatusRequest) (*UpdateCollectionTransactionStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCollectionTransactionStatus not implemented")
+}
+func (UnimplementedFiatRampsServiceServer) ResolveBankAccount(context.Context, *ResolveBankAccountRequest) (*ResolveBankAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResolveBankAccount not implemented")
 }
 func (UnimplementedFiatRampsServiceServer) mustEmbedUnimplementedFiatRampsServiceServer() {}
 func (UnimplementedFiatRampsServiceServer) testEmbeddedByValue()                          {}
@@ -614,6 +630,24 @@ func _FiatRampsService_UpdateCollectionTransactionStatus_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FiatRampsService_ResolveBankAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResolveBankAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FiatRampsServiceServer).ResolveBankAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FiatRampsService_ResolveBankAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FiatRampsServiceServer).ResolveBankAccount(ctx, req.(*ResolveBankAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FiatRampsService_ServiceDesc is the grpc.ServiceDesc for FiatRampsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -684,6 +718,10 @@ var FiatRampsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateCollectionTransactionStatus",
 			Handler:    _FiatRampsService_UpdateCollectionTransactionStatus_Handler,
+		},
+		{
+			MethodName: "ResolveBankAccount",
+			Handler:    _FiatRampsService_ResolveBankAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
