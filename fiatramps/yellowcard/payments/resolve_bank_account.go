@@ -48,5 +48,7 @@ func ResolveBankAccount(input ResolveBankAccountInput) (ResolveBankAccountRespon
 		return ResolveBankAccountResponse{}, err
 	}
 
+	fmt.Println(responseData)
+
 	return responseData, nil
 }
