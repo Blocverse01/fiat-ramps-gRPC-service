@@ -5,6 +5,7 @@ import (
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
 	"github.com/shopspring/decimal"
+	"unicode"
 )
 
 type BeneficiaryPaymentRequestInput struct {
@@ -115,6 +116,15 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 		normalizedAccountType = "momo"
 	}
 
+	var beneficiaryAccountNameWithoutDigits string
+
+	for _, char := range beneficiary.AccountName {
+		if unicode.IsDigit(char) {
+			continue
+		}
+		beneficiaryAccountNameWithoutDigits += string(char)
+	}
+
 	paymentRequest, err := CreatePaymentRequest(PaymentRequestInput{
 		Sender:      validInput.Sender,
 		ChannelId:   beneficiary.ChannelId,
@@ -124,7 +134,7 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 		Destination: PaymentRequestDestination{
 			AccountType:   normalizedAccountType,
 			AccountNumber: beneficiary.AccountNumber,
-			AccountName:   beneficiary.AccountName,
+			AccountName:   beneficiaryAccountNameWithoutDigits,
 			Country:       beneficiary.Country,
 			NetworkName:   beneficiary.NetworkName,
 			NetworkId:     beneficiary.NetworkId,
