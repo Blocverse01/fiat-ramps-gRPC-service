@@ -3,7 +3,6 @@ package collection
 import (
 	"fmt"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
-	"github.com/shopspring/decimal"
 )
 
 type PlatformCollectionRequestPayload struct {
@@ -49,17 +48,21 @@ func (p PlatformCollectionRequestPayload) Validate() error {
 		return fmt.Errorf("ChannelId is required")
 	}
 
-	localAmount := decimal.NewFromFloat(p.LocalAmount)
-	conversionRate := decimal.NewFromFloat(p.ConversionRate)
-	convertedUsdAmount := localAmount.Div(conversionRate)
-	platformFeePercentage := decimal.NewFromFloat(p.PlatformFeePercentage).Div(yellowcard.Percent)
+	// Todo Test this
 
-	expectedUsdAmount := convertedUsdAmount.Sub(convertedUsdAmount.Mul(platformFeePercentage)).Round(2)
-	inputUsdAmount := decimal.NewFromFloat(p.UsdAmount).Round(2)
-
-	if !expectedUsdAmount.Equal(inputUsdAmount) {
-		return fmt.Errorf("UsdAmount %s should be equal to expectedUsdAmount %s", inputUsdAmount.String(), expectedUsdAmount.String())
-	}
+	//localAmount := decimal.NewFromFloat(p.LocalAmount).Round(2)
+	//inputUsdAmount := decimal.NewFromFloat(p.UsdAmount).Round(2)
+	//
+	//conversionRate := decimal.NewFromFloat(p.ConversionRate)
+	//convertedUsdAmount := localAmount.Div(conversionRate)
+	//platformFeePercentage := decimal.NewFromFloat(p.PlatformFeePercentage).Div(yellowcard.Percent)
+	//
+	//expectedUsdAmount := convertedUsdAmount.Sub(convertedUsdAmount.Mul(platformFeePercentage)).Round(2)
+	//
+	//
+	//if !expectedUsdAmount.Equal(inputUsdAmount) {
+	//	return fmt.Errorf("UsdAmount %s should be equal to expectedUsdAmount %s", inputUsdAmount.String(), expectedUsdAmount.String())
+	//}
 
 	return nil
 }

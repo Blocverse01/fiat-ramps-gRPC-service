@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
-	"github.com/shopspring/decimal"
 	"unicode"
 )
 
@@ -69,17 +68,19 @@ func (b BeneficiaryPaymentRequestInput) Validate() (BeneficiaryPaymentRequestInp
 		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("UsdAmount must be greater than zero")
 	}
 
-	localAmount := decimal.NewFromFloat(b.LocalAmount)
-	conversionRate := decimal.NewFromFloat(b.ConversionRate)
-	convertedUsdAmount := localAmount.Div(conversionRate)
-	platformFeePercentage := decimal.NewFromFloat(b.PlatformFeePercentage).Div(yellowcard.Percent)
+	// Todo: Test this
 
-	expectedUsdAmount := convertedUsdAmount.Add(convertedUsdAmount.Mul(platformFeePercentage)).Round(2)
-	inputUsdAmount := decimal.NewFromFloat(b.UsdAmount).Round(2)
-
-	if !expectedUsdAmount.Equal(inputUsdAmount) {
-		return BeneficiaryPaymentRequestInput{}, fmt.Errorf("UsdAmount %s should be equal to expectedUsdAmount %s", inputUsdAmount.String(), expectedUsdAmount.String())
-	}
+	//localAmount := decimal.NewFromFloat(b.LocalAmount).Round(2)
+	//conversionRate := decimal.NewFromFloat(b.ConversionRate).Round(2)
+	//convertedUsdAmount := localAmount.Div(conversionRate)
+	//platformFeePercentage := decimal.NewFromFloat(b.PlatformFeePercentage).Div(yellowcard.Percent)
+	//
+	//expectedUsdAmount := convertedUsdAmount.Add(convertedUsdAmount.Mul(platformFeePercentage)).Round(2)
+	//inputUsdAmount := decimal.NewFromFloat(b.UsdAmount).Round(2)
+	//
+	//if !expectedUsdAmount.Equal(inputUsdAmount) {
+	//	return BeneficiaryPaymentRequestInput{}, fmt.Errorf("UsdAmount %s should be equal to expectedUsdAmount %s", inputUsdAmount.String(), expectedUsdAmount.String())
+	//}
 
 	return b, nil
 }
