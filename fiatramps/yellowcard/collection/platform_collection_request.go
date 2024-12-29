@@ -103,7 +103,7 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		BlockchainNetwork:        input.BlockchainNetwork,
 		TokenSymbol:              input.TokenSymbol,
 		ConversionRate:           collectionRequest.Rate,
-		UsdAmount:                collectionRequest.Amount,
+		UsdAmount:                input.UsdAmount,
 		LocalAmount:              input.LocalAmount,
 		PlatformFeePercentage:    input.PlatformFeePercentage,
 		DestinationWalletAddress: input.DestinationWalletAddress,
