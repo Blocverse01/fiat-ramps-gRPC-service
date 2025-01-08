@@ -475,6 +475,20 @@ func (server *fiatRampsServer) UpdateCollectionTransactionStatus(_ context.Conte
 	}, nil
 }
 
+func (server *fiatRampsServer) UpdatePaymentTransactionStatus(_ context.Context, req *pb.UpdatePaymentTransactionStatusRequest) (*pb.UpdatePaymentTransactionStatusResponse, error) {
+	err := payments.UpdatePaymentRequestStatus(req.SequenceId, req.Status)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.UpdatePaymentTransactionStatusResponse{
+		Status:     req.Status,
+		Success:    true,
+		SequenceId: req.SequenceId,
+	}, nil
+}
+
 func (server *fiatRampsServer) ResolveBankAccount(_ context.Context, req *pb.ResolveBankAccountRequest) (*pb.ResolveBankAccountResponse, error) {
 	response, err := payments.ResolveBankAccount(payments.ResolveBankAccountInput{
 		AccountNumber: req.AccountNumber,

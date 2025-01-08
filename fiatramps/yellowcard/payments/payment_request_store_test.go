@@ -18,3 +18,18 @@ func TestGetPaymentRequestTransaction(t *testing.T) {
 		t.Logf("Payment Request Transaction: %v", paymentRequestTransaction.Beneficiary)
 	})
 }
+
+func TestUpdatePaymentRequestStatus(t *testing.T) {
+	fiatramps.LoadEnv("../../../.env")
+
+	t.Run("Test Update Payment Request Status", func(t *testing.T) {
+		sequenceId := "azza-p-555f1e957030abcfb5ec6c57"
+		status := "processing"
+
+		err := UpdatePaymentRequestStatus(sequenceId, status)
+
+		if err != nil {
+			t.Fatalf("error updating payment request status: %v", err)
+		}
+	})
+}

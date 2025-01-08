@@ -177,7 +177,7 @@ func UpdateCollectionRequestStatus(sequenceId string, status string) error {
 		return err
 	}
 
-	resp, err := database.MakeTablesRequest("PUT", endpoint, bodyData)
+	resp, err := database.MakeTablesRequest("PATCH", endpoint, bodyData)
 
 	if err != nil {
 		log.Printf("Error making database request: %v", err)

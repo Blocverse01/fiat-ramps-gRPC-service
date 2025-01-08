@@ -32,10 +32,10 @@ type StoreBeneficiaryPaymentRequestResponse struct {
 	Id string `json:"id"`
 }
 
-var TableName = "yellowcard_offramp_transaction"
+var tableName = "yellowcard_offramp_transaction"
 
 func StoreBeneficiaryPaymentRequest(input PaymentRequestRecord) (string, error) {
-	endpoint := fmt.Sprintf("%s/data", TableName)
+	endpoint := fmt.Sprintf("%s/data", tableName)
 
 	bodyData, err := fiatramps.BufferBodyData(input)
 
@@ -94,10 +94,11 @@ type StoredPaymentRequestRecord struct {
 	SequenceId            string                                  `json:"sequenceId"`
 	UsdAmount             float64                                 `json:"usdAmount"` // Total USD amount including transaction fees.
 	YellowCardStatus      string                                  `json:"yellowCardStatus"`
+	Id                    string                                  `json:"id"`
 }
 
 func GetPaymentRequestTransaction(sequenceId string) (StoredPaymentRequestRecord, error) {
-	endpoint := fmt.Sprintf("%s/query", TableName)
+	endpoint := fmt.Sprintf("%s/query", tableName)
 
 	var filter map[string]string
 
@@ -150,4 +151,48 @@ func GetPaymentRequestTransaction(sequenceId string) (StoredPaymentRequestRecord
 	}
 
 	return response.Records[0], nil
+}
+
+func UpdatePaymentRequestStatus(sequenceId string, status string) error {
+	paymentRequest, err := GetPaymentRequestTransaction(sequenceId)
+
+	if err != nil {
+		return err
+	}
+
+	endpoint := fmt.Sprintf("%s/data/%s", tableName, paymentRequest.Id)
+
+	reqBody := map[string]string{
+		"yellowCardStatus": status,
+	}
+
+	bodyData, err := fiatramps.BufferBodyData(reqBody)
+
+	if err != nil {
+		return err
+	}
+
+	resp, err := database.MakeTablesRequest("PATCH", endpoint, bodyData)
+
+	if err != nil {
+		log.Printf("Error making database request: %v", err)
+		return err
+	}
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Printf("Error closing body %v", err)
+		}
+	}(resp.Body)
+
+	// Handle the response
+	log.Printf("Response status: %s", resp.Status)
+
+	if resp.StatusCode != http.StatusOK {
+		fiatramps.HandleFailedResponse(resp)
+		return fmt.Errorf("failed response with status: %s", resp.Status)
+	}
+
+	return nil
 }
