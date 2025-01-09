@@ -17,6 +17,7 @@ type PlatformCollectionRequestPayload struct {
 	UsdAmount                float64                   `json:"usdAmount"` // Total USD amount including transaction fees.
 	LocalAmount              float64                   `json:"localAmount"`
 	ChannelId                string                    `json:"channelId"`
+	TransactionFeeUsd        float64                   `json:"transactionFeeUsd"`
 }
 
 func (p PlatformCollectionRequestPayload) Validate() error {
@@ -112,6 +113,7 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		DestinationWalletAddress: input.DestinationWalletAddress,
 		NetworkId:                input.Source.NetworkId,
 		YellowCardStatus:         collectionRequest.Status,
+		TransactionFeeUsd:        input.TransactionFeeUsd,
 	})
 
 	if err != nil {

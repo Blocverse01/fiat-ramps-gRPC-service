@@ -21,6 +21,7 @@ type BeneficiaryPaymentRequestInput struct {
 	PlatformFeePercentage float64                   `json:"platformFeePercentage"`
 	ConversionRate        float64                   `json:"conversionRate"`
 	UsdAmount             float64                   `json:"usdAmount"` // Total USD amount including transaction fees.
+	TransactionFeeUsd     float64                   `json:"transactionFeeUsd"`
 }
 
 func (b BeneficiaryPaymentRequestInput) Validate() (BeneficiaryPaymentRequestInput, error) {
@@ -163,6 +164,7 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 		UsdAmount:             input.UsdAmount,
 		SequenceId:            sequenceId,
 		YellowCardStatus:      paymentRequest.Status,
+		TransactionFeeUsd:     input.TransactionFeeUsd,
 	})
 
 	if err != nil {

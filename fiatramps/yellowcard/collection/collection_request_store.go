@@ -28,6 +28,7 @@ type StoreCollectionRequestInput struct {
 	DestinationWalletAddress string  `json:"destinationWalletAddress"`
 	NetworkId                string  `json:"networkId"`
 	YellowCardStatus         string  `json:"yellowCardStatus"`
+	TransactionFeeUsd        float64 `json:"transactionFeeUsd"`
 }
 
 type RequestRecord struct {
@@ -49,6 +50,7 @@ type RequestRecord struct {
 	NetworkId                string  `json:"networkId"`
 	YellowCardStatus         string  `json:"yellowCardStatus"`
 	Id                       string  `json:"id"`
+	TransactionFeeUsd        float64 `json:"transactionFeeUsd"`
 }
 
 type StoreCollectionRequestResponse struct {

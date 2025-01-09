@@ -26,6 +26,7 @@ type PaymentRequestRecord struct {
 	SequenceId            string  `json:"sequenceId"`
 	UsdAmount             float64 `json:"usdAmount"` // Total USD amount including transaction fees.
 	YellowCardStatus      string  `json:"yellowCardStatus"`
+	TransactionFeeUsd     float64 `json:"transactionFeeUsd"`
 }
 
 type StoreBeneficiaryPaymentRequestResponse struct {
@@ -95,6 +96,7 @@ type StoredPaymentRequestRecord struct {
 	UsdAmount             float64                                 `json:"usdAmount"` // Total USD amount including transaction fees.
 	YellowCardStatus      string                                  `json:"yellowCardStatus"`
 	Id                    string                                  `json:"id"`
+	TransactionFeeUsd     float64                                 `json:"transactionFeeUsd"`
 }
 
 func GetPaymentRequestTransaction(sequenceId string) (StoredPaymentRequestRecord, error) {

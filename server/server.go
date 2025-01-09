@@ -284,6 +284,7 @@ func (server *fiatRampsServer) CreateBeneficiaryPaymentRequest(_ context.Context
 		PlatformFeePercentage: req.PlatformFeePercentage,
 		ConversionRate:        req.ConversionRate,
 		UsdAmount:             req.UsdAmount,
+		TransactionFeeUsd:     req.TransactionFeeUsd,
 	})
 
 	if err != nil {
@@ -350,6 +351,7 @@ func (server *fiatRampsServer) CreatePlatformCollectionRequest(_ context.Context
 		ConversionRate:           req.ConversionRate,
 		UsdAmount:                req.UsdAmount,
 		ChannelId:                req.ChannelId,
+		TransactionFeeUsd:        req.TransactionFeeUsd,
 	})
 
 	if err != nil {
@@ -416,6 +418,7 @@ func (server *fiatRampsServer) GetPaymentRequestTransaction(_ context.Context, r
 		BlockchainNetwork:   paymentRequest.BlockchainNetwork,
 		LocalCurrencySymbol: country.CurrencySymbol,
 		TransactionHash:     paymentRequest.TransactionHash,
+		TransactionFeeUsd:   paymentRequest.TransactionFeeUsd,
 	}, nil
 }
 
@@ -446,6 +449,7 @@ func (server *fiatRampsServer) GetCollectionRequestTransaction(_ context.Context
 		LocalCurrencySymbol:      country.CurrencySymbol,
 		DestinationWalletAddress: collectionRequest.DestinationWalletAddress,
 		CollectionCountry:        collectionRequest.CollectionCountry,
+		TransactionFeeUsd:        collectionRequest.TransactionFeeUsd,
 	}, nil
 }
 
