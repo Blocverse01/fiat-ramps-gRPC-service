@@ -7,12 +7,28 @@ import (
 	"net/http"
 )
 
-func MakeTablesRequest(method string, endpoint string, bodyData *bytes.Buffer) (*http.Response, error) {
+func MakeTablesRequest(method string, endpoint string, bodyData *bytes.Buffer, branchAndDbUrl ...string) (*http.Response, error) {
 	var apiKey = fiatramps.GetEnvConfig("XATA_API_KEY")
-	var branch = fiatramps.GetEnvConfig("XATA_BRANCH")
-	var baseURL = fiatramps.GetEnvConfig("XATA_DATABASE_URL")
 
-	fullURL := fmt.Sprintf("%s:%s/tables/%s", baseURL, branch, endpoint)
+	var branchValue string
+	var dbUrl string
+
+	if len(branchAndDbUrl) > 0 {
+		branchValue = branchAndDbUrl[0]
+
+		if len(branchAndDbUrl) > 1 {
+			dbUrl = branchAndDbUrl[1]
+		}
+	}
+
+	if branchValue == "" {
+		branchValue = fiatramps.GetEnvConfig("XATA_BRANCH")
+	}
+	if dbUrl == "" {
+		dbUrl = fiatramps.GetEnvConfig("XATA_DATABASE_URL")
+	}
+
+	fullURL := fmt.Sprintf("%s:%s/tables/%s", dbUrl, branchValue, endpoint)
 
 	req, err := http.NewRequest(method, fullURL, bodyData)
 	if err != nil {
@@ -35,4 +51,8 @@ func MakeTablesRequest(method string, endpoint string, bodyData *bytes.Buffer) (
 type TableDataQueryRequestBody struct {
 	Columns []string          `json:"columns"`
 	Filter  map[string]string `json:"filter"`
+}
+
+type XataInfo struct {
+	CreatedAt string `json:"createdAt"`
 }

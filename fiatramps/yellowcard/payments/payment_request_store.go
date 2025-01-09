@@ -93,10 +93,11 @@ type StoredPaymentRequestRecord struct {
 	PlatformFeePercentage float64                                 `json:"platformFeePercentage"`
 	ConversionRate        float64                                 `json:"conversionRate"`
 	SequenceId            string                                  `json:"sequenceId"`
-	UsdAmount             float64                                 `json:"usdAmount"` // Total USD amount including transaction fees.
+	UsdAmount             float64                                 `json:"usdAmount"`
 	YellowCardStatus      string                                  `json:"yellowCardStatus"`
 	Id                    string                                  `json:"id"`
 	TransactionFeeUsd     float64                                 `json:"transactionFeeUsd"`
+	Xata                  database.XataInfo                       `json:"xata"`
 }
 
 func GetPaymentRequestTransaction(sequenceId string) (StoredPaymentRequestRecord, error) {

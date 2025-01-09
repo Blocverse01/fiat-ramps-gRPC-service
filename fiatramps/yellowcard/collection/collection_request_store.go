@@ -32,25 +32,26 @@ type StoreCollectionRequestInput struct {
 }
 
 type RequestRecord struct {
-	OwnerId                  string  `json:"ownerId"`
-	CollectionCountry        string  `json:"collectionCountry"`
-	CollectionAccountNumber  string  `json:"collectionAccountNumber"`
-	CollectionBankName       string  `json:"collectionBankName"`
-	CollectionAccountType    string  `json:"collectionAccountType"`
-	CollectionAccountName    string  `json:"collectionAccountName"`
-	ChannelId                string  `json:"channelId"`
-	SequenceId               string  `json:"sequenceId"`
-	BlockchainNetwork        string  `json:"blockchainNetwork"`
-	TokenSymbol              string  `json:"tokenSymbol"`
-	ConversionRate           float64 `json:"conversionRate"`
-	UsdAmount                float64 `json:"usdAmount"`
-	LocalAmount              float64 `json:"localAmount"`
-	PlatformFeePercentage    float64 `json:"platformFeePercentage"`
-	DestinationWalletAddress string  `json:"destinationWalletAddress"`
-	NetworkId                string  `json:"networkId"`
-	YellowCardStatus         string  `json:"yellowCardStatus"`
-	Id                       string  `json:"id"`
-	TransactionFeeUsd        float64 `json:"transactionFeeUsd"`
+	OwnerId                  string            `json:"ownerId"`
+	CollectionCountry        string            `json:"collectionCountry"`
+	CollectionAccountNumber  string            `json:"collectionAccountNumber"`
+	CollectionBankName       string            `json:"collectionBankName"`
+	CollectionAccountType    string            `json:"collectionAccountType"`
+	CollectionAccountName    string            `json:"collectionAccountName"`
+	ChannelId                string            `json:"channelId"`
+	SequenceId               string            `json:"sequenceId"`
+	BlockchainNetwork        string            `json:"blockchainNetwork"`
+	TokenSymbol              string            `json:"tokenSymbol"`
+	ConversionRate           float64           `json:"conversionRate"`
+	UsdAmount                float64           `json:"usdAmount"`
+	LocalAmount              float64           `json:"localAmount"`
+	PlatformFeePercentage    float64           `json:"platformFeePercentage"`
+	DestinationWalletAddress string            `json:"destinationWalletAddress"`
+	NetworkId                string            `json:"networkId"`
+	YellowCardStatus         string            `json:"yellowCardStatus"`
+	Id                       string            `json:"id"`
+	TransactionFeeUsd        float64           `json:"transactionFeeUsd"`
+	Xata                     database.XataInfo `json:"xata"`
 }
 
 type StoreCollectionRequestResponse struct {
