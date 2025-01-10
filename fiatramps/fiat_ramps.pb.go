@@ -443,18 +443,89 @@ func (x *Rate) GetLocale() string {
 	return ""
 }
 
+type ConditionalFeePercentConfig struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Rule          string  `protobuf:"bytes,1,opt,name=rule,proto3" json:"rule,omitempty"`
+	FeePercentage float32 `protobuf:"fixed32,2,opt,name=fee_percentage,json=feePercentage,proto3" json:"fee_percentage,omitempty"`
+	TriggerAmount float64 `protobuf:"fixed64,3,opt,name=trigger_amount,json=triggerAmount,proto3" json:"trigger_amount,omitempty"`
+	RampType      string  `protobuf:"bytes,4,opt,name=ramp_type,json=rampType,proto3" json:"ramp_type,omitempty"`
+}
+
+func (x *ConditionalFeePercentConfig) Reset() {
+	*x = ConditionalFeePercentConfig{}
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConditionalFeePercentConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConditionalFeePercentConfig) ProtoMessage() {}
+
+func (x *ConditionalFeePercentConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConditionalFeePercentConfig.ProtoReflect.Descriptor instead.
+func (*ConditionalFeePercentConfig) Descriptor() ([]byte, []int) {
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ConditionalFeePercentConfig) GetRule() string {
+	if x != nil {
+		return x.Rule
+	}
+	return ""
+}
+
+func (x *ConditionalFeePercentConfig) GetFeePercentage() float32 {
+	if x != nil {
+		return x.FeePercentage
+	}
+	return 0
+}
+
+func (x *ConditionalFeePercentConfig) GetTriggerAmount() float64 {
+	if x != nil {
+		return x.TriggerAmount
+	}
+	return 0
+}
+
+func (x *ConditionalFeePercentConfig) GetRampType() string {
+	if x != nil {
+		return x.RampType
+	}
+	return ""
+}
+
 type GetTransactionFeeResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	OnrampFeePercentage  float32 `protobuf:"fixed32,2,opt,name=onramp_fee_percentage,json=onrampFeePercentage,proto3" json:"onramp_fee_percentage,omitempty"`
-	OfframpFeePercentage float32 `protobuf:"fixed32,3,opt,name=offramp_fee_percentage,json=offrampFeePercentage,proto3" json:"offramp_fee_percentage,omitempty"`
+	OnrampFeePercentage          float32                        `protobuf:"fixed32,1,opt,name=onramp_fee_percentage,json=onrampFeePercentage,proto3" json:"onramp_fee_percentage,omitempty"`
+	OfframpFeePercentage         float32                        `protobuf:"fixed32,2,opt,name=offramp_fee_percentage,json=offrampFeePercentage,proto3" json:"offramp_fee_percentage,omitempty"`
+	OfframpMinFeeUsd             float32                        `protobuf:"fixed32,3,opt,name=offramp_min_fee_usd,json=offrampMinFeeUsd,proto3" json:"offramp_min_fee_usd,omitempty"`
+	ConditionalFeePercentConfigs []*ConditionalFeePercentConfig `protobuf:"bytes,4,rep,name=conditional_fee_percent_configs,json=conditionalFeePercentConfigs,proto3" json:"conditional_fee_percent_configs,omitempty"`
 }
 
 func (x *GetTransactionFeeResponse) Reset() {
 	*x = GetTransactionFeeResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[8]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -466,7 +537,7 @@ func (x *GetTransactionFeeResponse) String() string {
 func (*GetTransactionFeeResponse) ProtoMessage() {}
 
 func (x *GetTransactionFeeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[8]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -479,7 +550,7 @@ func (x *GetTransactionFeeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTransactionFeeResponse.ProtoReflect.Descriptor instead.
 func (*GetTransactionFeeResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{8}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GetTransactionFeeResponse) GetOnrampFeePercentage() float32 {
@@ -496,6 +567,20 @@ func (x *GetTransactionFeeResponse) GetOfframpFeePercentage() float32 {
 	return 0
 }
 
+func (x *GetTransactionFeeResponse) GetOfframpMinFeeUsd() float32 {
+	if x != nil {
+		return x.OfframpMinFeeUsd
+	}
+	return 0
+}
+
+func (x *GetTransactionFeeResponse) GetConditionalFeePercentConfigs() []*ConditionalFeePercentConfig {
+	if x != nil {
+		return x.ConditionalFeePercentConfigs
+	}
+	return nil
+}
+
 type GetQuotesResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -507,7 +592,7 @@ type GetQuotesResponse struct {
 
 func (x *GetQuotesResponse) Reset() {
 	*x = GetQuotesResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[9]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -519,7 +604,7 @@ func (x *GetQuotesResponse) String() string {
 func (*GetQuotesResponse) ProtoMessage() {}
 
 func (x *GetQuotesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[9]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -532,7 +617,7 @@ func (x *GetQuotesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetQuotesResponse.ProtoReflect.Descriptor instead.
 func (*GetQuotesResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{9}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetQuotesResponse) GetRate() *Rate {
@@ -559,7 +644,7 @@ type GetTransactionFeeRequest struct {
 
 func (x *GetTransactionFeeRequest) Reset() {
 	*x = GetTransactionFeeRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[10]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -571,7 +656,7 @@ func (x *GetTransactionFeeRequest) String() string {
 func (*GetTransactionFeeRequest) ProtoMessage() {}
 
 func (x *GetTransactionFeeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[10]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -584,7 +669,7 @@ func (x *GetTransactionFeeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTransactionFeeRequest.ProtoReflect.Descriptor instead.
 func (*GetTransactionFeeRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{10}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *GetTransactionFeeRequest) GetCountryCode() string {
@@ -606,7 +691,7 @@ type GetBeneficiariesRequest struct {
 
 func (x *GetBeneficiariesRequest) Reset() {
 	*x = GetBeneficiariesRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[11]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -618,7 +703,7 @@ func (x *GetBeneficiariesRequest) String() string {
 func (*GetBeneficiariesRequest) ProtoMessage() {}
 
 func (x *GetBeneficiariesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[11]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -631,7 +716,7 @@ func (x *GetBeneficiariesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBeneficiariesRequest.ProtoReflect.Descriptor instead.
 func (*GetBeneficiariesRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{11}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *GetBeneficiariesRequest) GetCountryCode() string {
@@ -665,7 +750,7 @@ type GetBeneficiariesResponse struct {
 
 func (x *GetBeneficiariesResponse) Reset() {
 	*x = GetBeneficiariesResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[12]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -677,7 +762,7 @@ func (x *GetBeneficiariesResponse) String() string {
 func (*GetBeneficiariesResponse) ProtoMessage() {}
 
 func (x *GetBeneficiariesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[12]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -690,7 +775,7 @@ func (x *GetBeneficiariesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBeneficiariesResponse.ProtoReflect.Descriptor instead.
 func (*GetBeneficiariesResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{12}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetBeneficiariesResponse) GetBeneficiaries() []*Beneficiary {
@@ -717,7 +802,7 @@ type Beneficiary struct {
 
 func (x *Beneficiary) Reset() {
 	*x = Beneficiary{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[13]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -729,7 +814,7 @@ func (x *Beneficiary) String() string {
 func (*Beneficiary) ProtoMessage() {}
 
 func (x *Beneficiary) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[13]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -742,7 +827,7 @@ func (x *Beneficiary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Beneficiary.ProtoReflect.Descriptor instead.
 func (*Beneficiary) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{13}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *Beneficiary) GetId() string {
@@ -811,7 +896,7 @@ type GetBeneficiaryRequest struct {
 
 func (x *GetBeneficiaryRequest) Reset() {
 	*x = GetBeneficiaryRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[14]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -823,7 +908,7 @@ func (x *GetBeneficiaryRequest) String() string {
 func (*GetBeneficiaryRequest) ProtoMessage() {}
 
 func (x *GetBeneficiaryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[14]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -836,7 +921,7 @@ func (x *GetBeneficiaryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBeneficiaryRequest.ProtoReflect.Descriptor instead.
 func (*GetBeneficiaryRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{14}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *GetBeneficiaryRequest) GetBeneficiaryId() string {
@@ -857,7 +942,7 @@ type CountryFiatLimits struct {
 
 func (x *CountryFiatLimits) Reset() {
 	*x = CountryFiatLimits{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[15]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -869,7 +954,7 @@ func (x *CountryFiatLimits) String() string {
 func (*CountryFiatLimits) ProtoMessage() {}
 
 func (x *CountryFiatLimits) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[15]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -882,7 +967,7 @@ func (x *CountryFiatLimits) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CountryFiatLimits.ProtoReflect.Descriptor instead.
 func (*CountryFiatLimits) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{15}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *CountryFiatLimits) GetMax() float32 {
@@ -910,7 +995,7 @@ type PaymentChannel struct {
 
 func (x *PaymentChannel) Reset() {
 	*x = PaymentChannel{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[16]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -922,7 +1007,7 @@ func (x *PaymentChannel) String() string {
 func (*PaymentChannel) ProtoMessage() {}
 
 func (x *PaymentChannel) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[16]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -935,7 +1020,7 @@ func (x *PaymentChannel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PaymentChannel.ProtoReflect.Descriptor instead.
 func (*PaymentChannel) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{16}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *PaymentChannel) GetChannelId() string {
@@ -963,7 +1048,7 @@ type GetPaymentMethodsRequest struct {
 
 func (x *GetPaymentMethodsRequest) Reset() {
 	*x = GetPaymentMethodsRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[17]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -975,7 +1060,7 @@ func (x *GetPaymentMethodsRequest) String() string {
 func (*GetPaymentMethodsRequest) ProtoMessage() {}
 
 func (x *GetPaymentMethodsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[17]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -988,7 +1073,7 @@ func (x *GetPaymentMethodsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPaymentMethodsRequest.ProtoReflect.Descriptor instead.
 func (*GetPaymentMethodsRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{17}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *GetPaymentMethodsRequest) GetCountryCode() string {
@@ -1016,7 +1101,7 @@ type GetPaymentMethodsResponse struct {
 
 func (x *GetPaymentMethodsResponse) Reset() {
 	*x = GetPaymentMethodsResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[18]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1028,7 +1113,7 @@ func (x *GetPaymentMethodsResponse) String() string {
 func (*GetPaymentMethodsResponse) ProtoMessage() {}
 
 func (x *GetPaymentMethodsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[18]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1041,7 +1126,7 @@ func (x *GetPaymentMethodsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPaymentMethodsResponse.ProtoReflect.Descriptor instead.
 func (*GetPaymentMethodsResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{18}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *GetPaymentMethodsResponse) GetChannels() []*PaymentChannel {
@@ -1075,7 +1160,7 @@ type AddBeneficiaryRequest struct {
 
 func (x *AddBeneficiaryRequest) Reset() {
 	*x = AddBeneficiaryRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[19]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1087,7 +1172,7 @@ func (x *AddBeneficiaryRequest) String() string {
 func (*AddBeneficiaryRequest) ProtoMessage() {}
 
 func (x *AddBeneficiaryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[19]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1100,7 +1185,7 @@ func (x *AddBeneficiaryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddBeneficiaryRequest.ProtoReflect.Descriptor instead.
 func (*AddBeneficiaryRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{19}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *AddBeneficiaryRequest) GetAccountNumber() string {
@@ -1169,7 +1254,7 @@ type AddBeneficiaryResponse struct {
 
 func (x *AddBeneficiaryResponse) Reset() {
 	*x = AddBeneficiaryResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[20]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1181,7 +1266,7 @@ func (x *AddBeneficiaryResponse) String() string {
 func (*AddBeneficiaryResponse) ProtoMessage() {}
 
 func (x *AddBeneficiaryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[20]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1194,7 +1279,7 @@ func (x *AddBeneficiaryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddBeneficiaryResponse.ProtoReflect.Descriptor instead.
 func (*AddBeneficiaryResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{20}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *AddBeneficiaryResponse) GetNewBeneficiaryId() string {
@@ -1215,7 +1300,7 @@ type GetPaymentNetworksRequest struct {
 
 func (x *GetPaymentNetworksRequest) Reset() {
 	*x = GetPaymentNetworksRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[21]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1227,7 +1312,7 @@ func (x *GetPaymentNetworksRequest) String() string {
 func (*GetPaymentNetworksRequest) ProtoMessage() {}
 
 func (x *GetPaymentNetworksRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[21]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1240,7 +1325,7 @@ func (x *GetPaymentNetworksRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPaymentNetworksRequest.ProtoReflect.Descriptor instead.
 func (*GetPaymentNetworksRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{21}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *GetPaymentNetworksRequest) GetCountryCode() string {
@@ -1269,7 +1354,7 @@ type ActivePaymentNetwork struct {
 
 func (x *ActivePaymentNetwork) Reset() {
 	*x = ActivePaymentNetwork{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[22]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1281,7 +1366,7 @@ func (x *ActivePaymentNetwork) String() string {
 func (*ActivePaymentNetwork) ProtoMessage() {}
 
 func (x *ActivePaymentNetwork) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[22]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1294,7 +1379,7 @@ func (x *ActivePaymentNetwork) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActivePaymentNetwork.ProtoReflect.Descriptor instead.
 func (*ActivePaymentNetwork) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{22}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ActivePaymentNetwork) GetName() string {
@@ -1328,7 +1413,7 @@ type GetPaymentNetworksResponse struct {
 
 func (x *GetPaymentNetworksResponse) Reset() {
 	*x = GetPaymentNetworksResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[23]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1340,7 +1425,7 @@ func (x *GetPaymentNetworksResponse) String() string {
 func (*GetPaymentNetworksResponse) ProtoMessage() {}
 
 func (x *GetPaymentNetworksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[23]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1353,7 +1438,7 @@ func (x *GetPaymentNetworksResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPaymentNetworksResponse.ProtoReflect.Descriptor instead.
 func (*GetPaymentNetworksResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{23}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *GetPaymentNetworksResponse) GetNetworks() []*ActivePaymentNetwork {
@@ -1381,7 +1466,7 @@ type YellowCardRetailCustomer struct {
 
 func (x *YellowCardRetailCustomer) Reset() {
 	*x = YellowCardRetailCustomer{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[24]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1393,7 +1478,7 @@ func (x *YellowCardRetailCustomer) String() string {
 func (*YellowCardRetailCustomer) ProtoMessage() {}
 
 func (x *YellowCardRetailCustomer) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[24]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1406,7 +1491,7 @@ func (x *YellowCardRetailCustomer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use YellowCardRetailCustomer.ProtoReflect.Descriptor instead.
 func (*YellowCardRetailCustomer) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{24}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *YellowCardRetailCustomer) GetName() string {
@@ -1487,7 +1572,7 @@ type PaymentRequestDestination struct {
 
 func (x *PaymentRequestDestination) Reset() {
 	*x = PaymentRequestDestination{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[25]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1499,7 +1584,7 @@ func (x *PaymentRequestDestination) String() string {
 func (*PaymentRequestDestination) ProtoMessage() {}
 
 func (x *PaymentRequestDestination) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[25]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1512,7 +1597,7 @@ func (x *PaymentRequestDestination) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PaymentRequestDestination.ProtoReflect.Descriptor instead.
 func (*PaymentRequestDestination) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{25}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *PaymentRequestDestination) GetAccountNumber() string {
@@ -1580,7 +1665,7 @@ type CreateBeneficiaryPaymentRequestInput struct {
 
 func (x *CreateBeneficiaryPaymentRequestInput) Reset() {
 	*x = CreateBeneficiaryPaymentRequestInput{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[26]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1592,7 +1677,7 @@ func (x *CreateBeneficiaryPaymentRequestInput) String() string {
 func (*CreateBeneficiaryPaymentRequestInput) ProtoMessage() {}
 
 func (x *CreateBeneficiaryPaymentRequestInput) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[26]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1605,7 +1690,7 @@ func (x *CreateBeneficiaryPaymentRequestInput) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use CreateBeneficiaryPaymentRequestInput.ProtoReflect.Descriptor instead.
 func (*CreateBeneficiaryPaymentRequestInput) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{26}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *CreateBeneficiaryPaymentRequestInput) GetBeneficiaryId() string {
@@ -1727,7 +1812,7 @@ type CreatePaymentRequestResponse struct {
 
 func (x *CreatePaymentRequestResponse) Reset() {
 	*x = CreatePaymentRequestResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[27]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1739,7 +1824,7 @@ func (x *CreatePaymentRequestResponse) String() string {
 func (*CreatePaymentRequestResponse) ProtoMessage() {}
 
 func (x *CreatePaymentRequestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[27]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1752,7 +1837,7 @@ func (x *CreatePaymentRequestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePaymentRequestResponse.ProtoReflect.Descriptor instead.
 func (*CreatePaymentRequestResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{27}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *CreatePaymentRequestResponse) GetId() string {
@@ -1849,7 +1934,7 @@ type GetPaymentRequestTransactionRequest struct {
 
 func (x *GetPaymentRequestTransactionRequest) Reset() {
 	*x = GetPaymentRequestTransactionRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[28]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1861,7 +1946,7 @@ func (x *GetPaymentRequestTransactionRequest) String() string {
 func (*GetPaymentRequestTransactionRequest) ProtoMessage() {}
 
 func (x *GetPaymentRequestTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[28]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1874,7 +1959,7 @@ func (x *GetPaymentRequestTransactionRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use GetPaymentRequestTransactionRequest.ProtoReflect.Descriptor instead.
 func (*GetPaymentRequestTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{28}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *GetPaymentRequestTransactionRequest) GetSequenceId() string {
@@ -1904,7 +1989,7 @@ type GetPaymentRequestTransactionResponse struct {
 
 func (x *GetPaymentRequestTransactionResponse) Reset() {
 	*x = GetPaymentRequestTransactionResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[29]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1916,7 +2001,7 @@ func (x *GetPaymentRequestTransactionResponse) String() string {
 func (*GetPaymentRequestTransactionResponse) ProtoMessage() {}
 
 func (x *GetPaymentRequestTransactionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[29]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1929,7 +2014,7 @@ func (x *GetPaymentRequestTransactionResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use GetPaymentRequestTransactionResponse.ProtoReflect.Descriptor instead.
 func (*GetPaymentRequestTransactionResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{29}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *GetPaymentRequestTransactionResponse) GetSequenceId() string {
@@ -2019,7 +2104,7 @@ type GetHotWalletAddressRequest struct {
 
 func (x *GetHotWalletAddressRequest) Reset() {
 	*x = GetHotWalletAddressRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[30]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2031,7 +2116,7 @@ func (x *GetHotWalletAddressRequest) String() string {
 func (*GetHotWalletAddressRequest) ProtoMessage() {}
 
 func (x *GetHotWalletAddressRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[30]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2044,7 +2129,7 @@ func (x *GetHotWalletAddressRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetHotWalletAddressRequest.ProtoReflect.Descriptor instead.
 func (*GetHotWalletAddressRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{30}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *GetHotWalletAddressRequest) GetNetworkType() string {
@@ -2064,7 +2149,7 @@ type GetHotWalletAddressResponse struct {
 
 func (x *GetHotWalletAddressResponse) Reset() {
 	*x = GetHotWalletAddressResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[31]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2076,7 +2161,7 @@ func (x *GetHotWalletAddressResponse) String() string {
 func (*GetHotWalletAddressResponse) ProtoMessage() {}
 
 func (x *GetHotWalletAddressResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[31]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2089,7 +2174,7 @@ func (x *GetHotWalletAddressResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetHotWalletAddressResponse.ProtoReflect.Descriptor instead.
 func (*GetHotWalletAddressResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{31}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *GetHotWalletAddressResponse) GetAddress() string {
@@ -2111,7 +2196,7 @@ type CollectionSource struct {
 
 func (x *CollectionSource) Reset() {
 	*x = CollectionSource{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[32]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2123,7 +2208,7 @@ func (x *CollectionSource) String() string {
 func (*CollectionSource) ProtoMessage() {}
 
 func (x *CollectionSource) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[32]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2136,7 +2221,7 @@ func (x *CollectionSource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CollectionSource.ProtoReflect.Descriptor instead.
 func (*CollectionSource) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{32}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *CollectionSource) GetAccountNumber() string {
@@ -2181,7 +2266,7 @@ type CreatePlatformCollectionRequestInput struct {
 
 func (x *CreatePlatformCollectionRequestInput) Reset() {
 	*x = CreatePlatformCollectionRequestInput{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[33]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2193,7 +2278,7 @@ func (x *CreatePlatformCollectionRequestInput) String() string {
 func (*CreatePlatformCollectionRequestInput) ProtoMessage() {}
 
 func (x *CreatePlatformCollectionRequestInput) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[33]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2206,7 +2291,7 @@ func (x *CreatePlatformCollectionRequestInput) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use CreatePlatformCollectionRequestInput.ProtoReflect.Descriptor instead.
 func (*CreatePlatformCollectionRequestInput) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{33}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *CreatePlatformCollectionRequestInput) GetOwnerId() string {
@@ -2305,7 +2390,7 @@ type BankInfo struct {
 
 func (x *BankInfo) Reset() {
 	*x = BankInfo{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[34]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2317,7 +2402,7 @@ func (x *BankInfo) String() string {
 func (*BankInfo) ProtoMessage() {}
 
 func (x *BankInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[34]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2330,7 +2415,7 @@ func (x *BankInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BankInfo.ProtoReflect.Descriptor instead.
 func (*BankInfo) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{34}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *BankInfo) GetName() string {
@@ -2375,7 +2460,7 @@ type CreateCollectionResponse struct {
 
 func (x *CreateCollectionResponse) Reset() {
 	*x = CreateCollectionResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[35]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2387,7 +2472,7 @@ func (x *CreateCollectionResponse) String() string {
 func (*CreateCollectionResponse) ProtoMessage() {}
 
 func (x *CreateCollectionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[35]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2400,7 +2485,7 @@ func (x *CreateCollectionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCollectionResponse.ProtoReflect.Descriptor instead.
 func (*CreateCollectionResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{35}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *CreateCollectionResponse) GetSource() *CollectionSource {
@@ -2497,7 +2582,7 @@ type GetCollectionRequestTransactionRequest struct {
 
 func (x *GetCollectionRequestTransactionRequest) Reset() {
 	*x = GetCollectionRequestTransactionRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[36]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2509,7 +2594,7 @@ func (x *GetCollectionRequestTransactionRequest) String() string {
 func (*GetCollectionRequestTransactionRequest) ProtoMessage() {}
 
 func (x *GetCollectionRequestTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[36]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2522,7 +2607,7 @@ func (x *GetCollectionRequestTransactionRequest) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use GetCollectionRequestTransactionRequest.ProtoReflect.Descriptor instead.
 func (*GetCollectionRequestTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{36}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *GetCollectionRequestTransactionRequest) GetSequenceId() string {
@@ -2560,7 +2645,7 @@ type GetCollectionRequestResponse struct {
 
 func (x *GetCollectionRequestResponse) Reset() {
 	*x = GetCollectionRequestResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[37]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2572,7 +2657,7 @@ func (x *GetCollectionRequestResponse) String() string {
 func (*GetCollectionRequestResponse) ProtoMessage() {}
 
 func (x *GetCollectionRequestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[37]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2585,7 +2670,7 @@ func (x *GetCollectionRequestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCollectionRequestResponse.ProtoReflect.Descriptor instead.
 func (*GetCollectionRequestResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{37}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *GetCollectionRequestResponse) GetOwnerId() string {
@@ -2732,7 +2817,7 @@ type UpdateCollectionTransactionStatusRequest struct {
 
 func (x *UpdateCollectionTransactionStatusRequest) Reset() {
 	*x = UpdateCollectionTransactionStatusRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[38]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2744,7 +2829,7 @@ func (x *UpdateCollectionTransactionStatusRequest) String() string {
 func (*UpdateCollectionTransactionStatusRequest) ProtoMessage() {}
 
 func (x *UpdateCollectionTransactionStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[38]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2757,7 +2842,7 @@ func (x *UpdateCollectionTransactionStatusRequest) ProtoReflect() protoreflect.M
 
 // Deprecated: Use UpdateCollectionTransactionStatusRequest.ProtoReflect.Descriptor instead.
 func (*UpdateCollectionTransactionStatusRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{38}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *UpdateCollectionTransactionStatusRequest) GetSequenceId() string {
@@ -2786,7 +2871,7 @@ type UpdateCollectionTransactionStatusResponse struct {
 
 func (x *UpdateCollectionTransactionStatusResponse) Reset() {
 	*x = UpdateCollectionTransactionStatusResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[39]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2798,7 +2883,7 @@ func (x *UpdateCollectionTransactionStatusResponse) String() string {
 func (*UpdateCollectionTransactionStatusResponse) ProtoMessage() {}
 
 func (x *UpdateCollectionTransactionStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[39]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2811,7 +2896,7 @@ func (x *UpdateCollectionTransactionStatusResponse) ProtoReflect() protoreflect.
 
 // Deprecated: Use UpdateCollectionTransactionStatusResponse.ProtoReflect.Descriptor instead.
 func (*UpdateCollectionTransactionStatusResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{39}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *UpdateCollectionTransactionStatusResponse) GetSequenceId() string {
@@ -2846,7 +2931,7 @@ type ResolveBankAccountRequest struct {
 
 func (x *ResolveBankAccountRequest) Reset() {
 	*x = ResolveBankAccountRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[40]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2858,7 +2943,7 @@ func (x *ResolveBankAccountRequest) String() string {
 func (*ResolveBankAccountRequest) ProtoMessage() {}
 
 func (x *ResolveBankAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[40]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2871,7 +2956,7 @@ func (x *ResolveBankAccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResolveBankAccountRequest.ProtoReflect.Descriptor instead.
 func (*ResolveBankAccountRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{40}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *ResolveBankAccountRequest) GetAccountNumber() string {
@@ -2900,7 +2985,7 @@ type ResolveBankAccountResponse struct {
 
 func (x *ResolveBankAccountResponse) Reset() {
 	*x = ResolveBankAccountResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[41]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2912,7 +2997,7 @@ func (x *ResolveBankAccountResponse) String() string {
 func (*ResolveBankAccountResponse) ProtoMessage() {}
 
 func (x *ResolveBankAccountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[41]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2925,7 +3010,7 @@ func (x *ResolveBankAccountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResolveBankAccountResponse.ProtoReflect.Descriptor instead.
 func (*ResolveBankAccountResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{41}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *ResolveBankAccountResponse) GetAccountName() string {
@@ -2960,7 +3045,7 @@ type UpdatePaymentTransactionStatusRequest struct {
 
 func (x *UpdatePaymentTransactionStatusRequest) Reset() {
 	*x = UpdatePaymentTransactionStatusRequest{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[42]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2972,7 +3057,7 @@ func (x *UpdatePaymentTransactionStatusRequest) String() string {
 func (*UpdatePaymentTransactionStatusRequest) ProtoMessage() {}
 
 func (x *UpdatePaymentTransactionStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[42]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2985,7 +3070,7 @@ func (x *UpdatePaymentTransactionStatusRequest) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use UpdatePaymentTransactionStatusRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePaymentTransactionStatusRequest) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{42}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *UpdatePaymentTransactionStatusRequest) GetSequenceId() string {
@@ -3014,7 +3099,7 @@ type UpdatePaymentTransactionStatusResponse struct {
 
 func (x *UpdatePaymentTransactionStatusResponse) Reset() {
 	*x = UpdatePaymentTransactionStatusResponse{}
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[43]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3026,7 +3111,7 @@ func (x *UpdatePaymentTransactionStatusResponse) String() string {
 func (*UpdatePaymentTransactionStatusResponse) ProtoMessage() {}
 
 func (x *UpdatePaymentTransactionStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[43]
+	mi := &file_fiatramps_fiat_ramps_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3039,7 +3124,7 @@ func (x *UpdatePaymentTransactionStatusResponse) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use UpdatePaymentTransactionStatusResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePaymentTransactionStatusResponse) Descriptor() ([]byte, []int) {
-	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{43}
+	return file_fiatramps_fiat_ramps_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *UpdatePaymentTransactionStatusResponse) GetSequenceId() string {
@@ -3111,15 +3196,35 @@ var file_fiatramps_fiat_ramps_proto_rawDesc = []byte{
 	0x04, 0x73, 0x65, 0x6c, 0x6c, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x03, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x6c, 0x6f, 0x63,
 	0x61, 0x6c, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x6c, 0x6f, 0x63, 0x61, 0x6c,
-	0x65, 0x22, 0x85, 0x01, 0x0a, 0x19, 0x47, 0x65, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x46, 0x65, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x32, 0x0a, 0x15, 0x6f, 0x6e, 0x72, 0x61, 0x6d, 0x70, 0x5f, 0x66, 0x65, 0x65, 0x5f, 0x70, 0x65,
-	0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x02, 0x52, 0x13,
-	0x6f, 0x6e, 0x72, 0x61, 0x6d, 0x70, 0x46, 0x65, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74,
-	0x61, 0x67, 0x65, 0x12, 0x34, 0x0a, 0x16, 0x6f, 0x66, 0x66, 0x72, 0x61, 0x6d, 0x70, 0x5f, 0x66,
-	0x65, 0x65, 0x5f, 0x70, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x18, 0x03, 0x20,
-	0x01, 0x28, 0x02, 0x52, 0x14, 0x6f, 0x66, 0x66, 0x72, 0x61, 0x6d, 0x70, 0x46, 0x65, 0x65, 0x50,
-	0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x22, 0x78, 0x0a, 0x11, 0x47, 0x65, 0x74,
+	0x65, 0x22, 0x9c, 0x01, 0x0a, 0x1b, 0x43, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x61,
+	0x6c, 0x46, 0x65, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x12, 0x12, 0x0a, 0x04, 0x72, 0x75, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x04, 0x72, 0x75, 0x6c, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x66, 0x65, 0x65, 0x5f, 0x70, 0x65, 0x72,
+	0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x02, 0x52, 0x0d, 0x66,
+	0x65, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x12, 0x25, 0x0a, 0x0e,
+	0x74, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x01, 0x52, 0x0d, 0x74, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x41, 0x6d, 0x6f,
+	0x75, 0x6e, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x72, 0x61, 0x6d, 0x70, 0x5f, 0x74, 0x79, 0x70, 0x65,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x72, 0x61, 0x6d, 0x70, 0x54, 0x79, 0x70, 0x65,
+	0x22, 0xa6, 0x02, 0x0a, 0x19, 0x47, 0x65, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x46, 0x65, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x32,
+	0x0a, 0x15, 0x6f, 0x6e, 0x72, 0x61, 0x6d, 0x70, 0x5f, 0x66, 0x65, 0x65, 0x5f, 0x70, 0x65, 0x72,
+	0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x02, 0x52, 0x13, 0x6f,
+	0x6e, 0x72, 0x61, 0x6d, 0x70, 0x46, 0x65, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61,
+	0x67, 0x65, 0x12, 0x34, 0x0a, 0x16, 0x6f, 0x66, 0x66, 0x72, 0x61, 0x6d, 0x70, 0x5f, 0x66, 0x65,
+	0x65, 0x5f, 0x70, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x02, 0x52, 0x14, 0x6f, 0x66, 0x66, 0x72, 0x61, 0x6d, 0x70, 0x46, 0x65, 0x65, 0x50, 0x65,
+	0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x12, 0x2d, 0x0a, 0x13, 0x6f, 0x66, 0x66, 0x72,
+	0x61, 0x6d, 0x70, 0x5f, 0x6d, 0x69, 0x6e, 0x5f, 0x66, 0x65, 0x65, 0x5f, 0x75, 0x73, 0x64, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x02, 0x52, 0x10, 0x6f, 0x66, 0x66, 0x72, 0x61, 0x6d, 0x70, 0x4d, 0x69,
+	0x6e, 0x46, 0x65, 0x65, 0x55, 0x73, 0x64, 0x12, 0x70, 0x0a, 0x1f, 0x63, 0x6f, 0x6e, 0x64, 0x69,
+	0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x5f, 0x66, 0x65, 0x65, 0x5f, 0x70, 0x65, 0x72, 0x63, 0x65,
+	0x6e, 0x74, 0x5f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x29, 0x2e, 0x66, 0x69, 0x61, 0x74, 0x72, 0x61, 0x6d, 0x70, 0x73, 0x2e, 0x76, 0x31, 0x2e,
+	0x43, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x46, 0x65, 0x65, 0x50, 0x65,
+	0x72, 0x63, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x1c, 0x63, 0x6f, 0x6e,
+	0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x46, 0x65, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65,
+	0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x73, 0x22, 0x78, 0x0a, 0x11, 0x47, 0x65, 0x74,
 	0x51, 0x75, 0x6f, 0x74, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x26,
 	0x0a, 0x04, 0x72, 0x61, 0x74, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x66,
 	0x69, 0x61, 0x74, 0x72, 0x61, 0x6d, 0x70, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x52, 0x61, 0x74, 0x65,
@@ -3698,7 +3803,7 @@ func file_fiatramps_fiat_ramps_proto_rawDescGZIP() []byte {
 	return file_fiatramps_fiat_ramps_proto_rawDescData
 }
 
-var file_fiatramps_fiat_ramps_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
+var file_fiatramps_fiat_ramps_proto_msgTypes = make([]protoimpl.MessageInfo, 45)
 var file_fiatramps_fiat_ramps_proto_goTypes = []any{
 	(*GetSupportedCountriesRequest)(nil),              // 0: fiatramps.v1.GetSupportedCountriesRequest
 	(*GetSupportedCountryRequest)(nil),                // 1: fiatramps.v1.GetSupportedCountryRequest
@@ -3708,102 +3813,104 @@ var file_fiatramps_fiat_ramps_proto_goTypes = []any{
 	(*GetRatesResponse)(nil),                          // 5: fiatramps.v1.GetRatesResponse
 	(*GetQuotesRequest)(nil),                          // 6: fiatramps.v1.GetQuotesRequest
 	(*Rate)(nil),                                      // 7: fiatramps.v1.Rate
-	(*GetTransactionFeeResponse)(nil),                 // 8: fiatramps.v1.GetTransactionFeeResponse
-	(*GetQuotesResponse)(nil),                         // 9: fiatramps.v1.GetQuotesResponse
-	(*GetTransactionFeeRequest)(nil),                  // 10: fiatramps.v1.GetTransactionFeeRequest
-	(*GetBeneficiariesRequest)(nil),                   // 11: fiatramps.v1.GetBeneficiariesRequest
-	(*GetBeneficiariesResponse)(nil),                  // 12: fiatramps.v1.GetBeneficiariesResponse
-	(*Beneficiary)(nil),                               // 13: fiatramps.v1.Beneficiary
-	(*GetBeneficiaryRequest)(nil),                     // 14: fiatramps.v1.GetBeneficiaryRequest
-	(*CountryFiatLimits)(nil),                         // 15: fiatramps.v1.CountryFiatLimits
-	(*PaymentChannel)(nil),                            // 16: fiatramps.v1.PaymentChannel
-	(*GetPaymentMethodsRequest)(nil),                  // 17: fiatramps.v1.GetPaymentMethodsRequest
-	(*GetPaymentMethodsResponse)(nil),                 // 18: fiatramps.v1.GetPaymentMethodsResponse
-	(*AddBeneficiaryRequest)(nil),                     // 19: fiatramps.v1.AddBeneficiaryRequest
-	(*AddBeneficiaryResponse)(nil),                    // 20: fiatramps.v1.AddBeneficiaryResponse
-	(*GetPaymentNetworksRequest)(nil),                 // 21: fiatramps.v1.GetPaymentNetworksRequest
-	(*ActivePaymentNetwork)(nil),                      // 22: fiatramps.v1.ActivePaymentNetwork
-	(*GetPaymentNetworksResponse)(nil),                // 23: fiatramps.v1.GetPaymentNetworksResponse
-	(*YellowCardRetailCustomer)(nil),                  // 24: fiatramps.v1.YellowCardRetailCustomer
-	(*PaymentRequestDestination)(nil),                 // 25: fiatramps.v1.PaymentRequestDestination
-	(*CreateBeneficiaryPaymentRequestInput)(nil),      // 26: fiatramps.v1.CreateBeneficiaryPaymentRequestInput
-	(*CreatePaymentRequestResponse)(nil),              // 27: fiatramps.v1.CreatePaymentRequestResponse
-	(*GetPaymentRequestTransactionRequest)(nil),       // 28: fiatramps.v1.GetPaymentRequestTransactionRequest
-	(*GetPaymentRequestTransactionResponse)(nil),      // 29: fiatramps.v1.GetPaymentRequestTransactionResponse
-	(*GetHotWalletAddressRequest)(nil),                // 30: fiatramps.v1.GetHotWalletAddressRequest
-	(*GetHotWalletAddressResponse)(nil),               // 31: fiatramps.v1.GetHotWalletAddressResponse
-	(*CollectionSource)(nil),                          // 32: fiatramps.v1.CollectionSource
-	(*CreatePlatformCollectionRequestInput)(nil),      // 33: fiatramps.v1.CreatePlatformCollectionRequestInput
-	(*BankInfo)(nil),                                  // 34: fiatramps.v1.BankInfo
-	(*CreateCollectionResponse)(nil),                  // 35: fiatramps.v1.CreateCollectionResponse
-	(*GetCollectionRequestTransactionRequest)(nil),    // 36: fiatramps.v1.GetCollectionRequestTransactionRequest
-	(*GetCollectionRequestResponse)(nil),              // 37: fiatramps.v1.GetCollectionRequestResponse
-	(*UpdateCollectionTransactionStatusRequest)(nil),  // 38: fiatramps.v1.UpdateCollectionTransactionStatusRequest
-	(*UpdateCollectionTransactionStatusResponse)(nil), // 39: fiatramps.v1.UpdateCollectionTransactionStatusResponse
-	(*ResolveBankAccountRequest)(nil),                 // 40: fiatramps.v1.ResolveBankAccountRequest
-	(*ResolveBankAccountResponse)(nil),                // 41: fiatramps.v1.ResolveBankAccountResponse
-	(*UpdatePaymentTransactionStatusRequest)(nil),     // 42: fiatramps.v1.UpdatePaymentTransactionStatusRequest
-	(*UpdatePaymentTransactionStatusResponse)(nil),    // 43: fiatramps.v1.UpdatePaymentTransactionStatusResponse
+	(*ConditionalFeePercentConfig)(nil),               // 8: fiatramps.v1.ConditionalFeePercentConfig
+	(*GetTransactionFeeResponse)(nil),                 // 9: fiatramps.v1.GetTransactionFeeResponse
+	(*GetQuotesResponse)(nil),                         // 10: fiatramps.v1.GetQuotesResponse
+	(*GetTransactionFeeRequest)(nil),                  // 11: fiatramps.v1.GetTransactionFeeRequest
+	(*GetBeneficiariesRequest)(nil),                   // 12: fiatramps.v1.GetBeneficiariesRequest
+	(*GetBeneficiariesResponse)(nil),                  // 13: fiatramps.v1.GetBeneficiariesResponse
+	(*Beneficiary)(nil),                               // 14: fiatramps.v1.Beneficiary
+	(*GetBeneficiaryRequest)(nil),                     // 15: fiatramps.v1.GetBeneficiaryRequest
+	(*CountryFiatLimits)(nil),                         // 16: fiatramps.v1.CountryFiatLimits
+	(*PaymentChannel)(nil),                            // 17: fiatramps.v1.PaymentChannel
+	(*GetPaymentMethodsRequest)(nil),                  // 18: fiatramps.v1.GetPaymentMethodsRequest
+	(*GetPaymentMethodsResponse)(nil),                 // 19: fiatramps.v1.GetPaymentMethodsResponse
+	(*AddBeneficiaryRequest)(nil),                     // 20: fiatramps.v1.AddBeneficiaryRequest
+	(*AddBeneficiaryResponse)(nil),                    // 21: fiatramps.v1.AddBeneficiaryResponse
+	(*GetPaymentNetworksRequest)(nil),                 // 22: fiatramps.v1.GetPaymentNetworksRequest
+	(*ActivePaymentNetwork)(nil),                      // 23: fiatramps.v1.ActivePaymentNetwork
+	(*GetPaymentNetworksResponse)(nil),                // 24: fiatramps.v1.GetPaymentNetworksResponse
+	(*YellowCardRetailCustomer)(nil),                  // 25: fiatramps.v1.YellowCardRetailCustomer
+	(*PaymentRequestDestination)(nil),                 // 26: fiatramps.v1.PaymentRequestDestination
+	(*CreateBeneficiaryPaymentRequestInput)(nil),      // 27: fiatramps.v1.CreateBeneficiaryPaymentRequestInput
+	(*CreatePaymentRequestResponse)(nil),              // 28: fiatramps.v1.CreatePaymentRequestResponse
+	(*GetPaymentRequestTransactionRequest)(nil),       // 29: fiatramps.v1.GetPaymentRequestTransactionRequest
+	(*GetPaymentRequestTransactionResponse)(nil),      // 30: fiatramps.v1.GetPaymentRequestTransactionResponse
+	(*GetHotWalletAddressRequest)(nil),                // 31: fiatramps.v1.GetHotWalletAddressRequest
+	(*GetHotWalletAddressResponse)(nil),               // 32: fiatramps.v1.GetHotWalletAddressResponse
+	(*CollectionSource)(nil),                          // 33: fiatramps.v1.CollectionSource
+	(*CreatePlatformCollectionRequestInput)(nil),      // 34: fiatramps.v1.CreatePlatformCollectionRequestInput
+	(*BankInfo)(nil),                                  // 35: fiatramps.v1.BankInfo
+	(*CreateCollectionResponse)(nil),                  // 36: fiatramps.v1.CreateCollectionResponse
+	(*GetCollectionRequestTransactionRequest)(nil),    // 37: fiatramps.v1.GetCollectionRequestTransactionRequest
+	(*GetCollectionRequestResponse)(nil),              // 38: fiatramps.v1.GetCollectionRequestResponse
+	(*UpdateCollectionTransactionStatusRequest)(nil),  // 39: fiatramps.v1.UpdateCollectionTransactionStatusRequest
+	(*UpdateCollectionTransactionStatusResponse)(nil), // 40: fiatramps.v1.UpdateCollectionTransactionStatusResponse
+	(*ResolveBankAccountRequest)(nil),                 // 41: fiatramps.v1.ResolveBankAccountRequest
+	(*ResolveBankAccountResponse)(nil),                // 42: fiatramps.v1.ResolveBankAccountResponse
+	(*UpdatePaymentTransactionStatusRequest)(nil),     // 43: fiatramps.v1.UpdatePaymentTransactionStatusRequest
+	(*UpdatePaymentTransactionStatusResponse)(nil),    // 44: fiatramps.v1.UpdatePaymentTransactionStatusResponse
 }
 var file_fiatramps_fiat_ramps_proto_depIdxs = []int32{
 	2,  // 0: fiatramps.v1.GetSupportedCountriesResponse.countries:type_name -> fiatramps.v1.SupportedCountry
 	7,  // 1: fiatramps.v1.GetRatesResponse.rates:type_name -> fiatramps.v1.Rate
-	7,  // 2: fiatramps.v1.GetQuotesResponse.rate:type_name -> fiatramps.v1.Rate
-	8,  // 3: fiatramps.v1.GetQuotesResponse.fees:type_name -> fiatramps.v1.GetTransactionFeeResponse
-	13, // 4: fiatramps.v1.GetBeneficiariesResponse.beneficiaries:type_name -> fiatramps.v1.Beneficiary
-	2,  // 5: fiatramps.v1.Beneficiary.country:type_name -> fiatramps.v1.SupportedCountry
-	16, // 6: fiatramps.v1.GetPaymentMethodsResponse.channels:type_name -> fiatramps.v1.PaymentChannel
-	15, // 7: fiatramps.v1.GetPaymentMethodsResponse.limits:type_name -> fiatramps.v1.CountryFiatLimits
-	22, // 8: fiatramps.v1.GetPaymentNetworksResponse.networks:type_name -> fiatramps.v1.ActivePaymentNetwork
-	24, // 9: fiatramps.v1.CreateBeneficiaryPaymentRequestInput.sender:type_name -> fiatramps.v1.YellowCardRetailCustomer
-	24, // 10: fiatramps.v1.CreatePaymentRequestResponse.sender:type_name -> fiatramps.v1.YellowCardRetailCustomer
-	25, // 11: fiatramps.v1.CreatePaymentRequestResponse.destination:type_name -> fiatramps.v1.PaymentRequestDestination
-	32, // 12: fiatramps.v1.CreatePlatformCollectionRequestInput.source:type_name -> fiatramps.v1.CollectionSource
-	24, // 13: fiatramps.v1.CreatePlatformCollectionRequestInput.recipient:type_name -> fiatramps.v1.YellowCardRetailCustomer
-	32, // 14: fiatramps.v1.CreateCollectionResponse.source:type_name -> fiatramps.v1.CollectionSource
-	24, // 15: fiatramps.v1.CreateCollectionResponse.recipient:type_name -> fiatramps.v1.YellowCardRetailCustomer
-	34, // 16: fiatramps.v1.CreateCollectionResponse.bank_info:type_name -> fiatramps.v1.BankInfo
-	0,  // 17: fiatramps.v1.FiatRampsService.GetSupportedCountries:input_type -> fiatramps.v1.GetSupportedCountriesRequest
-	6,  // 18: fiatramps.v1.FiatRampsService.GetQuotes:input_type -> fiatramps.v1.GetQuotesRequest
-	4,  // 19: fiatramps.v1.FiatRampsService.GetRates:input_type -> fiatramps.v1.GetRatesRequest
-	10, // 20: fiatramps.v1.FiatRampsService.GetTransactionFee:input_type -> fiatramps.v1.GetTransactionFeeRequest
-	11, // 21: fiatramps.v1.FiatRampsService.GetBeneficiaries:input_type -> fiatramps.v1.GetBeneficiariesRequest
-	14, // 22: fiatramps.v1.FiatRampsService.GetBeneficiary:input_type -> fiatramps.v1.GetBeneficiaryRequest
-	17, // 23: fiatramps.v1.FiatRampsService.GetPaymentMethods:input_type -> fiatramps.v1.GetPaymentMethodsRequest
-	19, // 24: fiatramps.v1.FiatRampsService.AddBeneficiary:input_type -> fiatramps.v1.AddBeneficiaryRequest
-	21, // 25: fiatramps.v1.FiatRampsService.GetPaymentNetworks:input_type -> fiatramps.v1.GetPaymentNetworksRequest
-	1,  // 26: fiatramps.v1.FiatRampsService.GetSupportedCountryByCode:input_type -> fiatramps.v1.GetSupportedCountryRequest
-	26, // 27: fiatramps.v1.FiatRampsService.CreateBeneficiaryPaymentRequest:input_type -> fiatramps.v1.CreateBeneficiaryPaymentRequestInput
-	28, // 28: fiatramps.v1.FiatRampsService.GetPaymentRequestTransaction:input_type -> fiatramps.v1.GetPaymentRequestTransactionRequest
-	30, // 29: fiatramps.v1.FiatRampsService.GetHotWalletAddress:input_type -> fiatramps.v1.GetHotWalletAddressRequest
-	33, // 30: fiatramps.v1.FiatRampsService.CreatePlatformCollectionRequest:input_type -> fiatramps.v1.CreatePlatformCollectionRequestInput
-	36, // 31: fiatramps.v1.FiatRampsService.GetCollectionRequestTransaction:input_type -> fiatramps.v1.GetCollectionRequestTransactionRequest
-	38, // 32: fiatramps.v1.FiatRampsService.UpdateCollectionTransactionStatus:input_type -> fiatramps.v1.UpdateCollectionTransactionStatusRequest
-	40, // 33: fiatramps.v1.FiatRampsService.ResolveBankAccount:input_type -> fiatramps.v1.ResolveBankAccountRequest
-	42, // 34: fiatramps.v1.FiatRampsService.UpdatePaymentTransactionStatus:input_type -> fiatramps.v1.UpdatePaymentTransactionStatusRequest
-	3,  // 35: fiatramps.v1.FiatRampsService.GetSupportedCountries:output_type -> fiatramps.v1.GetSupportedCountriesResponse
-	9,  // 36: fiatramps.v1.FiatRampsService.GetQuotes:output_type -> fiatramps.v1.GetQuotesResponse
-	5,  // 37: fiatramps.v1.FiatRampsService.GetRates:output_type -> fiatramps.v1.GetRatesResponse
-	8,  // 38: fiatramps.v1.FiatRampsService.GetTransactionFee:output_type -> fiatramps.v1.GetTransactionFeeResponse
-	12, // 39: fiatramps.v1.FiatRampsService.GetBeneficiaries:output_type -> fiatramps.v1.GetBeneficiariesResponse
-	13, // 40: fiatramps.v1.FiatRampsService.GetBeneficiary:output_type -> fiatramps.v1.Beneficiary
-	18, // 41: fiatramps.v1.FiatRampsService.GetPaymentMethods:output_type -> fiatramps.v1.GetPaymentMethodsResponse
-	20, // 42: fiatramps.v1.FiatRampsService.AddBeneficiary:output_type -> fiatramps.v1.AddBeneficiaryResponse
-	23, // 43: fiatramps.v1.FiatRampsService.GetPaymentNetworks:output_type -> fiatramps.v1.GetPaymentNetworksResponse
-	2,  // 44: fiatramps.v1.FiatRampsService.GetSupportedCountryByCode:output_type -> fiatramps.v1.SupportedCountry
-	27, // 45: fiatramps.v1.FiatRampsService.CreateBeneficiaryPaymentRequest:output_type -> fiatramps.v1.CreatePaymentRequestResponse
-	29, // 46: fiatramps.v1.FiatRampsService.GetPaymentRequestTransaction:output_type -> fiatramps.v1.GetPaymentRequestTransactionResponse
-	31, // 47: fiatramps.v1.FiatRampsService.GetHotWalletAddress:output_type -> fiatramps.v1.GetHotWalletAddressResponse
-	35, // 48: fiatramps.v1.FiatRampsService.CreatePlatformCollectionRequest:output_type -> fiatramps.v1.CreateCollectionResponse
-	37, // 49: fiatramps.v1.FiatRampsService.GetCollectionRequestTransaction:output_type -> fiatramps.v1.GetCollectionRequestResponse
-	39, // 50: fiatramps.v1.FiatRampsService.UpdateCollectionTransactionStatus:output_type -> fiatramps.v1.UpdateCollectionTransactionStatusResponse
-	41, // 51: fiatramps.v1.FiatRampsService.ResolveBankAccount:output_type -> fiatramps.v1.ResolveBankAccountResponse
-	43, // 52: fiatramps.v1.FiatRampsService.UpdatePaymentTransactionStatus:output_type -> fiatramps.v1.UpdatePaymentTransactionStatusResponse
-	35, // [35:53] is the sub-list for method output_type
-	17, // [17:35] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	8,  // 2: fiatramps.v1.GetTransactionFeeResponse.conditional_fee_percent_configs:type_name -> fiatramps.v1.ConditionalFeePercentConfig
+	7,  // 3: fiatramps.v1.GetQuotesResponse.rate:type_name -> fiatramps.v1.Rate
+	9,  // 4: fiatramps.v1.GetQuotesResponse.fees:type_name -> fiatramps.v1.GetTransactionFeeResponse
+	14, // 5: fiatramps.v1.GetBeneficiariesResponse.beneficiaries:type_name -> fiatramps.v1.Beneficiary
+	2,  // 6: fiatramps.v1.Beneficiary.country:type_name -> fiatramps.v1.SupportedCountry
+	17, // 7: fiatramps.v1.GetPaymentMethodsResponse.channels:type_name -> fiatramps.v1.PaymentChannel
+	16, // 8: fiatramps.v1.GetPaymentMethodsResponse.limits:type_name -> fiatramps.v1.CountryFiatLimits
+	23, // 9: fiatramps.v1.GetPaymentNetworksResponse.networks:type_name -> fiatramps.v1.ActivePaymentNetwork
+	25, // 10: fiatramps.v1.CreateBeneficiaryPaymentRequestInput.sender:type_name -> fiatramps.v1.YellowCardRetailCustomer
+	25, // 11: fiatramps.v1.CreatePaymentRequestResponse.sender:type_name -> fiatramps.v1.YellowCardRetailCustomer
+	26, // 12: fiatramps.v1.CreatePaymentRequestResponse.destination:type_name -> fiatramps.v1.PaymentRequestDestination
+	33, // 13: fiatramps.v1.CreatePlatformCollectionRequestInput.source:type_name -> fiatramps.v1.CollectionSource
+	25, // 14: fiatramps.v1.CreatePlatformCollectionRequestInput.recipient:type_name -> fiatramps.v1.YellowCardRetailCustomer
+	33, // 15: fiatramps.v1.CreateCollectionResponse.source:type_name -> fiatramps.v1.CollectionSource
+	25, // 16: fiatramps.v1.CreateCollectionResponse.recipient:type_name -> fiatramps.v1.YellowCardRetailCustomer
+	35, // 17: fiatramps.v1.CreateCollectionResponse.bank_info:type_name -> fiatramps.v1.BankInfo
+	0,  // 18: fiatramps.v1.FiatRampsService.GetSupportedCountries:input_type -> fiatramps.v1.GetSupportedCountriesRequest
+	6,  // 19: fiatramps.v1.FiatRampsService.GetQuotes:input_type -> fiatramps.v1.GetQuotesRequest
+	4,  // 20: fiatramps.v1.FiatRampsService.GetRates:input_type -> fiatramps.v1.GetRatesRequest
+	11, // 21: fiatramps.v1.FiatRampsService.GetTransactionFee:input_type -> fiatramps.v1.GetTransactionFeeRequest
+	12, // 22: fiatramps.v1.FiatRampsService.GetBeneficiaries:input_type -> fiatramps.v1.GetBeneficiariesRequest
+	15, // 23: fiatramps.v1.FiatRampsService.GetBeneficiary:input_type -> fiatramps.v1.GetBeneficiaryRequest
+	18, // 24: fiatramps.v1.FiatRampsService.GetPaymentMethods:input_type -> fiatramps.v1.GetPaymentMethodsRequest
+	20, // 25: fiatramps.v1.FiatRampsService.AddBeneficiary:input_type -> fiatramps.v1.AddBeneficiaryRequest
+	22, // 26: fiatramps.v1.FiatRampsService.GetPaymentNetworks:input_type -> fiatramps.v1.GetPaymentNetworksRequest
+	1,  // 27: fiatramps.v1.FiatRampsService.GetSupportedCountryByCode:input_type -> fiatramps.v1.GetSupportedCountryRequest
+	27, // 28: fiatramps.v1.FiatRampsService.CreateBeneficiaryPaymentRequest:input_type -> fiatramps.v1.CreateBeneficiaryPaymentRequestInput
+	29, // 29: fiatramps.v1.FiatRampsService.GetPaymentRequestTransaction:input_type -> fiatramps.v1.GetPaymentRequestTransactionRequest
+	31, // 30: fiatramps.v1.FiatRampsService.GetHotWalletAddress:input_type -> fiatramps.v1.GetHotWalletAddressRequest
+	34, // 31: fiatramps.v1.FiatRampsService.CreatePlatformCollectionRequest:input_type -> fiatramps.v1.CreatePlatformCollectionRequestInput
+	37, // 32: fiatramps.v1.FiatRampsService.GetCollectionRequestTransaction:input_type -> fiatramps.v1.GetCollectionRequestTransactionRequest
+	39, // 33: fiatramps.v1.FiatRampsService.UpdateCollectionTransactionStatus:input_type -> fiatramps.v1.UpdateCollectionTransactionStatusRequest
+	41, // 34: fiatramps.v1.FiatRampsService.ResolveBankAccount:input_type -> fiatramps.v1.ResolveBankAccountRequest
+	43, // 35: fiatramps.v1.FiatRampsService.UpdatePaymentTransactionStatus:input_type -> fiatramps.v1.UpdatePaymentTransactionStatusRequest
+	3,  // 36: fiatramps.v1.FiatRampsService.GetSupportedCountries:output_type -> fiatramps.v1.GetSupportedCountriesResponse
+	10, // 37: fiatramps.v1.FiatRampsService.GetQuotes:output_type -> fiatramps.v1.GetQuotesResponse
+	5,  // 38: fiatramps.v1.FiatRampsService.GetRates:output_type -> fiatramps.v1.GetRatesResponse
+	9,  // 39: fiatramps.v1.FiatRampsService.GetTransactionFee:output_type -> fiatramps.v1.GetTransactionFeeResponse
+	13, // 40: fiatramps.v1.FiatRampsService.GetBeneficiaries:output_type -> fiatramps.v1.GetBeneficiariesResponse
+	14, // 41: fiatramps.v1.FiatRampsService.GetBeneficiary:output_type -> fiatramps.v1.Beneficiary
+	19, // 42: fiatramps.v1.FiatRampsService.GetPaymentMethods:output_type -> fiatramps.v1.GetPaymentMethodsResponse
+	21, // 43: fiatramps.v1.FiatRampsService.AddBeneficiary:output_type -> fiatramps.v1.AddBeneficiaryResponse
+	24, // 44: fiatramps.v1.FiatRampsService.GetPaymentNetworks:output_type -> fiatramps.v1.GetPaymentNetworksResponse
+	2,  // 45: fiatramps.v1.FiatRampsService.GetSupportedCountryByCode:output_type -> fiatramps.v1.SupportedCountry
+	28, // 46: fiatramps.v1.FiatRampsService.CreateBeneficiaryPaymentRequest:output_type -> fiatramps.v1.CreatePaymentRequestResponse
+	30, // 47: fiatramps.v1.FiatRampsService.GetPaymentRequestTransaction:output_type -> fiatramps.v1.GetPaymentRequestTransactionResponse
+	32, // 48: fiatramps.v1.FiatRampsService.GetHotWalletAddress:output_type -> fiatramps.v1.GetHotWalletAddressResponse
+	36, // 49: fiatramps.v1.FiatRampsService.CreatePlatformCollectionRequest:output_type -> fiatramps.v1.CreateCollectionResponse
+	38, // 50: fiatramps.v1.FiatRampsService.GetCollectionRequestTransaction:output_type -> fiatramps.v1.GetCollectionRequestResponse
+	40, // 51: fiatramps.v1.FiatRampsService.UpdateCollectionTransactionStatus:output_type -> fiatramps.v1.UpdateCollectionTransactionStatusResponse
+	42, // 52: fiatramps.v1.FiatRampsService.ResolveBankAccount:output_type -> fiatramps.v1.ResolveBankAccountResponse
+	44, // 53: fiatramps.v1.FiatRampsService.UpdatePaymentTransactionStatus:output_type -> fiatramps.v1.UpdatePaymentTransactionStatusResponse
+	36, // [36:54] is the sub-list for method output_type
+	18, // [18:36] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_fiatramps_fiat_ramps_proto_init() }
@@ -3817,7 +3924,7 @@ func file_fiatramps_fiat_ramps_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_fiatramps_fiat_ramps_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   44,
+			NumMessages:   45,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

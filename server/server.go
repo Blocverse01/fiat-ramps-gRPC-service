@@ -45,10 +45,23 @@ func (server *fiatRampsServer) GetQuotes(_ context.Context, req *pb.GetQuotesReq
 		CurrencySymbol: req.CurrencySymbol,
 	})
 
+	var conditionalFeePercentConfigs []*pb.ConditionalFeePercentConfig
+
+	for _, fee := range fiatQuotes.Fees.ConditionalFeeConfig() {
+		conditionalFeePercentConfigs = append(conditionalFeePercentConfigs, &pb.ConditionalFeePercentConfig{
+			Rule:          fee.Rule,
+			TriggerAmount: float64(fee.TriggerAmount),
+			FeePercentage: fee.FeePercentage,
+			RampType:      fee.RampType,
+		})
+	}
+
 	return &pb.GetQuotesResponse{
 		Fees: &pb.GetTransactionFeeResponse{
-			OnrampFeePercentage:  fiatQuotes.Fees.OnrampFeePercentage,
-			OfframpFeePercentage: fiatQuotes.Fees.OfframpFeePercentage,
+			OnrampFeePercentage:          fiatQuotes.Fees.OnrampFeePercentage,
+			OfframpFeePercentage:         fiatQuotes.Fees.OfframpFeePercentage,
+			ConditionalFeePercentConfigs: conditionalFeePercentConfigs,
+			OfframpMinFeeUsd:             fiatQuotes.Fees.OfframpMinFeeUsd,
 		},
 		Rate: &pb.Rate{
 			Buy:    fiatQuotes.Rate.Buy,
@@ -93,9 +106,22 @@ func (server *fiatRampsServer) GetTransactionFee(_ context.Context, req *pb.GetT
 		return nil, err
 	}
 
+	var conditionalFeePercentConfigs []*pb.ConditionalFeePercentConfig
+
+	for _, fee := range fees.ConditionalFeeConfig() {
+		conditionalFeePercentConfigs = append(conditionalFeePercentConfigs, &pb.ConditionalFeePercentConfig{
+			Rule:          fee.Rule,
+			TriggerAmount: float64(fee.TriggerAmount),
+			FeePercentage: fee.FeePercentage,
+			RampType:      fee.RampType,
+		})
+	}
+
 	return &pb.GetTransactionFeeResponse{
-		OnrampFeePercentage:  fees.OnrampFeePercentage,
-		OfframpFeePercentage: fees.OfframpFeePercentage,
+		OnrampFeePercentage:          fees.OnrampFeePercentage,
+		OfframpFeePercentage:         fees.OfframpFeePercentage,
+		ConditionalFeePercentConfigs: conditionalFeePercentConfigs,
+		OfframpMinFeeUsd:             fees.OfframpMinFeeUsd,
 	}, nil
 }
 

@@ -128,9 +128,26 @@ type GetTransactionFeeRequestBody struct {
 	Filter  map[string]string `json:"filter"`
 }
 
+type ConditionalFeePercentage struct {
+	Rule          string  `json:"rule"`
+	FeePercentage float32 `json:"feePercentage"`
+	TriggerAmount float32 `json:"triggerAmount"`
+	RampType      string  `json:"rampType"`
+}
 type TransactionFee struct {
-	OnrampFeePercentage  float32 `json:"onrampFeePercentage"`
-	OfframpFeePercentage float32 `json:"offrampFeePercentage"`
+	OnrampFeePercentage            float32 `json:"onrampFeePercentage"`
+	OfframpFeePercentage           float32 `json:"offrampFeePercentage"`
+	ConditionalFeePercentageConfig string  `json:"conditionalFeePercentageConfig"`
+	OfframpMinFeeUsd               float32 `json:"offrampMinFeeUsd"`
+}
+
+func (tf *TransactionFee) ConditionalFeeConfig() []ConditionalFeePercentage {
+	var conditionalFeeConfig []ConditionalFeePercentage
+	err := json.Unmarshal([]byte(tf.ConditionalFeePercentageConfig), &conditionalFeeConfig)
+	if err != nil {
+		log.Fatalf("Error unmarshalling conditional fee config: %v", err)
+	}
+	return conditionalFeeConfig
 }
 
 type TransactionFeeResponse struct {
@@ -141,7 +158,7 @@ func GetTransactionFee(countryCode string) (TransactionFee, error) {
 	endpoint := fmt.Sprintf("%s/query", transactionFeeTableName)
 
 	reqBody := GetTransactionFeeRequestBody{
-		Columns: []string{"onrampFeePercentage", "offrampFeePercentage"},
+		Columns: []string{"onrampFeePercentage", "offrampFeePercentage", "conditionalFeePercentageConfig", "offrampMinFeeUsd"},
 		Filter: map[string]string{
 			"country": countryCode,
 		},
@@ -186,6 +203,14 @@ func GetTransactionFee(countryCode string) (TransactionFee, error) {
 	if len(response.Records) == 0 {
 		return TransactionFee{}, fmt.Errorf("transaction fee not found for country code: %v", countryCode)
 	}
+
+	jsonData, err := json.Marshal(response.Records[0])
+
+	if err != nil {
+		log.Fatalf("Error marshalling response: %v", err)
+	}
+
+	log.Printf("Transaction fee response: %s", string(jsonData))
 
 	return response.Records[0], nil
 }
