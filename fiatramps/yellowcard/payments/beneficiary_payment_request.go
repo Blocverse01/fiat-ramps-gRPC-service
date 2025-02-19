@@ -118,13 +118,14 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 		normalizedAccountType = "momo"
 	}
 
-	var beneficiaryAccountNameWithoutDigits string
+	var normalizedBeneficiaryName string
 
+	// Remove digits from the beneficiary name
 	for _, char := range beneficiary.AccountName {
 		if unicode.IsDigit(char) {
 			continue
 		}
-		beneficiaryAccountNameWithoutDigits += string(char)
+		normalizedBeneficiaryName += string(char)
 	}
 
 	paymentRequest, err := CreatePaymentRequest(PaymentRequestInput{
@@ -136,7 +137,7 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 		Destination: PaymentRequestDestination{
 			AccountType:   normalizedAccountType,
 			AccountNumber: beneficiary.AccountNumber,
-			AccountName:   beneficiaryAccountNameWithoutDigits,
+			AccountName:   normalizedBeneficiaryName,
 			Country:       beneficiary.Country,
 			NetworkName:   beneficiary.NetworkName,
 			NetworkId:     beneficiary.NetworkId,

@@ -445,6 +445,15 @@ func (server *fiatRampsServer) GetPaymentRequestTransaction(_ context.Context, r
 		LocalCurrencySymbol: country.CurrencySymbol,
 		TransactionHash:     paymentRequest.TransactionHash,
 		TransactionFeeUsd:   paymentRequest.TransactionFeeUsd,
+		Destination: &pb.PaymentRequestDestination{
+			AccountNumber: paymentRequest.Beneficiary.AccountNumber,
+			AccountType:   paymentRequest.Beneficiary.AccountType,
+			NetworkId:     paymentRequest.Beneficiary.NetworkId,
+			NetworkName:   paymentRequest.Beneficiary.NetworkName,
+			Country:       paymentRequest.Beneficiary.Country,
+			AccountName:   paymentRequest.Beneficiary.AccountName,
+		},
+		CreatedAt: paymentRequest.Xata.CreatedAt,
 	}, nil
 }
 

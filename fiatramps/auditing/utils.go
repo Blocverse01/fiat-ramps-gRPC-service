@@ -12,7 +12,7 @@ import (
 
 func ConvertAuditExportsToCsv(transactions []AuditExport) string {
 	// CSV Header
-	csvString := "usdAmount,sequenceId,transactionFeeUsd,transactionHash,platformFeePercentage,blockchainNetwork,transactionType,createdAt\n"
+	csvString := "blockchainNetwork,sequenceId,usdAmount,platformFeePercentage,transactionFeeUsd,transactionHash,,transactionType,createdAt\n"
 
 	for _, transaction := range transactions {
 		usdAmountString := decimal.NewFromFloat(transaction.UsdAmount).String()
@@ -26,7 +26,7 @@ func ConvertAuditExportsToCsv(transactions []AuditExport) string {
 
 		formattedCreatedAt := parsedCreatedAt.Format("Jan 2, 2006 at 3:04pm (UTC)")
 
-		csvString += usdAmountString + "," + transaction.SequenceId + "," + transactionFeeUsdString + "," + transaction.TransactionHash + "," + platformPercentageString + "," + transaction.BlockchainNetwork + "," + transaction.TransactionType + "," + formattedCreatedAt + "\n"
+		csvString += transaction.BlockchainNetwork + "," + transaction.SequenceId + "," + usdAmountString + "," + platformPercentageString + "," + transactionFeeUsdString + "," + transaction.TransactionHash + "," + transaction.TransactionType + "," + fmt.Sprintf("'%s'", formattedCreatedAt) + "\n"
 	}
 
 	return csvString
