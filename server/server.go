@@ -485,6 +485,7 @@ func (server *fiatRampsServer) GetCollectionRequestTransaction(_ context.Context
 		DestinationWalletAddress: collectionRequest.DestinationWalletAddress,
 		CollectionCountry:        collectionRequest.CollectionCountry,
 		TransactionFeeUsd:        collectionRequest.TransactionFeeUsd,
+		CreatedAt:                collectionRequest.Xata.CreatedAt,
 	}, nil
 }
 
