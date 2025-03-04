@@ -87,6 +87,8 @@ func GetRates() []Rate {
 		return nil
 	}
 
+	fmt.Println(response.Rates)
+
 	return response.Rates
 }
 
