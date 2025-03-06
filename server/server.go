@@ -4,6 +4,10 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
+	"net"
+	"os"
+
 	pb "github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
@@ -15,9 +19,6 @@ import (
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/quotes"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"log"
-	"net"
-	"os"
 )
 
 var (
@@ -453,7 +454,10 @@ func (server *fiatRampsServer) GetPaymentRequestTransaction(_ context.Context, r
 			Country:       paymentRequest.Beneficiary.Country,
 			AccountName:   paymentRequest.Beneficiary.AccountName,
 		},
-		CreatedAt: paymentRequest.Xata.CreatedAt,
+		CreatedAt:             paymentRequest.Xata.CreatedAt,
+		HotWalletAddress:      paymentRequest.HotWalletAddress,
+		FromWalletAddress:     paymentRequest.FromWalletAddress,
+		PlatformFeePercentage: paymentRequest.PlatformFeePercentage,
 	}, nil
 }
 
