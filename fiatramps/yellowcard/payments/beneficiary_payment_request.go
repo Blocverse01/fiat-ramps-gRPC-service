@@ -2,9 +2,10 @@ package payments
 
 import (
 	"fmt"
+	"unicode"
+
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
-	"unicode"
 )
 
 type BeneficiaryPaymentRequestInput struct {
@@ -89,6 +90,8 @@ func (b BeneficiaryPaymentRequestInput) Validate() (BeneficiaryPaymentRequestInp
 const sequenceIdPrefix = "azza-p"
 const defaultPaymentReason = "other"
 const retailCustomerType = "retail"
+const defaultPaymentStatus = "recorded"
+const sentPaymentRequestStatus = "sent"
 
 func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (CreatePaymentRequestResponse, error) {
 	// Validate the input
@@ -128,6 +131,30 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 		normalizedBeneficiaryName += string(char)
 	}
 
+	storedPaymentRequestId, err := StoreBeneficiaryPaymentRequest(PaymentRequestRecord{
+		Beneficiary:           input.BeneficiaryId,
+		TokenAddress:          input.TokenAddress,
+		FromWalletAddress:     input.FromWalletAddress,
+		HotWalletAddress:      input.HotWalletAddress,
+		OwnerId:               input.OwnerId,
+		LocalAmount:           input.LocalAmount,
+		TokenSymbol:           input.TokenSymbol,
+		BlockchainNetwork:     input.BlockchainNetwork,
+		TransactionHash:       input.TransactionHash,
+		PlatformFeePercentage: input.PlatformFeePercentage,
+		ConversionRate:        input.ConversionRate,
+		UsdAmount:             input.UsdAmount,
+		SequenceId:            sequenceId,
+		YellowCardStatus:      defaultPaymentStatus,
+		TransactionFeeUsd:     input.TransactionFeeUsd,
+	})
+
+	fmt.Printf("Stored Payment Request ID: %s", storedPaymentRequestId)
+
+	if err != nil {
+		return CreatePaymentRequestResponse{}, fmt.Errorf("failed to record payment request: %w", err)
+	}
+
 	paymentRequest, err := CreatePaymentRequest(PaymentRequestInput{
 		Sender:      validInput.Sender,
 		ChannelId:   beneficiary.ChannelId,
@@ -147,32 +174,10 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 	})
 
 	if err != nil {
-		return CreatePaymentRequestResponse{}, fmt.Errorf("failed to create payment request: %w", err)
+		return CreatePaymentRequestResponse{}, fmt.Errorf("failed to send payment request to YC: %w", err)
 	}
 
-	storedPaymentRequestId, err := StoreBeneficiaryPaymentRequest(PaymentRequestRecord{
-		Beneficiary:           input.BeneficiaryId,
-		TokenAddress:          input.TokenAddress,
-		FromWalletAddress:     input.FromWalletAddress,
-		HotWalletAddress:      input.HotWalletAddress,
-		OwnerId:               input.OwnerId,
-		LocalAmount:           input.LocalAmount,
-		TokenSymbol:           input.TokenSymbol,
-		BlockchainNetwork:     input.BlockchainNetwork,
-		TransactionHash:       input.TransactionHash,
-		PlatformFeePercentage: input.PlatformFeePercentage,
-		ConversionRate:        paymentRequest.Rate,
-		UsdAmount:             input.UsdAmount,
-		SequenceId:            sequenceId,
-		YellowCardStatus:      paymentRequest.Status,
-		TransactionFeeUsd:     input.TransactionFeeUsd,
-	})
-
-	if err != nil {
-		return CreatePaymentRequestResponse{}, fmt.Errorf("failed to store payment request: %w", err)
-	}
-
-	fmt.Printf("Stored Payment Request ID: %s", storedPaymentRequestId)
+	UpdatePaymentRequestStatus(sequenceId, sentPaymentRequestStatus)
 
 	return paymentRequest, nil
 }

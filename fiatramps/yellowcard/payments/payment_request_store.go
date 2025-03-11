@@ -3,12 +3,13 @@ package payments
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
 )
 
 type PaymentRequestRecord struct {
@@ -24,7 +25,7 @@ type PaymentRequestRecord struct {
 	PlatformFeePercentage float64 `json:"platformFeePercentage"`
 	ConversionRate        float64 `json:"conversionRate"`
 	SequenceId            string  `json:"sequenceId"`
-	UsdAmount             float64 `json:"usdAmount"` // Total USD amount including transaction fees.
+	UsdAmount             float64 `json:"usdAmount"` // Total USD amount excluding transaction fees.
 	YellowCardStatus      string  `json:"yellowCardStatus"`
 	TransactionFeeUsd     float64 `json:"transactionFeeUsd"`
 }
@@ -52,9 +53,13 @@ func StoreBeneficiaryPaymentRequest(input PaymentRequestRecord) (string, error) 
 	}
 
 	defer func(Body io.ReadCloser) {
-		err := Body.Close()
+		_, err := io.Copy(io.Discard, Body) // Discard remaining data
 		if err != nil {
-			log.Printf("Error closing body %v", err)
+			log.Printf("Error discarding response body: %v", err)
+		}
+		err = Body.Close()
+		if err != nil {
+			log.Printf("Error closing body: %v", err)
 		}
 	}(resp.Body)
 
