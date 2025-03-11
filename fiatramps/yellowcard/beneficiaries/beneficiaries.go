@@ -3,17 +3,19 @@ package beneficiaries
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/countries"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/countries"
 )
 
 type GetBeneficiariesRequestBody struct {
 	Columns []string          `json:"columns"`
 	Filter  map[string]string `json:"filter"`
+	Page    map[string]any    `json:"page"`
 }
 
 type YellowCardBeneficiary struct {
@@ -55,6 +57,9 @@ func GetBeneficiaries(ownerId string, countryCode string, accountType string) ([
 	reqBody := GetBeneficiariesRequestBody{
 		Columns: []string{"*"},
 		Filter:  filter,
+		Page: map[string]any{
+			"size": 200,
+		},
 	}
 
 	bodyData, err := fiatramps.BufferBodyData(reqBody)
