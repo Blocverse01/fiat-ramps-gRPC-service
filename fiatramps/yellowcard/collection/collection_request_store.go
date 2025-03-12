@@ -3,11 +3,12 @@ package collection
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
 )
 
 type StoreCollectionRequestInput struct {
@@ -172,6 +173,58 @@ func UpdateCollectionRequestStatus(sequenceId string, status string) error {
 
 	reqBody := map[string]string{
 		"yellowCardStatus": status,
+	}
+
+	bodyData, err := fiatramps.BufferBodyData(reqBody)
+
+	if err != nil {
+		return err
+	}
+
+	resp, err := database.MakeTablesRequest("PATCH", endpoint, bodyData)
+
+	if err != nil {
+		log.Printf("Error making database request: %v", err)
+		return err
+	}
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Printf("Error closing body %v", err)
+		}
+	}(resp.Body)
+
+	// Handle the response
+	log.Printf("Response status: %s", resp.Status)
+
+	if resp.StatusCode != http.StatusOK {
+		fiatramps.HandleFailedResponse(resp)
+		return fmt.Errorf("failed response with status: %s", resp.Status)
+	}
+
+	return nil
+}
+
+type CollectAccountDetails struct {
+	CollectionAccountNumber string `json:"collectionAccountNumber"`
+	CollectionBankName      string `json:"collectionBankName"`
+	CollectionAccountName   string `json:"collectionAccountName"`
+}
+
+func UpdateCollectionRequestAccountDetails(sequenceId string, collectionAccount CollectAccountDetails) error {
+	collectionRequest, err := GetCollectionRequestTransaction(sequenceId)
+
+	if err != nil {
+		return err
+	}
+
+	endpoint := fmt.Sprintf("%s/data/%s", tableName, collectionRequest.Id)
+
+	reqBody := map[string]string{
+		"collectionAccountNumber": collectionAccount.CollectionAccountNumber,
+		"collectionBankName":      collectionAccount.CollectionBankName,
+		"collectionAccountName":   collectionAccount.CollectionAccountName,
 	}
 
 	bodyData, err := fiatramps.BufferBodyData(reqBody)

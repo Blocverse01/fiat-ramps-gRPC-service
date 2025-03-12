@@ -81,6 +81,30 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		return CreateCollectionResponse{}, err
 	}
 
+	storedRequestId, err := StoreCollectionRequest(StoreCollectionRequestInput{
+		OwnerId:                  input.OwnerId,
+		CollectionAccountType:    input.Source.AccountType,
+		CollectionCountry:        input.Recipient.Country,
+		ChannelId:                input.ChannelId,
+		SequenceId:               sequenceId,
+		BlockchainNetwork:        input.BlockchainNetwork,
+		TokenSymbol:              input.TokenSymbol,
+		ConversionRate:           input.ConversionRate,
+		UsdAmount:                input.UsdAmount,
+		LocalAmount:              input.LocalAmount,
+		PlatformFeePercentage:    input.PlatformFeePercentage,
+		DestinationWalletAddress: input.DestinationWalletAddress,
+		NetworkId:                input.Source.NetworkId,
+		YellowCardStatus:         "recorded",
+		TransactionFeeUsd:        input.TransactionFeeUsd,
+	})
+
+	if err != nil {
+		return CreateCollectionResponse{}, fmt.Errorf("failed to store collection request: %w", err)
+	}
+
+	fmt.Printf("Stored Collection Request ID: %s", storedRequestId)
+
 	collectionRequest, err := CreateCollectionRequest(RequestPayload{
 		Source:       input.Source,
 		Recipient:    input.Recipient,
@@ -95,32 +119,11 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		return CreateCollectionResponse{}, err
 	}
 
-	storedRequestId, err := StoreCollectionRequest(StoreCollectionRequestInput{
-		OwnerId:                  input.OwnerId,
-		CollectionCountry:        collectionRequest.Country,
-		CollectionAccountNumber:  collectionRequest.BankInfo.AccountNumber,
-		CollectionBankName:       collectionRequest.BankInfo.Name,
-		CollectionAccountType:    collectionRequest.Source.AccountType,
-		CollectionAccountName:    collectionRequest.BankInfo.AccountName,
-		ChannelId:                input.ChannelId,
-		SequenceId:               sequenceId,
-		BlockchainNetwork:        input.BlockchainNetwork,
-		TokenSymbol:              input.TokenSymbol,
-		ConversionRate:           collectionRequest.Rate,
-		UsdAmount:                input.UsdAmount,
-		LocalAmount:              input.LocalAmount,
-		PlatformFeePercentage:    input.PlatformFeePercentage,
-		DestinationWalletAddress: input.DestinationWalletAddress,
-		NetworkId:                input.Source.NetworkId,
-		YellowCardStatus:         collectionRequest.Status,
-		TransactionFeeUsd:        input.TransactionFeeUsd,
+	UpdateCollectionRequestAccountDetails(sequenceId, CollectAccountDetails{
+		CollectionAccountNumber: collectionRequest.BankInfo.AccountNumber,
+		CollectionBankName:      collectionRequest.BankInfo.Name,
+		CollectionAccountName:   collectionRequest.BankInfo.AccountName,
 	})
-
-	if err != nil {
-		return CreateCollectionResponse{}, fmt.Errorf("failed to store collection request: %w", err)
-	}
-
-	fmt.Printf("Stored Collection Request ID: %s", storedRequestId)
 
 	return collectionRequest, nil
 }
