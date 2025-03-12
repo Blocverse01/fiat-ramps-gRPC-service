@@ -128,29 +128,37 @@ func (server *fiatRampsServer) GetTransactionFee(_ context.Context, req *pb.GetT
 
 func (server *fiatRampsServer) GetBeneficiaries(_ context.Context, req *pb.GetBeneficiariesRequest) (*pb.GetBeneficiariesResponse, error) {
 	ownerBeneficiaries, err := beneficiaries.GetBeneficiaries(req.OwnerId, req.CountryCode, req.AccountType)
-
 	if err != nil {
 		return nil, err
 	}
 
+	// Map to store country details (avoids redundant calls)
+	countryCache := make(map[string]*pb.SupportedCountry)
+
 	var beneficiariesResponse []*pb.Beneficiary
 	for _, beneficiary := range ownerBeneficiaries {
-		country, err := countries.GetCountry(map[string]string{
-			"code": beneficiary.Country,
-		})
-		if err != nil {
-			return nil, err
-		}
-		beneficiariesResponse = append(beneficiariesResponse, &pb.Beneficiary{
-			Id: beneficiary.Id,
-			Country: &pb.SupportedCountry{
+		// Check if country details are already fetched
+		if _, exists := countryCache[beneficiary.Country]; !exists {
+			country, err := countries.GetCountry(map[string]string{
+				"code": beneficiary.Country,
+			})
+			if err != nil {
+				return nil, err
+			}
+			// Cache the country details
+			countryCache[beneficiary.Country] = &pb.SupportedCountry{
 				Code:           country.Code,
 				Name:           country.Name,
 				CurrencySymbol: country.CurrencySymbol,
 				CurrencyName:   country.CurrencyName,
 				Id:             country.Id,
 				Flag:           country.Flag,
-			},
+			}
+		}
+
+		beneficiariesResponse = append(beneficiariesResponse, &pb.Beneficiary{
+			Id:            beneficiary.Id,
+			Country:       countryCache[beneficiary.Country],
 			AccountType:   beneficiary.AccountType,
 			AccountName:   beneficiary.AccountName,
 			AccountNumber: beneficiary.AccountNumber,
