@@ -2,6 +2,7 @@ package collection
 
 import (
 	"fmt"
+
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 )
 
@@ -84,7 +85,6 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 	storedRequestId, err := StoreCollectionRequest(StoreCollectionRequestInput{
 		OwnerId:                  input.OwnerId,
 		CollectionAccountType:    input.Source.AccountType,
-		CollectionCountry:        input.Recipient.Country,
 		ChannelId:                input.ChannelId,
 		SequenceId:               sequenceId,
 		BlockchainNetwork:        input.BlockchainNetwork,
@@ -123,6 +123,7 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		CollectionAccountNumber: collectionRequest.BankInfo.AccountNumber,
 		CollectionBankName:      collectionRequest.BankInfo.Name,
 		CollectionAccountName:   collectionRequest.BankInfo.AccountName,
+		CollectionCountry:       collectionRequest.Country,
 	})
 
 	return collectionRequest, nil
