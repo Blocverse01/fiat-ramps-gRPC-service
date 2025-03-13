@@ -19,6 +19,7 @@ type PlatformCollectionRequestPayload struct {
 	LocalAmount              float64                   `json:"localAmount"`
 	ChannelId                string                    `json:"channelId"`
 	TransactionFeeUsd        float64                   `json:"transactionFeeUsd"`
+	CollectionCountryCode    string                    `json:"collectionCountryCode"`
 }
 
 func (p PlatformCollectionRequestPayload) Validate() error {
@@ -48,6 +49,9 @@ func (p PlatformCollectionRequestPayload) Validate() error {
 	}
 	if p.ChannelId == "" {
 		return fmt.Errorf("ChannelId is required")
+	}
+	if p.CollectionCountryCode == "" {
+		return fmt.Errorf("CollectionCountryCode is required")
 	}
 
 	// Todo Test this
@@ -85,6 +89,7 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 	storedRequestId, err := StoreCollectionRequest(StoreCollectionRequestInput{
 		OwnerId:                  input.OwnerId,
 		CollectionAccountType:    input.Source.AccountType,
+		CollectionCountry:        input.CollectionCountryCode,
 		ChannelId:                input.ChannelId,
 		SequenceId:               sequenceId,
 		BlockchainNetwork:        input.BlockchainNetwork,
@@ -123,7 +128,6 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		CollectionAccountNumber: collectionRequest.BankInfo.AccountNumber,
 		CollectionBankName:      collectionRequest.BankInfo.Name,
 		CollectionAccountName:   collectionRequest.BankInfo.AccountName,
-		CollectionCountry:       collectionRequest.Country,
 	})
 
 	return collectionRequest, nil

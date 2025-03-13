@@ -210,7 +210,6 @@ type CollectAccountDetails struct {
 	CollectionAccountNumber string `json:"collectionAccountNumber"`
 	CollectionBankName      string `json:"collectionBankName"`
 	CollectionAccountName   string `json:"collectionAccountName"`
-	CollectionCountry       string `json:"collectionCountry"`
 }
 
 func UpdateCollectionRequestAccountDetails(sequenceId string, collectionAccount CollectAccountDetails) error {
@@ -226,7 +225,6 @@ func UpdateCollectionRequestAccountDetails(sequenceId string, collectionAccount 
 		"collectionAccountNumber": collectionAccount.CollectionAccountNumber,
 		"collectionBankName":      collectionAccount.CollectionBankName,
 		"collectionAccountName":   collectionAccount.CollectionAccountName,
-		"collectionCountry":       collectionAccount.CollectionCountry,
 	}
 
 	bodyData, err := fiatramps.BufferBodyData(reqBody)

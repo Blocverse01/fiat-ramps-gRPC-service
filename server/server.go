@@ -387,6 +387,7 @@ func (server *fiatRampsServer) CreatePlatformCollectionRequest(_ context.Context
 		UsdAmount:                req.UsdAmount,
 		ChannelId:                req.ChannelId,
 		TransactionFeeUsd:        req.TransactionFeeUsd,
+		CollectionCountryCode:    req.CollectionCountryCode,
 	})
 
 	if err != nil {
