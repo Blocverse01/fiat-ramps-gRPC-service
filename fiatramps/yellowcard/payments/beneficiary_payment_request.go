@@ -1,6 +1,7 @@
 package payments
 
 import (
+	"encoding/json"
 	"fmt"
 	"unicode"
 
@@ -155,7 +156,7 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 		return CreatePaymentRequestResponse{}, fmt.Errorf("failed to record payment request: %w", err)
 	}
 
-	paymentRequest, err := CreatePaymentRequest(PaymentRequestInput{
+	paymentRequestInput := PaymentRequestInput{
 		Sender:      validInput.Sender,
 		ChannelId:   beneficiary.ChannelId,
 		LocalAmount: validInput.LocalAmount,
@@ -171,9 +172,18 @@ func CreateBeneficiaryPaymentRequest(input BeneficiaryPaymentRequestInput) (Crea
 		},
 		CustomerType: retailCustomerType,
 		ForceAccept:  true,
-	})
+	}
+
+	paymentRequest, err := CreatePaymentRequest(paymentRequestInput)
 
 	if err != nil {
+		jsonPayload, jsonErr := json.MarshalIndent(paymentRequestInput, "", "  ")
+		if jsonErr != nil {
+			fmt.Println("Error marshaling JSON:", jsonErr)
+		} else {
+			fmt.Println("Failed to create payment request:", err)
+			fmt.Println("Request Payload:", string(jsonPayload))
+		}
 		return CreatePaymentRequestResponse{}, fmt.Errorf("failed to send payment request to YC: %w", err)
 	}
 
