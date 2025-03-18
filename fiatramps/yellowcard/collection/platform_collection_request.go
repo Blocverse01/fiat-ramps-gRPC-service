@@ -1,6 +1,7 @@
 package collection
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
@@ -110,7 +111,7 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 
 	fmt.Printf("Stored Collection Request ID: %s", storedRequestId)
 
-	collectionRequest, err := CreateCollectionRequest(RequestPayload{
+	collectionRequestPayload := RequestPayload{
 		Source:       input.Source,
 		Recipient:    input.Recipient,
 		LocalAmount:  input.LocalAmount,
@@ -118,9 +119,18 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		ChannelId:    input.ChannelId,
 		ForceAccept:  true,
 		CustomerType: "retail",
-	})
+	}
+
+	collectionRequest, err := CreateCollectionRequest(collectionRequestPayload)
 
 	if err != nil {
+		jsonPayload, jsonErr := json.MarshalIndent(collectionRequestPayload, "", "  ")
+		if jsonErr != nil {
+			fmt.Println("Error marshaling JSON:", jsonErr)
+		} else {
+			fmt.Println("Failed to create collection request:", err)
+			fmt.Println("Request Payload:", string(jsonPayload))
+		}
 		return CreateCollectionResponse{}, err
 	}
 
