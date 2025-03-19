@@ -121,24 +121,16 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		CustomerType: "retail",
 	}
 
-	jsonPayload, jsonErr := json.MarshalIndent(collectionRequestPayload, "", "  ")
-	if jsonErr != nil {
-		fmt.Println("Error marshaling JSON:", jsonErr)
-	} else {
-		fmt.Println("Failed to create collection request:", err)
-		fmt.Println("Request Payload:", string(jsonPayload))
-	}
-
 	collectionRequest, err := CreateCollectionRequest(collectionRequestPayload)
 
 	if err != nil {
-		// jsonPayload, jsonErr := json.MarshalIndent(collectionRequestPayload, "", "  ")
-		// if jsonErr != nil {
-		// 	fmt.Println("Error marshaling JSON:", jsonErr)
-		// } else {
-		// 	fmt.Println("Failed to create collection request:", err)
-		// 	fmt.Println("Request Payload:", string(jsonPayload))
-		// }
+		jsonPayload, jsonErr := json.MarshalIndent(collectionRequestPayload, "", "  ")
+		if jsonErr != nil {
+			fmt.Println("Error marshaling JSON:", jsonErr)
+		} else {
+			fmt.Println("Failed to create collection request:", err)
+			fmt.Println("Request Payload:", string(jsonPayload))
+		}
 		return CreateCollectionResponse{}, err
 	}
 
