@@ -3,11 +3,12 @@ package payment_networks
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 )
 
 type NetworkStatus string
@@ -58,8 +59,18 @@ func GetPaymentNetworks(countryCode string, channelId string) ([]ActiveNetwork, 
 		return []ActiveNetwork{}, fmt.Errorf("failed response with status: %s", resp.Status)
 	}
 
+	// Read body into a buffer
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		return []ActiveNetwork{}, err
+	}
+
+	// Log the JSON response
+	log.Printf("Response Body: %s", string(bodyBytes))
+
 	var response GetNetworksResponse
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+	if err := json.Unmarshal(bodyBytes, &response); err != nil {
 		log.Printf("Failed to decode response body: %v", err)
 		return []ActiveNetwork{}, err
 	}
