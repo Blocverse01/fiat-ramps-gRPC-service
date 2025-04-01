@@ -3,11 +3,12 @@ package payment_networks
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 )
 
 type NetworkStatus string
@@ -23,6 +24,7 @@ type PaymentNetwork struct {
 	Country           string        `json:"country"`
 	AccountNumberType string        `json:"accountNumberType"`
 	ChannelIds        []string      `json:"channelIds"`
+	SeerBitId         string        `json:"seerbitId"`
 }
 
 type GetNetworksResponse struct {
@@ -33,6 +35,7 @@ type ActiveNetwork struct {
 	Name      string `json:"name"`
 	NetworkId string `json:"networkId"`
 	ChannelId string `json:"channelId"`
+	SeerBitId string `json:"seerbitId"`
 }
 
 const networksEndpoint = "/business/networks"
@@ -67,6 +70,8 @@ func GetPaymentNetworks(countryCode string, channelId string) ([]ActiveNetwork, 
 	// Filter for active status
 	var activeNetworks []ActiveNetwork
 
+	// fmt.Print(response.Networks)
+
 	// Filter active networks that have `channelId` in the list of `network.channelIds
 	for _, network := range response.Networks {
 		if network.Status == Active {
@@ -76,12 +81,15 @@ func GetPaymentNetworks(countryCode string, channelId string) ([]ActiveNetwork, 
 						Name:      network.Name,
 						NetworkId: network.Id,
 						ChannelId: id,
+						SeerBitId: "seerBitID",
 					})
 					break
 				}
 			}
 		}
 	}
+
+	fmt.Print(activeNetworks)
 
 	return activeNetworks, nil
 }

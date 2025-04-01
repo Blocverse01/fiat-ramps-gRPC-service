@@ -286,6 +286,7 @@ func (server *fiatRampsServer) GetPaymentNetworks(_ context.Context, req *pb.Get
 			NetworkId: network.NetworkId,
 			Name:      network.Name,
 			ChannelId: network.ChannelId,
+			SeerBitId : network.SeerBitId,
 		})
 	}
 
