@@ -70,18 +70,23 @@ func GetPaymentNetworks(countryCode string, channelId string) ([]ActiveNetwork, 
 	// Filter for active status
 	var activeNetworks []ActiveNetwork
 
-	// fmt.Print(response.Networks)
-
 	// Filter active networks that have `channelId` in the list of `network.channelIds
 	for _, network := range response.Networks {
 		if network.Status == Active {
 			for _, id := range network.ChannelIds {
 				if id == channelId {
+
+					// Check if SeerBitId exists; if not, use "not_available" as the default value
+					seerBitId := network.SeerBitId
+					if seerBitId == "" {
+						seerBitId = "not_available"
+					}
+
 					activeNetworks = append(activeNetworks, ActiveNetwork{
 						Name:      network.Name,
 						NetworkId: network.Id,
 						ChannelId: id,
-						SeerBitId: "seerBitID",
+						SeerBitId: seerBitId,
 					})
 					break
 				}
@@ -89,7 +94,6 @@ func GetPaymentNetworks(countryCode string, channelId string) ([]ActiveNetwork, 
 		}
 	}
 
-	fmt.Print(activeNetworks)
 
 	return activeNetworks, nil
 }

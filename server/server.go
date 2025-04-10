@@ -157,14 +157,16 @@ func (server *fiatRampsServer) GetBeneficiaries(_ context.Context, req *pb.GetBe
 		}
 
 		beneficiariesResponse = append(beneficiariesResponse, &pb.Beneficiary{
-			Id:            beneficiary.Id,
-			Country:       countryCache[beneficiary.Country],
-			AccountType:   beneficiary.AccountType,
-			AccountName:   beneficiary.AccountName,
-			AccountNumber: beneficiary.AccountNumber,
-			ProviderName:  beneficiary.NetworkName,
-			NetworkId:     beneficiary.NetworkId,
-			ChannelId:     beneficiary.ChannelId,
+			Id:                   beneficiary.Id,
+			Country:              countryCache[beneficiary.Country],
+			AccountType:          beneficiary.AccountType,
+			AccountName:          beneficiary.AccountName,
+			AccountNumber:        beneficiary.AccountNumber,
+			ProviderName:         beneficiary.NetworkName,
+			NetworkId:            beneficiary.NetworkId,
+			ChannelId:            beneficiary.ChannelId,
+			NameEnquiryReference: beneficiary.NameEnquiryReference,
+			SeerbitId:            beneficiary.SeerBitId,
 		})
 	}
 
@@ -198,12 +200,14 @@ func (server *fiatRampsServer) GetBeneficiary(_ context.Context, req *pb.GetBene
 			Id:             country.Id,
 			Flag:           country.Flag,
 		},
-		AccountType:   beneficiary.AccountType,
-		AccountName:   beneficiary.AccountName,
-		AccountNumber: beneficiary.AccountNumber,
-		ProviderName:  beneficiary.NetworkName,
-		NetworkId:     beneficiary.NetworkId,
-		ChannelId:     beneficiary.ChannelId,
+		AccountType:          beneficiary.AccountType,
+		AccountName:          beneficiary.AccountName,
+		AccountNumber:        beneficiary.AccountNumber,
+		ProviderName:         beneficiary.NetworkName,
+		NetworkId:            beneficiary.NetworkId,
+		ChannelId:            beneficiary.ChannelId,
+		NameEnquiryReference: beneficiary.NameEnquiryReference,
+		SeerbitId:            beneficiary.SeerBitId,
 	}, nil
 }
 
@@ -228,14 +232,16 @@ func (server *fiatRampsServer) GetSupportedCountryByCode(_ context.Context, req 
 
 func (server *fiatRampsServer) AddBeneficiary(_ context.Context, req *pb.AddBeneficiaryRequest) (*pb.AddBeneficiaryResponse, error) {
 	newBeneficiaryId, err := beneficiaries.AddBeneficiary(beneficiaries.AddBeneficiaryRequestBody{
-		AccountNumber: req.AccountNumber,
-		AccountType:   req.AccountType,
-		AccountName:   req.AccountName,
-		ChannelId:     req.ChannelId,
-		NetworkId:     req.NetworkId,
-		Country:       req.Country,
-		OwnerId:       req.OwnerId,
-		NetworkName:   req.NetworkName,
+		AccountNumber:        req.AccountNumber,
+		AccountType:          req.AccountType,
+		AccountName:          req.AccountName,
+		ChannelId:            req.ChannelId,
+		NetworkId:            req.NetworkId,
+		Country:              req.Country,
+		OwnerId:              req.OwnerId,
+		NetworkName:          req.NetworkName,
+		NameEnquiryReference: req.NameEnquiryReference,
+		SeerBitId:            req.SeerbitId,
 	})
 
 	if err != nil {
@@ -286,7 +292,7 @@ func (server *fiatRampsServer) GetPaymentNetworks(_ context.Context, req *pb.Get
 			NetworkId: network.NetworkId,
 			Name:      network.Name,
 			ChannelId: network.ChannelId,
-			SeerBitId : network.SeerBitId,
+			SeerbitId: network.SeerBitId,
 		})
 	}
 
