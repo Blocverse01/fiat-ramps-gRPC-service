@@ -19,15 +19,17 @@ type GetBeneficiariesRequestBody struct {
 }
 
 type YellowCardBeneficiary struct {
-	AccountNumber string `json:"accountNumber"`
-	AccountName   string `json:"accountName"`
-	AccountType   string `json:"accountType"`
-	NetworkId     string `json:"networkId"`
-	NetworkName   string `json:"networkName"`
-	ChannelId     string `json:"channelId"`
-	Country       string `json:"country"`
-	Id            string `json:"id"`
-	OwnerId       string `json:"ownerId"`
+	AccountNumber        string `json:"accountNumber"`
+	AccountName          string `json:"accountName"`
+	AccountType          string `json:"accountType"`
+	NetworkId            string `json:"networkId"`
+	NetworkName          string `json:"networkName"`
+	ChannelId            string `json:"channelId"`
+	Country              string `json:"country"`
+	Id                   string `json:"id"`
+	OwnerId              string `json:"ownerId"`
+	NameEnquiryReference string `json:"nameEnquiryReference"`
+	SeerBitId            string `json:"seerbitId"`
 }
 
 type GetBeneficiariesResponse struct {
@@ -155,14 +157,17 @@ func GetBeneficiary(beneficiaryId string) (YellowCardBeneficiary, error) {
 }
 
 type AddBeneficiaryRequestBody struct {
-	AccountNumber string `json:"accountNumber"`
-	AccountName   string `json:"accountName"`
-	AccountType   string `json:"accountType"`
-	NetworkId     string `json:"networkId"`
-	NetworkName   string `json:"networkName"`
-	ChannelId     string `json:"channelId"`
-	Country       string `json:"country"`
-	OwnerId       string `json:"ownerId"`
+	AccountNumber        string `json:"accountNumber"`
+	AccountName          string `json:"accountName"`
+	AccountType          string `json:"accountType"`
+	NetworkId            string `json:"networkId"`
+	NetworkName          string `json:"networkName"`
+	ChannelId            string `json:"channelId"`
+	Country              string `json:"country"`
+	OwnerId              string `json:"ownerId"`
+	NameEnquiryReference string `json:"nameEnquiryReference"`
+	SeerBitId            string `json:"seerbitId"`
+	
 }
 
 type AddBeneficiaryResponse struct {
@@ -170,6 +175,9 @@ type AddBeneficiaryResponse struct {
 }
 
 func AddBeneficiary(beneficiary AddBeneficiaryRequestBody) (string, error) {
+
+	fmt.Print("got here")
+
 	_, err := countries.GetCountry(map[string]string{
 		"code": beneficiary.Country,
 	})

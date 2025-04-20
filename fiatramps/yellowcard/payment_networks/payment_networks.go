@@ -24,6 +24,7 @@ type PaymentNetwork struct {
 	Country           string        `json:"country"`
 	AccountNumberType string        `json:"accountNumberType"`
 	ChannelIds        []string      `json:"channelIds"`
+	SeerBitId         string        `json:"seerbitId"`
 }
 
 type GetNetworksResponse struct {
@@ -34,6 +35,7 @@ type ActiveNetwork struct {
 	Name      string `json:"name"`
 	NetworkId string `json:"networkId"`
 	ChannelId string `json:"channelId"`
+	SeerBitId string `json:"seerbitId"`
 }
 
 const networksEndpoint = "/business/networks"
@@ -83,16 +85,25 @@ func GetPaymentNetworks(countryCode string, channelId string) ([]ActiveNetwork, 
 		if network.Status == Active {
 			for _, id := range network.ChannelIds {
 				if id == channelId {
+
+					// Check if SeerBitId exists; if not, use "not_available" as the default value
+					seerBitId := network.SeerBitId
+					if seerBitId == "" {
+						seerBitId = "not_available"
+					}
+
 					activeNetworks = append(activeNetworks, ActiveNetwork{
 						Name:      network.Name,
 						NetworkId: network.Id,
 						ChannelId: id,
+						SeerBitId: seerBitId,
 					})
 					break
 				}
 			}
 		}
 	}
+
 
 	return activeNetworks, nil
 }
