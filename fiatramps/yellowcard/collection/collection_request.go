@@ -3,10 +3,11 @@ package collection
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"log"
 	"net/http"
+
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 )
 
 type Source struct {
@@ -30,18 +31,19 @@ type BankInfo struct {
 	AccountName   string `json:"accountName"`
 }
 type CreateCollectionResponse struct {
-	Source          Source                    `json:"source"`
-	Recipient       yellowcard.RetailCustomer `json:"recipient"`
-	ChannelId       string                    `json:"channelId"`
-	SequenceId      string                    `json:"sequenceId"`
-	Amount          float64                   `json:"amount"`
-	ConvertedAmount float64                   `json:"convertedAmount"`
-	Rate            float64                   `json:"rate"`
-	Id              string                    `json:"id"`
-	Status          string                    `json:"status"`
-	Currency        string                    `json:"currency"`
-	Country         string                    `json:"country"`
-	BankInfo        BankInfo                  `json:"bankInfo"`
+	Source             Source                    `json:"source"`
+	Recipient          yellowcard.RetailCustomer `json:"recipient"`
+	ChannelId          string                    `json:"channelId"`
+	SequenceId         string                    `json:"sequenceId"`
+	Amount             float64                   `json:"amount"`
+	ConvertedAmount    float64                   `json:"convertedAmount"`
+	Rate               float64                   `json:"rate"`
+	Id                 string                    `json:"id"`
+	Status             string                    `json:"status"`
+	Currency           string                    `json:"currency"`
+	Country            string                    `json:"country"`
+	BankInfo           BankInfo                  `json:"bankInfo"`
+	IsAgentTransaction bool                      `json:"isAgentTransaction"`
 }
 
 func (s Source) Validate() error {

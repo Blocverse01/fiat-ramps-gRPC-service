@@ -21,6 +21,7 @@ type PlatformCollectionRequestPayload struct {
 	ChannelId                string                    `json:"channelId"`
 	TransactionFeeUsd        float64                   `json:"transactionFeeUsd"`
 	CollectionCountryCode    string                    `json:"collectionCountryCode"`
+	IsAgentTransaction       bool                      `json:"isAgentTransaction"`
 }
 
 func (p PlatformCollectionRequestPayload) Validate() error {
@@ -103,6 +104,7 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		NetworkId:                input.Source.NetworkId,
 		YellowCardStatus:         "recorded",
 		TransactionFeeUsd:        input.TransactionFeeUsd,
+		IsAgentTransaction:      input.IsAgentTransaction,
 	})
 
 	if err != nil {
