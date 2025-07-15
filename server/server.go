@@ -395,6 +395,7 @@ func (server *fiatRampsServer) CreatePlatformCollectionRequest(_ context.Context
 		ChannelId:                req.ChannelId,
 		TransactionFeeUsd:        req.TransactionFeeUsd,
 		CollectionCountryCode:    req.CollectionCountryCode,
+		IsAgentTransaction:  req.IsAgentTransaction,
 	})
 
 	if err != nil {
@@ -505,6 +506,7 @@ func (server *fiatRampsServer) GetCollectionRequestTransaction(_ context.Context
 		DestinationWalletAddress: collectionRequest.DestinationWalletAddress,
 		CollectionCountry:        collectionRequest.CollectionCountry,
 		TransactionFeeUsd:        collectionRequest.TransactionFeeUsd,
+		IsAgentTransaction:  	collectionRequest.IsAgentTransaction,
 		CreatedAt:                collectionRequest.Xata.CreatedAt,
 	}, nil
 }

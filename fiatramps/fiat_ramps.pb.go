@@ -2316,6 +2316,7 @@ type CreatePlatformCollectionRequestInput struct {
 	ChannelId                string                    `protobuf:"bytes,11,opt,name=channel_id,json=channelId,proto3" json:"channel_id,omitempty"`
 	TransactionFeeUsd        float64                   `protobuf:"fixed64,12,opt,name=transaction_fee_usd,json=transactionFeeUsd,proto3" json:"transaction_fee_usd,omitempty"`
 	CollectionCountryCode    string                    `protobuf:"bytes,13,opt,name=collection_country_code,json=collectionCountryCode,proto3" json:"collection_country_code,omitempty"`
+	IsAgentTransaction       bool                      `protobuf:"varint,14,opt,name=is_agent_transaction,json=isAgentTransaction,proto3" json:"is_agent_transaction,omitempty"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -2441,6 +2442,13 @@ func (x *CreatePlatformCollectionRequestInput) GetCollectionCountryCode() string
 	return ""
 }
 
+func (x *CreatePlatformCollectionRequestInput) GetIsAgentTransaction() bool {
+	if x != nil {
+		return x.IsAgentTransaction
+	}
+	return false
+}
+
 type BankInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -2502,21 +2510,22 @@ func (x *BankInfo) GetAccountName() string {
 }
 
 type CreateCollectionResponse struct {
-	state           protoimpl.MessageState    `protogen:"open.v1"`
-	Source          *CollectionSource         `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"`
-	Recipient       *YellowCardRetailCustomer `protobuf:"bytes,2,opt,name=recipient,proto3" json:"recipient,omitempty"`
-	ChannelId       string                    `protobuf:"bytes,3,opt,name=channel_id,json=channelId,proto3" json:"channel_id,omitempty"`
-	SequenceId      string                    `protobuf:"bytes,4,opt,name=sequence_id,json=sequenceId,proto3" json:"sequence_id,omitempty"`
-	Amount          float64                   `protobuf:"fixed64,5,opt,name=amount,proto3" json:"amount,omitempty"`
-	ConvertedAmount float64                   `protobuf:"fixed64,6,opt,name=converted_amount,json=convertedAmount,proto3" json:"converted_amount,omitempty"`
-	Rate            float64                   `protobuf:"fixed64,7,opt,name=rate,proto3" json:"rate,omitempty"`
-	Id              string                    `protobuf:"bytes,8,opt,name=id,proto3" json:"id,omitempty"`
-	Status          string                    `protobuf:"bytes,9,opt,name=status,proto3" json:"status,omitempty"`
-	Currency        string                    `protobuf:"bytes,10,opt,name=currency,proto3" json:"currency,omitempty"`
-	Country         string                    `protobuf:"bytes,11,opt,name=country,proto3" json:"country,omitempty"`
-	BankInfo        *BankInfo                 `protobuf:"bytes,12,opt,name=bank_info,json=bankInfo,proto3" json:"bank_info,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state              protoimpl.MessageState    `protogen:"open.v1"`
+	Source             *CollectionSource         `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"`
+	Recipient          *YellowCardRetailCustomer `protobuf:"bytes,2,opt,name=recipient,proto3" json:"recipient,omitempty"`
+	ChannelId          string                    `protobuf:"bytes,3,opt,name=channel_id,json=channelId,proto3" json:"channel_id,omitempty"`
+	SequenceId         string                    `protobuf:"bytes,4,opt,name=sequence_id,json=sequenceId,proto3" json:"sequence_id,omitempty"`
+	Amount             float64                   `protobuf:"fixed64,5,opt,name=amount,proto3" json:"amount,omitempty"`
+	ConvertedAmount    float64                   `protobuf:"fixed64,6,opt,name=converted_amount,json=convertedAmount,proto3" json:"converted_amount,omitempty"`
+	Rate               float64                   `protobuf:"fixed64,7,opt,name=rate,proto3" json:"rate,omitempty"`
+	Id                 string                    `protobuf:"bytes,8,opt,name=id,proto3" json:"id,omitempty"`
+	Status             string                    `protobuf:"bytes,9,opt,name=status,proto3" json:"status,omitempty"`
+	Currency           string                    `protobuf:"bytes,10,opt,name=currency,proto3" json:"currency,omitempty"`
+	Country            string                    `protobuf:"bytes,11,opt,name=country,proto3" json:"country,omitempty"`
+	BankInfo           *BankInfo                 `protobuf:"bytes,12,opt,name=bank_info,json=bankInfo,proto3" json:"bank_info,omitempty"`
+	IsAgentTransaction bool                      `protobuf:"varint,13,opt,name=is_agent_transaction,json=isAgentTransaction,proto3" json:"is_agent_transaction,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *CreateCollectionResponse) Reset() {
@@ -2633,6 +2642,13 @@ func (x *CreateCollectionResponse) GetBankInfo() *BankInfo {
 	return nil
 }
 
+func (x *CreateCollectionResponse) GetIsAgentTransaction() bool {
+	if x != nil {
+		return x.IsAgentTransaction
+	}
+	return false
+}
+
 type GetCollectionRequestTransactionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SequenceId    string                 `protobuf:"bytes,1,opt,name=sequence_id,json=sequenceId,proto3" json:"sequence_id,omitempty"`
@@ -2699,6 +2715,7 @@ type GetCollectionRequestResponse struct {
 	LocalCurrencySymbol      string                 `protobuf:"bytes,18,opt,name=local_currency_symbol,json=localCurrencySymbol,proto3" json:"local_currency_symbol,omitempty"`
 	TransactionFeeUsd        float64                `protobuf:"fixed64,19,opt,name=transaction_fee_usd,json=transactionFeeUsd,proto3" json:"transaction_fee_usd,omitempty"`
 	CreatedAt                string                 `protobuf:"bytes,20,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	IsAgentTransaction       bool                   `protobuf:"varint,21,opt,name=is_agent_transaction,json=isAgentTransaction,proto3" json:"is_agent_transaction,omitempty"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -2871,6 +2888,13 @@ func (x *GetCollectionRequestResponse) GetCreatedAt() string {
 		return x.CreatedAt
 	}
 	return ""
+}
+
+func (x *GetCollectionRequestResponse) GetIsAgentTransaction() bool {
+	if x != nil {
+		return x.IsAgentTransaction
+	}
+	return false
 }
 
 type UpdateCollectionTransactionStatusRequest struct {
@@ -3404,7 +3428,7 @@ const file_fiatramps_fiat_ramps_proto_rawDesc = "" +
 	"\x0eaccount_number\x18\x01 \x01(\tR\raccountNumber\x12!\n" +
 	"\faccount_type\x18\x02 \x01(\tR\vaccountType\x12\x1d\n" +
 	"\n" +
-	"network_id\x18\x03 \x01(\tR\tnetworkId\"\xf9\x04\n" +
+	"network_id\x18\x03 \x01(\tR\tnetworkId\"\xab\x05\n" +
 	"$CreatePlatformCollectionRequestInput\x12\x19\n" +
 	"\bowner_id\x18\x01 \x01(\tR\aownerId\x126\n" +
 	"\x06source\x18\x02 \x01(\v2\x1e.fiatramps.v1.CollectionSourceR\x06source\x12D\n" +
@@ -3421,11 +3445,12 @@ const file_fiatramps_fiat_ramps_proto_rawDesc = "" +
 	"\n" +
 	"channel_id\x18\v \x01(\tR\tchannelId\x12.\n" +
 	"\x13transaction_fee_usd\x18\f \x01(\x01R\x11transactionFeeUsd\x126\n" +
-	"\x17collection_country_code\x18\r \x01(\tR\x15collectionCountryCode\"h\n" +
+	"\x17collection_country_code\x18\r \x01(\tR\x15collectionCountryCode\x120\n" +
+	"\x14is_agent_transaction\x18\x0e \x01(\bR\x12isAgentTransaction\"h\n" +
 	"\bBankInfo\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
 	"\x0eaccount_number\x18\x02 \x01(\tR\raccountNumber\x12!\n" +
-	"\faccount_name\x18\x03 \x01(\tR\vaccountName\"\xc2\x03\n" +
+	"\faccount_name\x18\x03 \x01(\tR\vaccountName\"\xf4\x03\n" +
 	"\x18CreateCollectionResponse\x126\n" +
 	"\x06source\x18\x01 \x01(\v2\x1e.fiatramps.v1.CollectionSourceR\x06source\x12D\n" +
 	"\trecipient\x18\x02 \x01(\v2&.fiatramps.v1.YellowCardRetailCustomerR\trecipient\x12\x1d\n" +
@@ -3441,10 +3466,11 @@ const file_fiatramps_fiat_ramps_proto_rawDesc = "" +
 	"\bcurrency\x18\n" +
 	" \x01(\tR\bcurrency\x12\x18\n" +
 	"\acountry\x18\v \x01(\tR\acountry\x123\n" +
-	"\tbank_info\x18\f \x01(\v2\x16.fiatramps.v1.BankInfoR\bbankInfo\"I\n" +
+	"\tbank_info\x18\f \x01(\v2\x16.fiatramps.v1.BankInfoR\bbankInfo\x120\n" +
+	"\x14is_agent_transaction\x18\r \x01(\bR\x12isAgentTransaction\"I\n" +
 	"&GetCollectionRequestTransactionRequest\x12\x1f\n" +
 	"\vsequence_id\x18\x01 \x01(\tR\n" +
-	"sequenceId\"\xf3\x06\n" +
+	"sequenceId\"\xa5\a\n" +
 	"\x1cGetCollectionRequestResponse\x12\x19\n" +
 	"\bowner_id\x18\x01 \x01(\tR\aownerId\x12-\n" +
 	"\x12collection_country\x18\x02 \x01(\tR\x11collectionCountry\x12:\n" +
@@ -3471,7 +3497,8 @@ const file_fiatramps_fiat_ramps_proto_rawDesc = "" +
 	"\x15local_currency_symbol\x18\x12 \x01(\tR\x13localCurrencySymbol\x12.\n" +
 	"\x13transaction_fee_usd\x18\x13 \x01(\x01R\x11transactionFeeUsd\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\x14 \x01(\tR\tcreatedAt\"c\n" +
+	"created_at\x18\x14 \x01(\tR\tcreatedAt\x120\n" +
+	"\x14is_agent_transaction\x18\x15 \x01(\bR\x12isAgentTransaction\"c\n" +
 	"(UpdateCollectionTransactionStatusRequest\x12\x1f\n" +
 	"\vsequence_id\x18\x01 \x01(\tR\n" +
 	"sequenceId\x12\x16\n" +

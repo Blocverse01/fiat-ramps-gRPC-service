@@ -30,6 +30,7 @@ type StoreCollectionRequestInput struct {
 	NetworkId                string  `json:"networkId"`
 	YellowCardStatus         string  `json:"yellowCardStatus"`
 	TransactionFeeUsd        float64 `json:"transactionFeeUsd"`
+	IsAgentTransaction       bool    `json:"isAgentTransaction"`
 }
 
 type RequestRecord struct {
@@ -52,6 +53,7 @@ type RequestRecord struct {
 	YellowCardStatus         string            `json:"yellowCardStatus"`
 	Id                       string            `json:"id"`
 	TransactionFeeUsd        float64           `json:"transactionFeeUsd"`
+	IsAgentTransaction       bool    `json:"isAgentTransaction"`
 	Xata                     database.XataInfo `json:"xata"`
 }
 
@@ -65,6 +67,8 @@ func StoreCollectionRequest(input StoreCollectionRequestInput) (string, error) {
 	endpoint := fmt.Sprintf("%s/data", tableName)
 
 	bodyData, err := fiatramps.BufferBodyData(input)
+
+	fmt.Println("bodyData:", bodyData)
 
 	if err != nil {
 		return "", err
