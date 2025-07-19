@@ -86,6 +86,7 @@ func GetPaymentMethods(countryCode string, route string) (GetPaymentMethodsRespo
 
 	recommendedChannels := GetRecommendedChannels(countryCode, route)
 	fetchedChannelsForRoute := filterActiveChannelsByRoute(response.Channels, route)
+	log.Printf("Fetched channels: %v", fetchedChannelsForRoute)
 	recommendedChannelIds := make([]string, len(recommendedChannels))
 
 	for i, channel := range recommendedChannels {
@@ -129,10 +130,7 @@ func GetPaymentMethods(countryCode string, route string) (GetPaymentMethodsRespo
 				phonePaymentMethods = append(phonePaymentMethods, paymentMethod)
 			}
 		}
-	}
-
-	log.Printf("Bank payment methods: %v", bankPaymentMethods)
-	log.Printf("Phone payment methods: %v", phonePaymentMethods)
+	
 
 	var selectedPaymentMethods []PaymentMethod
 
