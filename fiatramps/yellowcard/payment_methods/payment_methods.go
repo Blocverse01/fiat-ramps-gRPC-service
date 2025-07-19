@@ -130,6 +130,7 @@ func GetPaymentMethods(countryCode string, route string) (GetPaymentMethodsRespo
 				phonePaymentMethods = append(phonePaymentMethods, paymentMethod)
 			}
 		}
+	}
 	
 
 	var selectedPaymentMethods []PaymentMethod
