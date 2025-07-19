@@ -78,7 +78,7 @@ var RecommendedChannels = []Channel{
 		Country:     "KE",
 		RampType:    "withdraw",
 		AccountType: "phone",
-		ID:          "a3f3a711-c50e-4e53-b867-7d1d148cd43b",
+		ID:          "c2b2eeda-d4ca-49fd-ba21-0781ffa7714b",
 	},
 	{
 		Country:     "KE",
