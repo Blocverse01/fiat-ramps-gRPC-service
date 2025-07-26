@@ -44,6 +44,9 @@ func generateAuthenticationCredentials(path string, method string, body *bytes.B
 
 	fmt.Println("Signature :", signature);
 
+	fmt.Println("Authorization :", authorization);
+
+
 	return AuthenticationCredentials{
 		Date:          date,
 		Authorization: authorization,
