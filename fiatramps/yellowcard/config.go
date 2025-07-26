@@ -23,6 +23,7 @@ func generateAuthenticationCredentials(path string, method string, body *bytes.B
 	var secretKey = fiatramps.GetEnvConfig("YELLOW_CARD_SECRET_KEY")
 
 	var date = time.Now().UTC().Format("2006-01-02T15:04:05Z07:00")
+
 	var message = fmt.Sprintf("%s%s%s", date, path, method)
 
 	// Create a new HMAC by defining the hash type and the key (as byte array)
@@ -40,6 +41,8 @@ func generateAuthenticationCredentials(path string, method string, body *bytes.B
 	// Get the final HMAC as a base64 string
 	signature := base64.StdEncoding.EncodeToString(h.Sum(nil))
 	authorization := fmt.Sprintf("YcHmacV1 %s:%s", publicKey, signature)
+
+	fmt.Println("Signature :", signature);
 
 	return AuthenticationCredentials{
 		Date:          date,
