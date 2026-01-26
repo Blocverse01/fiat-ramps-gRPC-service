@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
@@ -53,7 +54,7 @@ type RequestRecord struct {
 	YellowCardStatus         string            `json:"yellowCardStatus"`
 	Id                       string            `json:"id"`
 	TransactionFeeUsd        float64           `json:"transactionFeeUsd"`
-	IsAgentTransaction       bool    `json:"isAgentTransaction"`
+	IsAgentTransaction       bool              `json:"isAgentTransaction"`
 	Xata                     database.XataInfo `json:"xata"`
 }
 
@@ -113,10 +114,12 @@ type GetCollectionRequestResponse struct {
 func GetCollectionRequestTransaction(sequenceId string) (RequestRecord, error) {
 	endpoint := fmt.Sprintf("%s/query", tableName)
 
-	var filter map[string]string
+	filter := make(map[string]string)
 
-	filter = map[string]string{
-		"sequenceId": sequenceId,
+	if strings.Contains(sequenceId, "-") {
+		filter["sequenceId"] = sequenceId
+	} else {
+		filter["collectionAccountNumber"] = sequenceId
 	}
 
 	reqBody := database.TableDataQueryRequestBody{

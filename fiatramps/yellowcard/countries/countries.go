@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/database"
 
 	pb "github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
 	"github.com/xataio/xata-go/xata"
@@ -72,6 +73,10 @@ func GetSupportedCountries() []*pb.SupportedCountry {
 
 		// Append the pointer to the slice
 		supportedCountries = append(supportedCountries, country)
+	}
+
+	for i, c := range supportedCountries {
+		log.Printf("[%d] %+v\n", i, c)
 	}
 
 	// Return the list of supported countries
