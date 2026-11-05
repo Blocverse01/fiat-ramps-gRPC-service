@@ -42,11 +42,6 @@ func generateAuthenticationCredentials(path string, method string, body *bytes.B
 	signature := base64.StdEncoding.EncodeToString(h.Sum(nil))
 	authorization := fmt.Sprintf("YcHmacV1 %s:%s", publicKey, signature)
 
-	fmt.Println("Signature :", signature);
-
-	fmt.Println("Authorization :", authorization);
-
-
 	return AuthenticationCredentials{
 		Date:          date,
 		Authorization: authorization,

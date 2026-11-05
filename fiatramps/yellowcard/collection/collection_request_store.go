@@ -69,8 +69,6 @@ func StoreCollectionRequest(input StoreCollectionRequestInput) (string, error) {
 
 	bodyData, err := fiatramps.BufferBodyData(input)
 
-	fmt.Println("bodyData:", bodyData)
-
 	if err != nil {
 		return "", err
 	}
@@ -92,6 +90,10 @@ func StoreCollectionRequest(input StoreCollectionRequestInput) (string, error) {
 	// Handle the response
 	log.Printf("Response status for request [%s]: %s", endpoint, resp.Status)
 
+	if database.IsUniqueViolation(resp.StatusCode) {
+		return "", fmt.Errorf("duplicate collection request for sequenceId")
+	}
+
 	if resp.StatusCode != http.StatusCreated {
 		fiatramps.HandleFailedResponse(resp)
 		return "", fmt.Errorf("failed response with status: %s", resp.Status)
@@ -112,6 +114,17 @@ type GetCollectionRequestResponse struct {
 }
 
 func GetCollectionRequestTransaction(sequenceId string) (RequestRecord, error) {
+	return lookupCollectionRequest(sequenceId, "")
+}
+
+func GetCollectionRequestTransactionForOwner(sequenceId, ownerId string) (RequestRecord, error) {
+	if ownerId == "" {
+		return RequestRecord{}, fmt.Errorf("ownerId is required")
+	}
+	return lookupCollectionRequest(sequenceId, ownerId)
+}
+
+func lookupCollectionRequest(sequenceId, ownerId string) (RequestRecord, error) {
 	endpoint := fmt.Sprintf("%s/query", tableName)
 
 	filter := make(map[string]string)
@@ -120,6 +133,9 @@ func GetCollectionRequestTransaction(sequenceId string) (RequestRecord, error) {
 		filter["sequenceId"] = sequenceId
 	} else {
 		filter["collectionAccountNumber"] = sequenceId
+	}
+	if ownerId != "" {
+		filter["ownerId"] = ownerId
 	}
 
 	reqBody := database.TableDataQueryRequestBody{
@@ -169,7 +185,7 @@ func GetCollectionRequestTransaction(sequenceId string) (RequestRecord, error) {
 	return response.Records[0], nil
 }
 
-func UpdateCollectionRequestStatus(sequenceId string, status string) error {
+func patchCollectionRequestStatus(sequenceId string, status string) error {
 	collectionRequest, err := GetCollectionRequestTransaction(sequenceId)
 
 	if err != nil {

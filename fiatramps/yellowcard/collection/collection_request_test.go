@@ -10,6 +10,7 @@ import (
 )
 
 func TestCreateCollectionRequest(t *testing.T) {
+	fiatramps.SkipWithoutLiveEnv(t, "../../../.env")
 	fiatramps.LoadEnv("../../../.env")
 
 	const phoneNumberForTesting = "+2348143100808"

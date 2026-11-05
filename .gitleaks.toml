@@ -1,0 +1,13 @@
+title = "fiat-ramps-grpc-service"
+
+[extend]
+useDefault = true
+
+[allowlist]
+paths = ['''(.*?)gitleaks\.toml$''']
+
+[[rules]]
+id = "xata-api-key"
+description = "Xata API key"
+regex = '''xau_[A-Za-z0-9]{10,}'''
+tags = ["key", "xata", "secret"]

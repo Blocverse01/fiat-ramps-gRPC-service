@@ -892,6 +892,7 @@ func (x *Beneficiary) GetSeerbitId() string {
 type GetBeneficiaryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	BeneficiaryId string                 `protobuf:"bytes,1,opt,name=beneficiary_id,json=beneficiaryId,proto3" json:"beneficiary_id,omitempty"`
+	OwnerId       string                 `protobuf:"bytes,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -929,6 +930,13 @@ func (*GetBeneficiaryRequest) Descriptor() ([]byte, []int) {
 func (x *GetBeneficiaryRequest) GetBeneficiaryId() string {
 	if x != nil {
 		return x.BeneficiaryId
+	}
+	return ""
+}
+
+func (x *GetBeneficiaryRequest) GetOwnerId() string {
+	if x != nil {
+		return x.OwnerId
 	}
 	return ""
 }
@@ -1940,6 +1948,7 @@ func (x *CreatePaymentRequestResponse) GetDestination() *PaymentRequestDestinati
 type GetPaymentRequestTransactionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SequenceId    string                 `protobuf:"bytes,1,opt,name=sequence_id,json=sequenceId,proto3" json:"sequence_id,omitempty"`
+	OwnerId       string                 `protobuf:"bytes,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1977,6 +1986,13 @@ func (*GetPaymentRequestTransactionRequest) Descriptor() ([]byte, []int) {
 func (x *GetPaymentRequestTransactionRequest) GetSequenceId() string {
 	if x != nil {
 		return x.SequenceId
+	}
+	return ""
+}
+
+func (x *GetPaymentRequestTransactionRequest) GetOwnerId() string {
+	if x != nil {
+		return x.OwnerId
 	}
 	return ""
 }
@@ -2652,6 +2668,7 @@ func (x *CreateCollectionResponse) GetIsAgentTransaction() bool {
 type GetCollectionRequestTransactionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SequenceId    string                 `protobuf:"bytes,1,opt,name=sequence_id,json=sequenceId,proto3" json:"sequence_id,omitempty"`
+	OwnerId       string                 `protobuf:"bytes,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2689,6 +2706,13 @@ func (*GetCollectionRequestTransactionRequest) Descriptor() ([]byte, []int) {
 func (x *GetCollectionRequestTransactionRequest) GetSequenceId() string {
 	if x != nil {
 		return x.SequenceId
+	}
+	return ""
+}
+
+func (x *GetCollectionRequestTransactionRequest) GetOwnerId() string {
+	if x != nil {
+		return x.OwnerId
 	}
 	return ""
 }

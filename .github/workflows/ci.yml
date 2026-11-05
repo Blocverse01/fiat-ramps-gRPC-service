@@ -1,0 +1,65 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  secrets:
+    name: gitleaks and xau_ tree gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install gitleaks
+        run: |
+          set -euo pipefail
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz \
+            | tar -xz gitleaks
+
+      - name: Gitleaks (working tree)
+        run: ./gitleaks detect --source=. --no-git --redact --exit-code 1 --config=.gitleaks.toml
+
+      - name: Fail if any xau_ token appears in the tree
+        run: |
+          set -euo pipefail
+          if git grep -I -nE 'xau_[A-Za-z0-9]{10,}' -- . ':!.gitleaks.toml'; then
+            echo "xau_ token pattern found in the working tree" >&2
+            exit 1
+          fi
+          echo "no xau_ token values in tree"
+
+      - name: Confirm .idea/ and .env* are gitignored
+        run: |
+          set -euo pipefail
+          git check-ignore -q .idea/ || { echo ".idea/ is not gitignored" >&2; exit 1; }
+          git check-ignore -q .env || { echo ".env is not gitignored" >&2; exit 1; }
+          git check-ignore -q .env.local || { echo ".env* is not gitignored" >&2; exit 1; }
+          if git ls-files --error-unmatch '.idea/*' >/dev/null 2>&1; then
+            echo ".idea/ is still tracked" >&2
+            exit 1
+          fi
+
+  test:
+    name: go test and log redaction
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Test
+        env:
+          SKIP_LIVE_TESTS: "true"
+        run: go test $(go list ./... | grep -vE '/(scripts|auditing)$')
+
+      - name: Log redaction grep gate
+        run: bash scripts/check-log-redaction.sh

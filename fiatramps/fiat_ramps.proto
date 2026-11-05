@@ -111,6 +111,7 @@ message Beneficiary {
 
 message GetBeneficiaryRequest {
   string beneficiary_id = 1;
+  string owner_id = 2;
 }
 
 message CountryFiatLimits {
@@ -215,6 +216,7 @@ message CreatePaymentRequestResponse {
 
 message GetPaymentRequestTransactionRequest {
   string sequence_id = 1;
+  string owner_id = 2;
 }
 message GetPaymentRequestTransactionResponse {
   string sequence_id = 1;
@@ -287,6 +289,7 @@ message CreateCollectionResponse {
 
 message GetCollectionRequestTransactionRequest {
   string sequence_id = 1;
+  string owner_id = 2;
 }
 
 message GetCollectionRequestResponse {
