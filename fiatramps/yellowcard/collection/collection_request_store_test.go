@@ -6,6 +6,7 @@ import (
 )
 
 func TestUpdateCollectionRequestStatus(t *testing.T) {
+	fiatramps.SkipWithoutLiveEnv(t, "../../../.env")
 	fiatramps.LoadEnv("../../../.env")
 
 	t.Run("Test Update Collection Request Status", func(t *testing.T) {

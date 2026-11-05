@@ -6,6 +6,7 @@ import (
 )
 
 func TestGetPaymentNetworks(t *testing.T) {
+	fiatramps.SkipWithoutLiveEnv(t, "../../../.env")
 	fiatramps.LoadEnv("../../../.env")
 
 	t.Run("Test Get Payment Networks", func(t *testing.T) {

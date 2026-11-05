@@ -7,8 +7,10 @@ import (
 	"log"
 	"net"
 	"os"
+	"strconv"
 
 	pb "github.com/blocverse01/fiat-ramps-grpc-service/fiatramps"
+	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/auth"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/beneficiaries"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/collection"
@@ -18,15 +20,16 @@ import (
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/payments"
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard/quotes"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 )
 
 var (
-	port     = flag.Int("port", 50051, "The server port")
-	tls      = flag.Bool("tls", false, "Connection uses TLS if true, else plain TCP")
-	certFile = flag.String("cert_file", "", "The TLS cert file")
-	keyFile  = flag.String("key_file", "", "The TLS key file")
-	envFile  = flag.String("env_path", ".env", "The path to the .env file")
+	port         = flag.Int("port", 50051, "The server port")
+	tls          = flag.Bool("tls", false, "Connection uses TLS if true, else plain TCP")
+	certFile     = flag.String("cert_file", "", "The TLS cert file")
+	keyFile      = flag.String("key_file", "", "The TLS key file")
+	clientCAFile = flag.String("client_ca_file", "", "The CA used to verify client certificates (mTLS)")
+	localDev     = flag.Bool("local_dev", false, "Allow insecure startup for local development only")
+	envFile      = flag.String("env_path", ".env", "The path to the .env file")
 )
 
 type fiatRampsServer struct {
@@ -126,8 +129,12 @@ func (server *fiatRampsServer) GetTransactionFee(_ context.Context, req *pb.GetT
 	}, nil
 }
 
-func (server *fiatRampsServer) GetBeneficiaries(_ context.Context, req *pb.GetBeneficiariesRequest) (*pb.GetBeneficiariesResponse, error) {
-	ownerBeneficiaries, err := beneficiaries.GetBeneficiaries(req.OwnerId, req.CountryCode, req.AccountType)
+func (server *fiatRampsServer) GetBeneficiaries(ctx context.Context, req *pb.GetBeneficiariesRequest) (*pb.GetBeneficiariesResponse, error) {
+	ownerId, err := auth.ResolveOwnerID(ctx, req.OwnerId)
+	if err != nil {
+		return nil, err
+	}
+	ownerBeneficiaries, err := beneficiaries.GetBeneficiaries(ownerId, req.CountryCode, req.AccountType)
 	if err != nil {
 		return nil, err
 	}
@@ -175,8 +182,12 @@ func (server *fiatRampsServer) GetBeneficiaries(_ context.Context, req *pb.GetBe
 	}, nil
 }
 
-func (server *fiatRampsServer) GetBeneficiary(_ context.Context, req *pb.GetBeneficiaryRequest) (*pb.Beneficiary, error) {
-	beneficiary, err := beneficiaries.GetBeneficiary(req.BeneficiaryId)
+func (server *fiatRampsServer) GetBeneficiary(ctx context.Context, req *pb.GetBeneficiaryRequest) (*pb.Beneficiary, error) {
+	ownerId, err := auth.ResolveOwnerID(ctx, req.GetOwnerId())
+	if err != nil {
+		return nil, err
+	}
+	beneficiary, err := beneficiaries.GetBeneficiaryForOwner(req.BeneficiaryId, ownerId)
 
 	if err != nil {
 		return nil, err
@@ -230,7 +241,11 @@ func (server *fiatRampsServer) GetSupportedCountryByCode(_ context.Context, req 
 	}, nil
 }
 
-func (server *fiatRampsServer) AddBeneficiary(_ context.Context, req *pb.AddBeneficiaryRequest) (*pb.AddBeneficiaryResponse, error) {
+func (server *fiatRampsServer) AddBeneficiary(ctx context.Context, req *pb.AddBeneficiaryRequest) (*pb.AddBeneficiaryResponse, error) {
+	ownerId, err := auth.ResolveOwnerID(ctx, req.OwnerId)
+	if err != nil {
+		return nil, err
+	}
 	newBeneficiaryId, err := beneficiaries.AddBeneficiary(beneficiaries.AddBeneficiaryRequestBody{
 		AccountNumber:        req.AccountNumber,
 		AccountType:          req.AccountType,
@@ -238,7 +253,7 @@ func (server *fiatRampsServer) AddBeneficiary(_ context.Context, req *pb.AddBene
 		ChannelId:            req.ChannelId,
 		NetworkId:            req.NetworkId,
 		Country:              req.Country,
-		OwnerId:              req.OwnerId,
+		OwnerId:              ownerId,
 		NetworkName:          req.NetworkName,
 		NameEnquiryReference: req.NameEnquiryReference,
 		SeerBitId:            req.SeerbitId,
@@ -301,11 +316,15 @@ func (server *fiatRampsServer) GetPaymentNetworks(_ context.Context, req *pb.Get
 	}, nil
 }
 
-func (server *fiatRampsServer) CreateBeneficiaryPaymentRequest(_ context.Context, req *pb.CreateBeneficiaryPaymentRequestInput) (*pb.CreatePaymentRequestResponse, error) {
+func (server *fiatRampsServer) CreateBeneficiaryPaymentRequest(ctx context.Context, req *pb.CreateBeneficiaryPaymentRequestInput) (*pb.CreatePaymentRequestResponse, error) {
+	ownerId, err := auth.ResolveOwnerID(ctx, req.OwnerId)
+	if err != nil {
+		return nil, err
+	}
 	paymentRequestResponse, err := payments.CreateBeneficiaryPaymentRequest(payments.BeneficiaryPaymentRequestInput{
 		BeneficiaryId: req.BeneficiaryId,
 		LocalAmount:   req.LocalAmount,
-		OwnerId:       req.OwnerId,
+		OwnerId:       ownerId,
 		Sender: yellowcard.RetailCustomer{
 			Name:               req.Sender.Name,
 			Phone:              req.Sender.Phone,
@@ -366,10 +385,14 @@ func (server *fiatRampsServer) CreateBeneficiaryPaymentRequest(_ context.Context
 	}, nil
 }
 
-func (server *fiatRampsServer) CreatePlatformCollectionRequest(_ context.Context, req *pb.CreatePlatformCollectionRequestInput) (*pb.CreateCollectionResponse, error) {
+func (server *fiatRampsServer) CreatePlatformCollectionRequest(ctx context.Context, req *pb.CreatePlatformCollectionRequestInput) (*pb.CreateCollectionResponse, error) {
+	ownerId, err := auth.ResolveOwnerID(ctx, req.OwnerId)
+	if err != nil {
+		return nil, err
+	}
 	collectionRequestResponse, err := collection.CreatePlatformCollectionRequest(collection.PlatformCollectionRequestPayload{
 		LocalAmount: req.LocalAmount,
-		OwnerId:     req.OwnerId,
+		OwnerId:     ownerId,
 		Recipient: yellowcard.RetailCustomer{
 			Name:               req.Recipient.Name,
 			Phone:              req.Recipient.Phone,
@@ -395,7 +418,7 @@ func (server *fiatRampsServer) CreatePlatformCollectionRequest(_ context.Context
 		ChannelId:                req.ChannelId,
 		TransactionFeeUsd:        req.TransactionFeeUsd,
 		CollectionCountryCode:    req.CollectionCountryCode,
-		IsAgentTransaction:  req.IsAgentTransaction,
+		IsAgentTransaction:       req.IsAgentTransaction,
 	})
 
 	if err != nil {
@@ -436,8 +459,12 @@ func (server *fiatRampsServer) CreatePlatformCollectionRequest(_ context.Context
 	}, nil
 }
 
-func (server *fiatRampsServer) GetPaymentRequestTransaction(_ context.Context, req *pb.GetPaymentRequestTransactionRequest) (*pb.GetPaymentRequestTransactionResponse, error) {
-	paymentRequest, err := payments.GetPaymentRequestTransaction(req.SequenceId)
+func (server *fiatRampsServer) GetPaymentRequestTransaction(ctx context.Context, req *pb.GetPaymentRequestTransactionRequest) (*pb.GetPaymentRequestTransactionResponse, error) {
+	ownerId, err := auth.ResolveOwnerID(ctx, req.GetOwnerId())
+	if err != nil {
+		return nil, err
+	}
+	paymentRequest, err := payments.GetPaymentRequestTransactionForOwner(req.SequenceId, ownerId)
 
 	if err != nil {
 		return nil, err
@@ -478,8 +505,12 @@ func (server *fiatRampsServer) GetPaymentRequestTransaction(_ context.Context, r
 	}, nil
 }
 
-func (server *fiatRampsServer) GetCollectionRequestTransaction(_ context.Context, req *pb.GetCollectionRequestTransactionRequest) (*pb.GetCollectionRequestResponse, error) {
-	collectionRequest, err := collection.GetCollectionRequestTransaction(req.SequenceId)
+func (server *fiatRampsServer) GetCollectionRequestTransaction(ctx context.Context, req *pb.GetCollectionRequestTransactionRequest) (*pb.GetCollectionRequestResponse, error) {
+	ownerId, err := auth.ResolveOwnerID(ctx, req.GetOwnerId())
+	if err != nil {
+		return nil, err
+	}
+	collectionRequest, err := collection.GetCollectionRequestTransactionForOwner(req.SequenceId, ownerId)
 
 	if err != nil {
 		return nil, err
@@ -506,7 +537,7 @@ func (server *fiatRampsServer) GetCollectionRequestTransaction(_ context.Context
 		DestinationWalletAddress: collectionRequest.DestinationWalletAddress,
 		CollectionCountry:        collectionRequest.CollectionCountry,
 		TransactionFeeUsd:        collectionRequest.TransactionFeeUsd,
-		IsAgentTransaction:  	collectionRequest.IsAgentTransaction,
+		IsAgentTransaction:       collectionRequest.IsAgentTransaction,
 		CreatedAt:                collectionRequest.Xata.CreatedAt,
 	}, nil
 }
@@ -568,8 +599,17 @@ func (server *fiatRampsServer) ResolveBankAccount(_ context.Context, req *pb.Res
 	}, nil
 }
 
+func listenAddr() string {
+	listenPort := *port
+	if p := os.Getenv("PORT"); p != "" {
+		if n, err := strconv.Atoi(p); err == nil {
+			listenPort = n
+		}
+	}
+	return fmt.Sprintf("0.0.0.0:%d", listenPort)
+}
+
 func main() {
-	// Parse command-line flags
 	flag.Parse()
 
 	val, ok := os.LookupEnv("DEPLOYED_ON_RENDER")
@@ -577,22 +617,15 @@ func main() {
 		pb.LoadEnv(*envFile)
 	}
 
-	// Start gRPC server
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
+	cfg := auth.LoadConfig(*localDev, *tls, *certFile, *keyFile, *clientCAFile)
+	opts, err := cfg.ServerOptions()
+	if err != nil {
+		log.Fatalf("server startup failed: %v", err)
+	}
+
+	lis, err := net.Listen("tcp", listenAddr())
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
-	}
-	var opts []grpc.ServerOption
-
-	if *tls {
-		if *certFile == "" || *keyFile == "" {
-			log.Fatalf("cert_file and key_file must be set when tls is enabled")
-		}
-		creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
-		if err != nil {
-			log.Fatalf("failed to load TLS credentials: %v", err)
-		}
-		opts = append(opts, grpc.Creds(creds))
 	}
 
 	grpcServer := grpc.NewServer(opts...)

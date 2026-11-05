@@ -1,7 +1,6 @@
 package collection
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/blocverse01/fiat-ramps-grpc-service/fiatramps/yellowcard"
@@ -104,7 +103,7 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 		NetworkId:                input.Source.NetworkId,
 		YellowCardStatus:         "recorded",
 		TransactionFeeUsd:        input.TransactionFeeUsd,
-		IsAgentTransaction:      input.IsAgentTransaction,
+		IsAgentTransaction:       input.IsAgentTransaction,
 	})
 
 	if err != nil {
@@ -126,13 +125,6 @@ func CreatePlatformCollectionRequest(input PlatformCollectionRequestPayload) (Cr
 	collectionRequest, err := CreateCollectionRequest(collectionRequestPayload)
 
 	if err != nil {
-		jsonPayload, jsonErr := json.MarshalIndent(collectionRequestPayload, "", "  ")
-		if jsonErr != nil {
-			fmt.Println("Error marshaling JSON:", jsonErr)
-		} else {
-			fmt.Println("Failed to create collection request:", err)
-			fmt.Println("Request Payload:", string(jsonPayload))
-		}
 		return CreateCollectionResponse{}, err
 	}
 

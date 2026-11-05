@@ -7,6 +7,7 @@ import (
 )
 
 func TestBeneficiaries(t *testing.T) {
+	fiatramps.SkipWithoutLiveEnv(t, "../../../.env")
 	fiatramps.LoadEnv("../../../.env")
 
 	t.Run("Test Get Beneficiaries", func(t *testing.T) {

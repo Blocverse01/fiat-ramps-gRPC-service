@@ -4,19 +4,28 @@ import "testing"
 
 func TestUtils(t *testing.T) {
 	t.Run("Test GeneratePaymentSequenceId", func(t *testing.T) {
-		transactionHash := "0x1516f1b307f63567703daa5434354d909c5055e016db66bcbac958ab0a7a66c8"
 		prefix := "azza-p"
 
-		sequenceId, err := GeneratePaymentSequenceId(PaymentSequenceIdInput{
-			TransactionHash: transactionHash,
+		first, err := GeneratePaymentSequenceId(PaymentSequenceIdInput{
+			TransactionHash: "0xpublic",
 			Prefix:          prefix,
 		})
-
 		if err != nil {
-			t.Error(err)
+			t.Fatal(err)
 		}
-
-		t.Log("sequenceId: ", sequenceId)
+		second, err := GeneratePaymentSequenceId(PaymentSequenceIdInput{
+			TransactionHash: "0xpublic",
+			Prefix:          prefix,
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if first == second {
+			t.Fatal("offramp sequence ids must be random, not derived from txHash")
+		}
+		if len(first) < len(prefix)+5 {
+			t.Fatalf("unexpected sequence id %s", first)
+		}
 	})
 
 	t.Run("Test date formatter", func(t *testing.T) {

@@ -6,6 +6,7 @@ import (
 )
 
 func TestGetPaymentRequestTransaction(t *testing.T) {
+	fiatramps.SkipWithoutLiveEnv(t, "../../../.env")
 	fiatramps.LoadEnv("../../../.env")
 
 	t.Run("Test Get Payment Request Transaction", func(t *testing.T) {
@@ -20,6 +21,7 @@ func TestGetPaymentRequestTransaction(t *testing.T) {
 }
 
 func TestUpdatePaymentRequestStatus(t *testing.T) {
+	fiatramps.SkipWithoutLiveEnv(t, "../../../.env")
 	fiatramps.LoadEnv("../../../.env")
 
 	t.Run("Test Update Payment Request Status", func(t *testing.T) {

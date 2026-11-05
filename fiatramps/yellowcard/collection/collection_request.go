@@ -100,8 +100,6 @@ func CreateCollectionRequest(input RequestPayload) (CreateCollectionResponse, er
 		return CreateCollectionResponse{}, err
 	}
 
-	println(validatedInput.Recipient.Dob)
-
 	bodyData, err := fiatramps.BufferBodyData(validatedInput)
 	if err != nil {
 		return CreateCollectionResponse{}, err

@@ -6,6 +6,7 @@ import (
 )
 
 func TestGetQuotes(t *testing.T) {
+	fiatramps.SkipWithoutLiveEnv(t, "../../../.env")
 	fiatramps.LoadEnv("../../../.env")
 	t.Run("Test GetTransactionFee", func(t *testing.T) {
 		// Test the GetTransactionFee function

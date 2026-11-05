@@ -1,4 +1,6 @@
 .env
+.env*
+.idea/
 script.go
 .DS_STORE
 fiatramps/auditing

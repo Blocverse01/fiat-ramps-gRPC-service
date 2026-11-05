@@ -24,8 +24,8 @@ func HandleFailedResponse(resp *http.Response) {
 			log.Printf("Failed to read response body: %v", err)
 		}
 
-		// Log the parsed response
-		log.Printf("Request failed with status [%d] and response: %v", resp.StatusCode, string(body))
+		log.Printf("Request failed with status [%d] (response body redacted)", resp.StatusCode)
+		_ = body
 	}
 }
 

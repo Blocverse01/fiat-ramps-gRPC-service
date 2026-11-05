@@ -104,13 +104,25 @@ func GetBeneficiaries(ownerId string, countryCode string, accountType string) ([
 }
 
 func GetBeneficiary(beneficiaryId string) (YellowCardBeneficiary, error) {
+	return lookupBeneficiary(map[string]string{"id": beneficiaryId})
+}
+
+func GetBeneficiaryForOwner(beneficiaryId, ownerId string) (YellowCardBeneficiary, error) {
+	if ownerId == "" {
+		return YellowCardBeneficiary{}, fmt.Errorf("ownerId is required")
+	}
+	return lookupBeneficiary(map[string]string{
+		"id":      beneficiaryId,
+		"ownerId": ownerId,
+	})
+}
+
+func lookupBeneficiary(filter map[string]string) (YellowCardBeneficiary, error) {
 	endpoint := fmt.Sprintf("%s/query", beneficiariesTableName)
 
 	reqBody := GetBeneficiariesRequestBody{
 		Columns: []string{"*", "country"},
-		Filter: map[string]string{
-			"id": beneficiaryId,
-		},
+		Filter:  filter,
 	}
 
 	bodyData, err := fiatramps.BufferBodyData(reqBody)
@@ -150,7 +162,7 @@ func GetBeneficiary(beneficiaryId string) (YellowCardBeneficiary, error) {
 	}
 
 	if len(response.Records) == 0 {
-		return YellowCardBeneficiary{}, fmt.Errorf("no beneficiary with ID: %v found", beneficiaryId)
+		return YellowCardBeneficiary{}, fmt.Errorf("no beneficiary found")
 	}
 
 	return response.Records[0], nil
@@ -167,7 +179,6 @@ type AddBeneficiaryRequestBody struct {
 	OwnerId              string `json:"ownerId"`
 	NameEnquiryReference string `json:"nameEnquiryReference"`
 	SeerBitId            string `json:"seerbitId"`
-	
 }
 
 type AddBeneficiaryResponse struct {
